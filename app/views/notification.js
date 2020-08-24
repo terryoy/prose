@@ -1,5 +1,5 @@
 var $ = require('jquery-browserify');
-var _ = require('underscore');
+var _ = require('lodash');
 var Backbone = require('backbone');
 var templates = require('../../dist/templates');
 var util = require('../util');
@@ -17,7 +17,6 @@ module.exports = Backbone.View.extend({
 
   initialize: function(options) {
     options = _.clone(options) || {};
-    _.bindAll(this);
 
     this.message = options.message;
     this.error = options.error;
@@ -33,9 +32,9 @@ module.exports = Backbone.View.extend({
       options: this.options
     }
 
-    this.$el.html(_.template(this.template, data, {
+    this.$el.html(_.template(this.template, {
       variable: 'data'
-    }));
+    })(data));
 
     return this;
   },

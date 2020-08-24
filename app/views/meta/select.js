@@ -1,6 +1,6 @@
 var $ = require('jquery-browserify');
 var Backbone = require('backbone');
-var _ = require('underscore');
+var _ = require('lodash');
 var templates = require('../../../dist/templates');
 
 module.exports = Backbone.View.extend({
@@ -9,24 +9,25 @@ module.exports = Backbone.View.extend({
   type: 'select',
 
   initialize: function(options) {
-    this.name = options.data.name;
+    this.options = options;
+    _.bindAll(this, ['render', 'getValue', 'setValue']);
   },
 
   render: function () {
-    var data = this.options.data;
+    var options = this.options;
     var select = {
-      name: data.name,
-      label: data.field.label,
-      help: data.field.help,
-      placeholder: data.field.placeholder,
-      options: data.field.options,
-      value: data.field.value,
-      lang: data.lang
+      name: options.name,
+      label: options.field.label,
+      help: options.field.help,
+      placeholder: options.field.placeholder,
+      options: options.field.options,
+      value: options.field.value,
+      lang: options.lang
     };
 
-    this.setElement($(_.template(this.template, select, {
+    this.setElement($(_.template(this.template, {
       variable: 'meta'
-    })));
+    })(select)));
     this.$form = this.$el.find('select');
     return this.$el;
   },

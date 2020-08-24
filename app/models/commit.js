@@ -1,10 +1,8 @@
-var _ = require('underscore');
+var _ = require('lodash');
 var Backbone = require('backbone');
 
 module.exports = Backbone.Model.extend({
   initialize: function(attributes, options) {
-    _.bindAll(this);
-
     this.repo = attributes.repo;
   },
 

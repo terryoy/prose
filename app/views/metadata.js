@@ -1,7 +1,7 @@
 var CodeMirror = require('codemirror');
 var $ = require('jquery-browserify');
 var chosen = require('chosen-jquery-browserify');
-var _ = require('underscore');
+var _ = require('lodash');
 _.merge = require('deepmerge');
 var jsyaml = require('js-yaml');
 var Backbone = require('backbone');
@@ -43,21 +43,21 @@ module.exports = Backbone.View.extend({
   // titleAsHeading is true when the filetype is markdown,
   // and when there exists a meta field called title.
   initialize: function(options) {
-    _.bindAll(this);
-
     this.model = options.model;
     this.titleAsHeading = options.titleAsHeading;
     this.view = options.view;
 
     this.subviews = [];
     this.codeMirrorInstances = {};
+
+    _.bindAll(this, ['updateModel', 'setValue', 'exit', 'remove']);
   },
 
   // Parent file view calls this render func immediately
   // after initializing this view.
   // This is responsible for rendering metadata fields for each *default*.
   render: function() {
-    this.$el.empty().append(_.template(this.template));
+    this.$el.empty().append(_.template(this.template)());
 
     var $form = this.$el.find('.form');
 
@@ -66,7 +66,7 @@ module.exports = Backbone.View.extend({
 
     // Using the yml configuration file for metadata,
     // render form fields.
-    _.each(this.model.get('defaults'), (function(data, key) {
+    this.model.get('defaults').forEach((data, key) => {
 
       // Tests that 1. This is the title metadata,
       // and 2. We've decided to combine the title form UI as the page header.
@@ -84,46 +84,36 @@ module.exports = Backbone.View.extend({
           value: data,
         }
         var name = data.name ? data.name : key;
-        view = new forms.TextForm({data: {
+        view = new forms.TextForm({
           name: name,
           type: 'text',
           field: field
-        }});
+        });
       }
 
       // Use the data field to determine the kind of meta form to draw.
       else {
         switch (data.field.element) {
           case 'button':
-            view = new forms.Button({data: data});
+            view = new forms.Button(data);
           break;
           case 'checkbox':
-            view = new forms.Checkbox({data: data});
+            view = new forms.Checkbox(data);
           break;
           case 'text':
-            view = new forms.TextForm({
-              data: _.extend({}, data, {type: 'text'})
-            });
+            view = new forms.TextForm(_.extend({}, data, {type: 'text'}));
           break;
           case 'textarea':
-            view = new forms.TextArea({
-              data: _.extend({}, data, {id: util.stringToUrl(data.name)})
-            });
+            view = new forms.TextArea(_.extend({}, data, {id: util.stringToUrl(data.name)}));
           break;
           case 'number':
-            view = new forms.TextForm({
-              data: _.extend({}, data, {type: 'number'})
-            });
+            view = new forms.TextForm(_.extend({}, data, {type: 'number'}));
           break;
           case 'select':
-            view = new forms.Select({
-              data: _.extend({}, data, {lang: lang})
-            });
+            view = new forms.Select(_.extend({}, data, {lang: lang}));
           break;
           case 'multiselect':
-            view = new forms.Multiselect({
-              data: _.extend({}, data, {lang: lang})
-            });
+            view = new forms.Multiselect(_.extend({}, data, {lang: lang}));
           break;
 
           // On hidden values, we obviously don't have to render anything.
@@ -161,12 +151,12 @@ module.exports = Backbone.View.extend({
           // TODO passing in a bound callback is not the best
           // as it increases the debugging surface area.
           // Find some way to get around this.
-          var codeMirror = view.initCodeMirror(this.updateModel.bind(this));
+          var codeMirror = view.initCodeMirror(this.updateModel);
 
           this.codeMirrorInstances[id] = codeMirror;
         }
       }
-    }).bind(this));
+    });
 
     // Attach a change event listener
     this.$el.find('.chzn-select').chosen().change(this.updateModel);
@@ -212,7 +202,7 @@ module.exports = Backbone.View.extend({
       $parent.empty();
     }
     else {
-      this.$el.find('.form').append(_.template(templates.meta.raw));
+      this.$el.find('.form').append(_.template(templates.meta.raw)());
       $parent = this.$el.find('#raw');
     }
 
@@ -252,7 +242,7 @@ module.exports = Backbone.View.extend({
         value: view.getValue(),
         name: view.name
       };
-    }).groupBy('name').each(function(group) {
+    }).groupBy('name').forEach(function(group) {
       var name = group[0].name;
       metadata[name] = group.length === 1 ?
         group[0].value : _.pluck(group, 'value');
@@ -314,7 +304,7 @@ module.exports = Backbone.View.extend({
     // Easiest thing to do is update metadata fields
     // that are rendered already, ie. have defaults specified
     // in _config.yml or _prose.yml
-    _.each(metadata, function(value, key) {
+    _.forEach(metadata, function(value, key) {
 
       // Filter instead of find, because you never know if someone
       // is using the same key for two different elements.
@@ -328,7 +318,7 @@ module.exports = Backbone.View.extend({
       // subviews is an ordered array.
       if (renderedViews.length && _.isArray(value)
           && value.length === renderedViews.length) {
-        _.each(renderedViews, function(view, i) {
+        renderedViews.forEach(function(view, i) {
           view.setValue(value[i]);
         });
       }
@@ -351,7 +341,7 @@ module.exports = Backbone.View.extend({
   },
 
   refresh: function() {
-    _.each(this.codeMirrorInstances, function(codeMirror) {
+    _.forEach(this.codeMirrorInstances, function(codeMirror) {
       codeMirror.refresh();
     });
   },

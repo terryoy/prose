@@ -1,6 +1,6 @@
 var $ = require('jquery-browserify');
 var chosen = require('chosen-jquery-browserify');
-var _ = require('underscore');
+var _ = require('lodash');
 var util = require('../util');
 var Backbone = require('backbone');
 var toolbar = require('../toolbar/markdown.js');
@@ -66,7 +66,7 @@ module.exports = Backbone.View.extend({
       metadata: this.file.get('metadata')
     };
 
-    this.$el.html(_.template(this.template, toolbar, { variable: 'toolbar' }));
+    this.$el.html(_.template(this.template, {variable: 'toolbar'})(toolbar));
 
     return this;
   },
@@ -481,7 +481,7 @@ module.exports = Backbone.View.extend({
       $media.append('<li class="directory back"><a href="' + link + '"><span class="ico fl small inline back"></span>Back</a></li>');
     }
 
-    data.each(function(d) {
+    data.forEach(function(d) {
       var parts = d.get('path').split('/');
       var path = parts.slice(0, parts.length - 1).join('/');
 

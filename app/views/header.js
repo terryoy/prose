@@ -1,6 +1,6 @@
 var pathUtil = require('path');
 var $ = require('jquery-browserify');
-var _ = require('underscore');
+var _ = require('lodash');
 var Backbone = require('backbone');
 var util = require('../util');
 var templates = require('../../dist/templates');
@@ -15,8 +15,6 @@ module.exports = Backbone.View.extend({
   },
 
   initialize: function(options) {
-    _.bindAll(this);
-
     this.user = options.user;
     this.repo = options.repo;
     this.file = options.file;
@@ -63,9 +61,9 @@ module.exports = Backbone.View.extend({
       translate: this.file ? this.file.get('translate') : undefined
     };
 
-    this.$el.empty().append(_.template(this.template, data, {
+    this.$el.empty().append(_.template(this.template, {
       variable: 'data'
-    }));
+    })(data));
 
     return this;
   },

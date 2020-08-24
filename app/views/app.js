@@ -1,5 +1,5 @@
 var $ = require('jquery-browserify');
-var _ = require('underscore');
+var _ = require('lodash');
 var Backbone = require('backbone');
 var LoaderView = require('./loader');
 var SidebarView = require('./sidebar');
@@ -19,10 +19,8 @@ module.exports = Backbone.View.extend({
   events: {
     'click a.logout': 'logout'
   },
-  
-  initialize: function(options) {
-    _.bindAll(this);
 
+  initialize: function(options) {
     key('j, k, enter, o', (function(e, handler) {
       if (this.$el.find('.listing')[0]) {
         if (handler.key === 'j' || handler.key === 'k') {
@@ -32,7 +30,7 @@ module.exports = Backbone.View.extend({
         }
       }
     }).bind(this));
-    
+
     key('ctrl+enter', (function (e, handler) {
       if (this.nav.state === 'blob') {
         this.nav.trigger('edit');
@@ -64,7 +62,7 @@ module.exports = Backbone.View.extend({
   },
 
   render: function() {
-    this.$el.html(_.template(this.template, {}, { variable: 'data' }));
+    this.$el.html(_.template(this.template)());
 
     this.loader.setElement(this.$el.find('#loader')).render();
     this.sidebar.setElement(this.$el.find('#drawer')).render();

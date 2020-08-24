@@ -1,4 +1,4 @@
-var _ = require('underscore');
+var _ = require('lodash');
 var jsyaml = require('js-yaml');
 var queue = require('queue-async');
 
@@ -44,8 +44,6 @@ module.exports = Backbone.Collection.extend({
   },
 
   initialize: function(models, options) {
-    _.bindAll(this);
-
     this.repo = options.repo;
     this.branch = options.branch;
     this.sha = options.sha;
@@ -124,7 +122,7 @@ module.exports = Backbone.Collection.extend({
         // Serial queue to not break global scope JSONP callbacks
         var q = queue(1);
 
-        _.each(metadata, function(raw, key) {
+        _.forEach(metadata, function(raw, key) {
           q.defer(function(cb) {
             var subq = queue();
             var defaults;
@@ -132,7 +130,7 @@ module.exports = Backbone.Collection.extend({
             if (_.isObject(raw)) {
               defaults = raw;
 
-              _.each(defaults, function(value, key) {
+              defaults.forEach(function(value, key) {
                 var regex = /^https?:\/\//;
 
                 // Parse JSON URL values

@@ -1,5 +1,5 @@
 var $ = require('jquery-browserify');
-var _ = require('underscore');
+var _ = require('lodash');
 var Backbone = require('backbone');
 var cookie = require('../../cookie');
 var templates = require('../../../dist/templates');
@@ -23,9 +23,9 @@ module.exports = Backbone.View.extend({
       login: cookie.get('login')
     });
 
-    this.$el.empty().append(_.template(this.template, data, {
+    this.$el.empty().append(_.template(this.template, {
       variable: 'repo'
-    }));
+    })(data));
 
     return this;
   }

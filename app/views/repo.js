@@ -1,5 +1,5 @@
 var $ = require('jquery-browserify');
-var _ = require('underscore');
+var _ = require('lodash');
 var queue = require('queue-async');
 var Backbone = require('backbone');
 var FilesView = require('./files');
@@ -18,8 +18,6 @@ module.exports = Backbone.View.extend({
   subviews: {},
 
   initialize: function(options) {
-    _.bindAll(this);
-
     var app = options.app;
     app.loader.start();
 
@@ -35,6 +33,8 @@ module.exports = Backbone.View.extend({
     this.initBranches();
     this.initHeader();
 
+    _.bindAll(this, ['initSearch', 'initHistory', 'initFiles']);
+
     var q = queue();
     q.defer(this.initSearch);
     q.defer(this.initHistory);
@@ -49,7 +49,7 @@ module.exports = Backbone.View.extend({
   },
 
   render: function() {
-    this.$el.html(_.template(this.template, {}, { variable: 'data' }));
+    this.$el.html(_.template(this.template)());
 
     this.header.setElement(this.$el.find('#heading')).render();
     this.search.setElement(this.$el.find('#search')).render();

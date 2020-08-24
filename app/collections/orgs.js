@@ -1,4 +1,4 @@
-var _ = require('underscore');
+var _ = require('lodash');
 var Backbone = require('backbone');
 var Org = require('../models/org');
 var config = require('../config');
@@ -9,8 +9,6 @@ module.exports = Backbone.Collection.extend({
 
   initialize: function(models, options) {
     options = _.clone(options) || {};
-    _.bindAll(this);
-
     this.user = options.user;
   },
 
