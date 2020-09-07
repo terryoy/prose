@@ -1,6 +1,6 @@
 var gulp = require('gulp');
 var concat = require('gulp-concat');
-var uglify = require('gulp-uglify');
+var uglify = require('gulp-uglify-es').default;
 var shell = require('gulp-shell');
 var browserify = require('browserify');
 var rename = require('gulp-rename');
@@ -18,7 +18,7 @@ var sourcemaps = require('gulp-sourcemaps');
 var log = require('fancy-log');
 var watchify = require('watchify');
 var notifier = require('node-notifier');
-var browserSync = require('browser-sync');
+var browserSync = require('browser-sync').create();
 var reload = browserSync.reload;
 
 // Scripts paths.
@@ -185,9 +185,9 @@ gulp.task('build-app', gulp.series('templates', 'oauth', function() {
   .pipe(gulp.dest(dist));
 }));
 
-gulp.task('serve', gulp.series('build-app', function () {
-  browserSync({
-    port: 5000,
+gulp.task('serve', gulp.series('build-app', 'css', function (cb) {
+  browserSync.init({
+    port: 3000,
     ghostMode: false,
     server: {
       baseDir: ['.'],
@@ -196,6 +196,8 @@ gulp.task('serve', gulp.series('build-app', function () {
       }
     }
   });
+  cb();
+}));
 
 // Build tests, then concatenate with vendor scripts
 gulp.task('build-tests', gulp.series('templates', 'oauth', function() {
@@ -215,21 +217,20 @@ gulp.task('build-tests', gulp.series('templates', 'oauth', function() {
 }));
 
 // Watch for changes in `app` scripts.
-// gulp.task('watch', gulp.series('build-app', 'build-tests', 'css', function() {
-//   // Watch any `.js` file under `app` folder.
-//   gulp.watch(paths.app, ['build-app', 'build-tests']);
-//   gulp.watch(paths.test, ['build-tests']);
-//   gulp.watch(paths.templates, ['build-app']);
-//   gulp.watch(paths.css, ['css']);
-// }));
-
-
-  gulp.watch([
-    paths.templates
-  ]).on('change', reload);
-
+gulp.task('watch', gulp.series('build-app', 'build-tests', 'css', function(cb) {
+  // Watch any `.js` file under `app` folder.
+  gulp.watch(paths.app, ['build-app', 'build-tests']);
+  gulp.watch(paths.test, ['build-tests']);
+  gulp.watch(paths.templates, ['build-app']);
   gulp.watch(paths.css, ['css']);
-  gulp.watch(paths.templates, ['templates']);
+  cb();
+// }));
+  // gulp.watch([
+  //   paths.templates
+  // ]).on('change', reload);
+  //
+  // gulp.watch(paths.css, ['css']);
+  // gulp.watch(paths.templates, ['templates']);
 }));
 
 var testTask = shell.task([

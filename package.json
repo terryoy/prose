@@ -27,7 +27,7 @@
     "github"
   ],
   "devDependencies": {
-    "browser-sync": "^2.23.6",
+    "browser-sync": "^2.26.12",
     "browserify": "^6.0.0",
     "browserify-shim": "^3.8.0",
     "chai": "^1.9.2",
@@ -41,7 +41,7 @@
     "gulp-sass": "^3.1.0",
     "gulp-shell": "^0.8.0",
     "gulp-sourcemaps": "^2.6.4",
-    "gulp-uglify": "^3.0.0",
+    "gulp-uglify-es": "^2.0.0",
     "gulp-watch": "^5.0.0",
     "merge2": "^1.0.2",
     "mocha": "^8.1.1",
@@ -50,7 +50,6 @@
     "serve": "^10.1.1",
     "sinon": "^1.17.2",
     "sinon-chai": "^2.6.0",
-    "uglify-js": "^3.4.9",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^0.1.1",
     "watchify": "^3.10.0"
