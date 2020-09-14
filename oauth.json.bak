@@ -1,6 +1,6 @@
 {
   "api": "https://api.github.com",
   "site": "https://github.com",
-  "clientId": "583fc57089683db2bc69",
-  "gatekeeperUrl": "https://teatime-prose.herokuapp.com"
+  "clientId": "OAUTH_CLIENT_ID",
+  "gatekeeperUrl": "GATEKEEPER_HOST"
 }
