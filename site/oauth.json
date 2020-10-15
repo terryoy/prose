@@ -1,0 +1,6 @@
+{
+  "api": "https://api.github.com",
+  "site": "https://github.com",
+  "clientId": "583fc57089683db2bc69",
+  "gatekeeperUrl": "http://teatime-prose.herokuapp.com"
+}

@@ -2,11 +2,11 @@
 node_modules/
 dist
 transifex.auth
-oauth.json
+# oauth.json
 .vimrc
 test/lib
 _site
-site
+# site
 npm-debug.log
 *.swp
 
