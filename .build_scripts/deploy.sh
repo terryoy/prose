@@ -4,7 +4,7 @@ set -e # halt script on error
 FINAL_PATH=public
 
 prepare_content() {
-  echo "Preparing site content to gh-pages!"
+  echo "Preparing site content at: ${FINAL_PATH}"
   rm -rf e
   mkdir $FINAL_PATH
   cp -a dist $FINAL_PATH
@@ -17,7 +17,7 @@ prepare_content() {
 #echo "${DEPLOY_BRANCH}"
 #echo "${GH_REF}"
 #if [ $TRAVIS_PULL_REQUEST == "false" ] && [ $TRAVIS_BRANCH == ${DEPLOY_BRANCH} ]; then
-  prepare_content()
+  prepare_content
   #echo "Deploy to gh-pages"
   #cd $FINAL_PATH
   #git init
