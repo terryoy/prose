@@ -8,7 +8,7 @@ prepare_content() {
   rm -rf e
   mkdir $FINAL_PATH
   cp -a dist $FINAL_PATH
-  #cp -a img fonts index.html style-rtl.css locale.js oauth.json CNAME translations $FINAL_PATH
+  cp -a translations $FINAL_PATH
   cp -a site/* $FINAL_PATH
 }
 
