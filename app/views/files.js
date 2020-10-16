@@ -1,5 +1,5 @@
 var $ = require('jquery-browserify');
-var _ = require('underscore');
+var _ = require('lodash');
 var Backbone = require('backbone');
 var File = require('../models/file');
 var Folder = require('../models/folder');
@@ -23,8 +23,6 @@ module.exports = Backbone.View.extend({
   },
 
   initialize: function(options) {
-    _.bindAll(this);
-
     var app = options.app;
     app.loader.start();
 
@@ -38,6 +36,8 @@ module.exports = Backbone.View.extend({
     this.router = options.router;
     this.search = options.search;
     this.sidebar = options.sidebar;
+
+    _.bindAll(this, ['setModel']);
 
     this.branches.fetch({
       success: this.setModel,
@@ -122,18 +122,17 @@ module.exports = Backbone.View.extend({
       url: url
     };
 
-    this.$el.html(_.template(this.template, data, {variable: 'data'}));
+    this.$el.html(_.template(this.template, {variable: 'data'})(data));
 
     // if not searching, filter to only show current level
-    var collection = search ? this.search.search() : this.presentationModel.filter((function(file) {
+    var collection = search ? this.search.search() : this.presentationModel.filter(file => {
       return regex.test(file.get('path'));
-    }).bind(this));
+    });
 
     var frag = document.createDocumentFragment();
 
-    collection.each((function(file, index) {
+    collection.forEach((file, index) => {
       var view;
-
       if (file instanceof File) {
         view = new FileView({
           branch: this.branch,
@@ -153,10 +152,9 @@ module.exports = Backbone.View.extend({
           router: this.router
         });
       }
-
       frag.appendChild(view.render().el);
       this.subviews[file.id] = view;
-    }).bind(this));
+    });
 
     this.$el.find('ul').html(frag);
 

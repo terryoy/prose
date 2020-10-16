@@ -1,5 +1,5 @@
 var $ = require('jquery-browserify');
-var _ = require('underscore');
+var _ = require('lodash');
 var Backbone = require('backbone');
 var templates = require('../../dist/templates');
 var auth = require('../config');
@@ -23,7 +23,7 @@ module.exports = Backbone.View.extend({
   template: templates.start,
 
   render: function() {
-    this.$el.html(_.template(this.template, auth, { variable: 'auth' }));
+    this.$el.html(_.template(this.template, {variable: 'auth'})(auth));
     return this;
   },
 

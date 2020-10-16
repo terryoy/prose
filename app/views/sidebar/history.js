@@ -1,5 +1,5 @@
 var $ = require('jquery-browserify');
-var _ = require('underscore');
+var _ = require('lodash');
 var Backbone = require('backbone');
 var CommitView = require('./li/commit');
 
@@ -15,8 +15,6 @@ module.exports = Backbone.View.extend({
   template: templates.sidebar.label,
 
   initialize: function(options) {
-    _.bindAll(this);
-
     var app = options.app;
     app.loader.start();
 
@@ -28,6 +26,8 @@ module.exports = Backbone.View.extend({
     this.sidebar = options.sidebar;
     this.user = options.user;
     this.view = options.view;
+
+    _.bindAll(this, ['render']);
 
     this.commits.setBranch(this.branch, {
       success: this.render,
@@ -72,7 +72,7 @@ module.exports = Backbone.View.extend({
       var ul = frag.appendChild(document.createElement('ul'));
       ul.className = 'listing';
 
-      list.slice(0,5).each((function(file, index) {
+      list.slice(0,5).forEach((file, index) => {
         var commits = map[file];
         var commit = commits[0];
 
@@ -84,14 +84,12 @@ module.exports = Backbone.View.extend({
         });
 
         ul.appendChild(view.render().el);
-
         this.subviews[commit.sha] = view;
-      }).bind(this));
+      });
 
-      var tmpl = _.template(this.template, label, { variable: 'label' });
-      this.$el.append(tmpl, frag);
+      var tmpl = _.template(this.template, {variable: 'label'});
+      this.$el.append(tmpl(label), frag);
     }
-
     this.app.loader.done();
   },
 
@@ -121,7 +119,7 @@ module.exports = Backbone.View.extend({
 
     var q = queue();
 
-    _.union(this.history, this.recent).each(function(commit) {
+    _.union(this.history, this.recent).forEach(function(commit) {
       q.defer(function(cb) {
         commit.fetch({
           success: function(model, res, options) {

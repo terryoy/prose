@@ -1,5 +1,5 @@
 var $ = require('jquery-browserify');
-var _ = require('underscore');
+var _ = require('lodash');
 var Backbone = require('backbone');
 var templates = require('../../../dist/templates');
 var cookie = require('../../cookie');
@@ -8,8 +8,7 @@ module.exports = Backbone.View.extend({
   template: templates.sidebar.orgs,
 
   initialize: function(options) {
-    _.bindAll(this);
-
+    _.bindAll(this, ['render']);
     this.model = options.model;
     this.router = options.router;
     this.sidebar = options.sidebar;
@@ -33,9 +32,9 @@ module.exports = Backbone.View.extend({
       orgs: this.model.toJSON()
     };
 
-    this.$el.html(_.template(this.template, orgs, {
-      variable: 'orgs'
-    }));
+    this.$el.html(_.template(this.template, {
+      variable: 'data'
+    })(orgs));
 
     // Update active user or organization
     this.$el.find('li a').removeClass('active');

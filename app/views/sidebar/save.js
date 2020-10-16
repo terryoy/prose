@@ -1,5 +1,5 @@
 var $ = require('jquery-browserify');
-var _ = require('underscore');
+var _ = require('lodash');
 var Backbone = require('backbone');
 var NavView = require('../nav');
 var templates = require('../../../dist/templates');
@@ -15,8 +15,6 @@ module.exports = Backbone.View.extend({
   },
 
   initialize: function(options) {
-    _.bindAll(this);
-
     this.sidebar = options.sidebar;
     this.file = options.file;
 
@@ -51,9 +49,9 @@ module.exports = Backbone.View.extend({
       t('sidebar.save.save') :
       t('sidebar.save.submit')
 
-    this.$el.html(_.template(this.template, writable, {
+    this.$el.html(_.template(this.template, {
       variable: 'writable'
-    }));
+    })(writable));
 
     this.updatePlaceholder(this.file, this.file.get('path'));
 

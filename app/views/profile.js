@@ -1,5 +1,5 @@
 var $ = require('jquery-browserify');
-var _ = require('underscore');
+var _ = require('lodash');
 var Backbone = require('backbone');
 var HeaderView = require('./header');
 var OrgsView = require('./sidebar/orgs');
@@ -21,7 +21,7 @@ module.exports = Backbone.View.extend({
   },
 
   render: function() {
-    this.$el.empty().append(_.template(this.template));
+    this.$el.empty().append(_.template(this.template)());
 
     this.search.setElement(this.$el.find('#search')).render();
     this.repos.setElement(this.$el.find('#repos'));
@@ -37,7 +37,7 @@ module.exports = Backbone.View.extend({
         sidebar: this.sidebar,
         user: this.user
       });
-      
+
       this.subviews['orgs'] = orgs;
     }
 

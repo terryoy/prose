@@ -1,6 +1,6 @@
 var $ = require('jquery-browserify');
 var chosen = require('chosen-jquery-browserify');
-var _ = require('underscore');
+var _ = require('lodash');
 var Backbone = require('backbone');
 var BranchView = require('./branch');
 var templates = require('../../../dist/templates');
@@ -11,8 +11,6 @@ module.exports = Backbone.View.extend({
   subviews: {},
 
   initialize: function(options) {
-    _.bindAll(this);
-
     var app = options.app;
     app.loader.start();
 
@@ -22,6 +20,8 @@ module.exports = Backbone.View.extend({
     this.branch = options.branch || this.repo.get('default_branch');
     this.router = options.router;
     this.sidebar = options.sidebar;
+
+    _.bindAll(this, ['render']);
 
     this.model.fetch({
       success: this.render,
@@ -38,10 +38,10 @@ module.exports = Backbone.View.extend({
 
     this.app.loader.start();
 
-    this.$el.empty().append(_.template(this.template));
+    this.$el.empty().append(_.template(this.template)());
     var frag = document.createDocumentFragment();
 
-    this.model.each((function(branch, index) {
+    this.model.forEach((branch, index) => {
       var view = new BranchView({
         model: branch,
         repo: this.repo,
@@ -50,7 +50,7 @@ module.exports = Backbone.View.extend({
 
       frag.appendChild(view.render().el);
       this.subviews[branch.get('name')] = view;
-    }).bind(this));
+    });
 
     this.$el.find('select').html(frag);
 

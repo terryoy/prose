@@ -1,5 +1,5 @@
 var pathUtil = require('path');
-var _ = require('underscore');
+var _ = require('lodash');
 var marked = require('marked');
 var Backbone = require('backbone');
 var jsyaml = require('js-yaml');
@@ -10,7 +10,6 @@ module.exports = Backbone.Model.extend({
 
   initialize: function(attributes, options) {
     options = _.clone(options) || {};
-    _.bindAll(this);
 
     this.isClone = function() {
       return !!options.clone;
@@ -177,7 +176,7 @@ module.exports = Backbone.Model.extend({
   getAttributes: function() {
     var data = {};
 
-    _.each(this.attributes, function(value, key) {
+    this.attributes.forEach(function(value, key) {
       data[key] = this.get(key);
     }, this);
 

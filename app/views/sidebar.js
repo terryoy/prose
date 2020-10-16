@@ -1,4 +1,4 @@
-var _ = require('underscore');
+var _ = require('lodash');
 var Backbone = require('backbone');
 var util = require('../util');
 
@@ -18,12 +18,8 @@ module.exports = Backbone.View.extend({
 
   subviews: {},
 
-  initialize: function(options) {
-    _.bindAll(this);
-  },
-
   render: function(options) {
-    this.$el.html(_.template(this.template, {}, { variable: 'sidebar' }));
+    this.$el.html(_.template(this.template)());
     _.invoke(this.subviews, 'render');
     return this;
   },

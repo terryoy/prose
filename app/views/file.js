@@ -1,9 +1,9 @@
 var CodeMirror = require('codemirror');
 var $ = require('jquery-browserify');
-var _ = require('underscore');
+var _ = require('lodash');
 var queue = require('queue-async');
 var jsyaml = require('js-yaml');
-var patch = require('../../vendor/liquid.patch');
+// var patch = require('../../vendor/liquid.patch');
 var Handsontable = require('handsontable');
 var Papa = require('papaparse');
 
@@ -35,7 +35,7 @@ module.exports = Backbone.View.extend({
     app.loader.start();
 
     // Patch Liquid
-    patch.apply(this);
+    // patch.apply(this);
 
     this.app = app;
     this.branch = options.branch || options.repo.get('default_branch');
@@ -64,6 +64,8 @@ module.exports = Backbone.View.extend({
     this.listenTo(this.sidebar, 'cancel', this.cancel);
     this.listenTo(this.sidebar, 'confirm', this.updateFile);
     this.listenTo(this.sidebar, 'translate', this.translate);
+
+    _.bindAll(this, ['stashFile', 'setCollection', 'setModel']);
 
     // Stash editor and metadataEditor content to sessionStorage on pagehide event
     $(window).on('pagehide', this.stashFile);
@@ -280,7 +282,7 @@ module.exports = Backbone.View.extend({
     var results = content.match(scan);
 
     // Iterate over the results and replace
-    _.each(results, (function(r) {
+    results.forEach(r => {
       var parts = (image).exec(r);
       var path;
 
@@ -305,7 +307,7 @@ module.exports = Backbone.View.extend({
           content = content.replace(r, '![' + parts[1] + '](' + url + ')');
         }
       }
-    }).bind(this));
+    });
 
     return _.escape(content);
   },
@@ -385,7 +387,7 @@ module.exports = Backbone.View.extend({
 
     // Bind Drag and Drop work on the editor
     if (this.model.get('markdown') && this.model.get('writable')) {
-      upload.dragDrop(this.$el, (function(e, file, content) {
+      upload.dragDrop(this.$el, function(e, file, content) {
         if (this.$el.find('#dialog').hasClass('dialog')) {
           this.updateImageInsert(e, file, content);
         } else {
@@ -396,7 +398,7 @@ module.exports = Backbone.View.extend({
           // Append images links in this.upload()
           this.upload(e, file, content);
         }
-      }).bind(this));
+      }.bind(this));
     }
 
     // Monitor the current selection and apply
@@ -578,9 +580,9 @@ module.exports = Backbone.View.extend({
         useCSVEditor: (['csv', 'tsv'].indexOf(this.model.get('lang')) !== -1 && !cookie.get('disableCSVEditor'))
       };
 
-      this.$el.empty().append(_.template(this.template, file, {
+      this.$el.empty().append(_.template(this.template, {
         variable: 'file'
-      }));
+      })(file));
 
       // Store the configuration object from the collection
       this.config = this.model.get('collection').config;
@@ -615,11 +617,13 @@ module.exports = Backbone.View.extend({
       this.updateDocumentTitle();
 
       // Preview needs access to marked, so it's registered here
+      /*
       Liquid.Template.registerFilter({
         'markdownify': function(input) {
           return marked(input || '');
         }
       });
+      */
 
       if (this.model.get('markdown') && this.mode === 'blob') {
         this.blob();
@@ -757,7 +761,7 @@ module.exports = Backbone.View.extend({
 
     // Parse JSONP links
     if (p.site && p.site.site) {
-      _(p.site.site).each(function(file, key) {
+      p.site.site.forEach(function(file, key) {
         q.defer(function(cb){
           var next = false;
           $.ajax({

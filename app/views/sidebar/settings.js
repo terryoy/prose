@@ -1,5 +1,5 @@
 var $ = require('jquery-browserify');
-var _ = require('underscore');
+var _ = require('lodash');
 var Backbone = require('backbone');
 var NavView = require('../nav');
 var util = require('../../util');
@@ -57,9 +57,7 @@ module.exports = Backbone.View.extend({
       path: this.file.get('path')
     };
 
-    this.$el.html(_.template(this.template, settings, {
-      variable: 'settings'
-    }));
+    this.$el.html(_.template(this.template, {variable: 'settings'})(settings));
 
     return this;
   }

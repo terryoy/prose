@@ -1,5 +1,5 @@
 var $ = require('jquery-browserify');
-var _ = require('underscore');
+var _ = require('lodash');
 var Backbone = require('backbone');
 var templates = require('../../../dist/templates');
 
@@ -9,16 +9,14 @@ module.exports = Backbone.View.extend({
   template: templates.sidebar.drafts,
 
   initialize: function(options) {
-    _.bindAll(this);
-
     this.link = options.link;
     this.sidebar = options.sidebar;
   },
 
   render: function() {
-    this.$el.html(_.template(this.template, this.link, {
+    this.$el.html(_.template(this.template, {
       variable: 'link'
-    }));
+    })(this.link));
 
     this.sidebar.open();
 

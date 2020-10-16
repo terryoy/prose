@@ -1,0 +1,38 @@
+name: Node CI
+
+on: 
+  push:
+    branches:
+    - terryoy
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: npm install, build, and test
+      run: |
+        yarn
+        yarn build
+        chmod +x .build_scripts/deploy.sh
+        .build_scripts/deploy.sh
+      env:
+        CI: true
+        DEPLOY_BRANCH: terryoy
+    - name: deploy to gh-pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        #deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+        github_token: ${{ secrets.ACTION_GHPAGES_TOKEN }}
+        publish_dir: ./public
+

@@ -1,4 +1,4 @@
-var _ = require('underscore');
+var _ = require('lodash');
 var Backbone = require('backbone');
 var util = require('.././util');
 
@@ -6,8 +6,6 @@ module.exports = Backbone.Model.extend({
   idAttribute: 'path',
 
   initialize: function(attributes, options) {
-    _.bindAll(this);
-
     this.branch = attributes.branch;
     this.collection = attributes.collection;
     this.repo = attributes.repo;
