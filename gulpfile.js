@@ -126,7 +126,7 @@ gulp.task('templates', shell.task([
 //     );
 // });
 gulp.task('oauth', shell.task([
-  '[ -f oauth.json -a -s oauth.json ] && echo "Using existing oauth.json." || curl "https://raw.githubusercontent.com/prose/prose/gh-pages/oauth.json" > oauth.json'
+  '[ -f oauth.json -a -s oauth.json ] && echo "Using existing oauth.json." || curl "https://raw.githubusercontent.com/prose/prose/gh-pages/oauth.json" > oauth.json && echo "use default oauth.json"'
 ]));
 
 // gulp.task('javascript', gulp.series('templates', 'oauth', function () {
