@@ -1,10 +1,7 @@
-// var $ = require('jquery-browserify');
-// var _ = require('lodash');
-// var templates = require('../dist/templates');
-import {
-  all, includes, map, isFunction, clone
-} from 'lodash-es';
 
+
+import { all, includes, map, clone, isFunction } from 'lodash-es';
+// var templates = require('./templates');
 var chrono = require('chrono');
 
 module.exports = {
@@ -36,7 +33,7 @@ module.exports = {
 
   validPathname: function(path) {
     var regex = /^([a-zA-Z0-9_\-]|\.)+$/;
-    return all(path.split('/'), function(filename) {
+    return _.all(path.split('/'), function(filename) {
       return !!regex.test(filename);
     });
   },
@@ -64,11 +61,11 @@ module.exports = {
 
   mode: function(extension) {
     if (this.isMarkdown(extension)) return 'gfm';
-    if (includes(['js', 'json'], extension)) return 'javascript';
+    if (_.includes(['js', 'json'], extension)) return 'javascript';
     if (extension === 'html') return 'htmlmixed';
     if (extension === 'rb') return 'ruby';
     if (/(yml|yaml)/.test(extension)) return 'yaml';
-    if (includes(['java', 'c', 'cpp', 'cs', 'php'], extension)) return 'clike';
+    if (_.includes(['java', 'c', 'cpp', 'cs', 'php'], extension)) return 'clike';
 
     return extension;
   },
@@ -118,7 +115,7 @@ module.exports = {
 
   chunkedPath: function(path) {
     var chunks = path.split('/');
-    return map(chunks, function(chunk, index) {
+    return _.map(chunks, function(chunk, index) {
       var url = [];
       for (var i = 0; i <= index; i++) {
         url.push(chunks[i]);
@@ -262,7 +259,7 @@ module.exports = {
   },
 
   parseLinkHeader: function(xhr, options) {
-    options = clone(options) || {};
+    options = _.clone(options) || {};
 
     var header = xhr.getResponseHeader('link');
 
@@ -287,10 +284,10 @@ module.exports = {
           error: options.error
         });
       } else {
-        if (isFunction(options.complete)) options.complete();
+        if (_.isFunction(options.complete)) options.complete();
       }
     } else {
-      if (isFunction(options.error)) options.error();
+      if (_.isFunction(options.error)) options.error();
     }
   },
 
