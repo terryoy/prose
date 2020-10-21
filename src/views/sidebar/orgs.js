@@ -3,7 +3,7 @@ import Backbone from 'backbone';
 import { bindAll, template } from 'lodash-es';
 
 var templates = require('../../templates');
-var cookie = require('../../cookie');
+var cookie = require('../../storage/cookie');
 
 module.exports = Backbone.View.extend({
   template: templates.sidebar.orgs,

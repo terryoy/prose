@@ -6,7 +6,7 @@
  */
 import User from './models/user';
 import cookie from './storage/cookie';
-
+import Router from './router';
 
 const authenticate = (config) => {
 

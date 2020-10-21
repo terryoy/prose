@@ -8,7 +8,7 @@ var CommitView = require('./li/commit');
 
 // var queue = require('queue-async');
 
-var cookie = require('../../cookie');
+var cookie = require('../../storage/cookie');
 var templates = require('../../templates');
 var utils = require('../../util');
 

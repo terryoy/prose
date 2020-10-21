@@ -2,7 +2,7 @@ var $ = require('jquery-browserify');
 var _ = require('lodash');
 var Backbone = require('backbone');
 var templates = require('../../../dist/templates');
-var cookie = require('../../cookie');
+var cookie = require('../../storage/cookie');
 
 module.exports = Backbone.View.extend({
   template: templates.sidebar.orgs,

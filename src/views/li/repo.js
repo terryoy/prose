@@ -3,7 +3,7 @@
 import Backbone from 'backbone';
 import { extend, template } from 'lodash-es';
 
-var cookie = require('../../cookie');
+var cookie = require('../../storage/cookie');
 var templates = require('../../templates');
 
 module.exports = Backbone.View.extend({

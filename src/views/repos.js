@@ -1,5 +1,5 @@
 import Backbone from 'backbone';
-import { bindAll，invoke } from 'lodash-es';
+import { bindAll, invoke } from 'lodash-es';
 
 var RepoView = require('./li/repo');
 

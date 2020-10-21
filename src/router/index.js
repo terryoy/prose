@@ -5,28 +5,28 @@ import {
   find, clone, isUndefined
 } from 'lodash-es';
 
-var User = require('./models/user');
-var Users = require('./collections/users');
-var Orgs = require('./collections/orgs');
+var User = require('../models/user');
+var Users = require('../collections/users');
+var Orgs = require('../collections/orgs');
 
-var Repo = require('./models/repo');
-var File = require('./models/file');
+var Repo = require('../models/repo');
+var File = require('../models/file');
 
-var AppView = require('./views/app');
-var NotificationView = require('./views/notification');
-var StartView = require('./views/start');
-var ProfileView = require('./views/profile');
-var SearchView = require('./views/search');
-var ReposView = require('./views/repos');
-var RepoView = require('./views/repo');
-var FileView = require('./views/file');
-var DocumentationView = require('./views/documentation');
-var ChooseLanguageView = require('./views/chooselanguage');
+var AppView = require('../views/app');
+var NotificationView = require('../views/notification');
+var StartView = require('../views/start');
+var ProfileView = require('../views/profile');
+var SearchView = require('../views/search');
+var ReposView = require('../views/repos');
+var RepoView = require('../views/repo');
+var FileView = require('../views/file');
+var DocumentationView = require('../views/documentation');
+var ChooseLanguageView = require('../views/chooselanguage');
 
-var templates = require('../dist/templates');
-var util = require('./util');
-var auth = require('./config');
-var cookie = require('./cookie');
+var templates = require('../templates');
+var util = require('../util');
+var auth = require('../config');
+var cookie = require('../storage/cookie');
 
 // Set scope
 auth.scope = cookie.get('scope') || 'repo';
