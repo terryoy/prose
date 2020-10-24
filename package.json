@@ -4,6 +4,7 @@
   "description": "[Prose](http://prose.io) is a web-based interface for managing text-based content in your GitHub repositories. Use it to create, edit, and delete files, and save your changes directly to GitHub.",
   "dependencies": {
     "backbone": "^1.3.3",
+    "chosen-jquery": "^0.1.1",
     "chosen-jquery-browserify": "~0.9.15",
     "chrono": "~1.0.4",
     "codemirror": "^5.13.2",
@@ -11,8 +12,9 @@
     "diff": "~2.2.0",
     "handsontable": "8.0.0",
     "ignore": "^3.3.7",
-    "jquery": "^3.3.1",
+    "jquery": "^3.5.1",
     "jquery-browserify": "~1.8.1",
+    "jquery-chosen": "^1.1.0",
     "js-base64": "~2.1.1",
     "js-yaml": "^3.6.1",
     "keymaster": "1.6.2",
@@ -49,6 +51,7 @@
     "mocha": "^8.1.1",
     "node-notifier": "^5.2.1",
     "parcel-bundler": "^1.12.4",
+    "parcel-plugin-externals": "^0.5.1",
     "parcel-plugin-txt": "^1.0.3",
     "request": "^2.88.0",
     "serve": "^10.1.1",
@@ -66,7 +69,7 @@
     "old-build": "gulp clean; gulp production",
     "old-translations": "gulp translations",
     "build": "parcel build site/new.html",
-    "start": "parcel site/new.html"
+    "start": "parcel site/new.html --port 3000"
   },
   "browserify": {
     "transform": [
@@ -75,9 +78,6 @@
   },
   "browserify-shim": {
     "chai": "global:chai"
-  },
-  "browser": {
-    "handsontable": "handsontable/dist/handsontable.full"
   },
   "repository": {
     "type": "git",

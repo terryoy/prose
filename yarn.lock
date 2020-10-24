@@ -2367,6 +2367,11 @@ chosen-jquery-browserify@~0.9.15:
   resolved "https://registry.npm.taobao.org/chosen-jquery-browserify/download/chosen-jquery-browserify-0.9.16.tgz#d6143597cd5b4fd228717f8ba38c6a661145dec3"
   integrity sha1-1hQ1l81bT9IocX+Lo4xqZhFF3sM=
 
+chosen-jquery@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.npm.taobao.org/chosen-jquery/download/chosen-jquery-0.1.1.tgz#0293b9d0a55e045c3c8a6f19c414a5e01c25c886"
+  integrity sha1-ApO50KVeBFw8im8ZxBSl4BwlyIY=
+
 chrono@~1.0.4:
   version "1.0.5"
   resolved "https://registry.npm.taobao.org/chrono/download/chrono-1.0.5.tgz#3faed1b0671661bf9f573e29a037e4aa4773ff16"
@@ -5711,7 +5716,12 @@ jquery-browserify@~1.8.1:
   resolved "https://registry.npm.taobao.org/jquery-browserify/download/jquery-browserify-1.8.1.tgz#0dea9d741a4f4115ae1980c4531b22502991a015"
   integrity sha1-DeqddBpPQRWuGYDEUxsiUCmRoBU=
 
-jquery@^3.3.1:
+jquery-chosen@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.npm.taobao.org/jquery-chosen/download/jquery-chosen-1.1.0.tgz#310acce072beb0dd44abb9d28b3939b68c7b2d41"
+  integrity sha1-MQrM4HK+sN1Eq7nSizk5tox7LUE=
+
+jquery@^3.5.1:
   version "3.5.1"
   resolved "https://registry.npm.taobao.org/jquery/download/jquery-3.5.1.tgz#d7b4d08e1bfdb86ad2f1a3d039ea17304717abb5"
   integrity sha1-17TQjhv9uGrS8aPQOeoXMEcXq7U=
@@ -7228,6 +7238,11 @@ parcel-bundler@^1.10.3, parcel-bundler@^1.12.4:
     terser "^3.7.3"
     v8-compile-cache "^2.0.0"
     ws "^5.1.1"
+
+parcel-plugin-externals@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.npm.taobao.org/parcel-plugin-externals/download/parcel-plugin-externals-0.5.1.tgz#c8489247e006c609093a0dfd8f1d7fa29c663b0e"
+  integrity sha1-yEiSR+AGxgkJOg39jx1/opxmOw4=
 
 parcel-plugin-txt@^1.0.3:
   version "1.0.3"

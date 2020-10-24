@@ -1,8 +1,8 @@
 // Automatically Generated
 
-module.exports = [{
+const locales = [{
   "name": "Arabic",
-  "code": "ar"
+  "code": "ar",
 }, {
   "name": "Arabic (Egypt)",
   "code": "ar-EG"
@@ -157,3 +157,5 @@ module.exports = [{
   "name": "Vietnamese (Viet Nam)",
   "code": "vi-VN"
 }];
+
+module.exports = locales;
