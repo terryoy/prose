@@ -4,10 +4,10 @@ import media from './media.txt';
 import mediadirectory from './mediadirectory.txt';
 
 export const dialogs = {
-  help,
-  link,
-  media,
-  mediadirectory
+    help,
+    link,
+    media,
+    mediadirectory
 };
 
 export default dialogs;

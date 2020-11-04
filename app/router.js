@@ -230,17 +230,17 @@ module.exports = Backbone.Router.extend({
     var url = util.extractURL(path);
 
     switch(url.mode) {
-      case 'tree':
-        this.repo(login, repoName, url.branch, url.path);
-        break;
-      case 'new':
-      case 'blob':
-      case 'edit':
-      case 'preview':
-        this.post(login, repoName, url.mode, url.branch, url.path);
-        break;
-      default:
-        throw url.mode;
+    case 'tree':
+      this.repo(login, repoName, url.branch, url.path);
+      break;
+    case 'new':
+    case 'blob':
+    case 'edit':
+    case 'preview':
+      this.post(login, repoName, url.mode, url.branch, url.path);
+      break;
+    default:
+      throw url.mode;
     }
   },
 
@@ -250,15 +250,15 @@ module.exports = Backbone.Router.extend({
     this.app.nav.mode('file');
 
     switch(mode) {
-      case 'new':
-        this.app.loader.start(t('loading.creating'));
-        break;
-      case 'edit':
-        this.app.loader.start(t('loading.file'));
-        break;
-      case 'preview':
-        this.app.loader.start(t('loading.preview'));
-        break;
+    case 'new':
+      this.app.loader.start(t('loading.creating'));
+      break;
+    case 'edit':
+      this.app.loader.start(t('loading.file'));
+      break;
+    case 'preview':
+      this.app.loader.start(t('loading.preview'));
+      break;
     }
 
     var user = this.users.findWhere({ login: login });

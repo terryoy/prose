@@ -3,9 +3,9 @@ import folder from './folder.txt';
 import repo from './repo.txt';
 
 export const li = {
-  file,
-  folder,
-  repo
+    file,
+    folder,
+    repo
 };
 
 export default li;

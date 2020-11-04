@@ -1,8 +1,9 @@
 
-var chosen = require('chosen-jquery-browserify');
+// var chosen = require('chosen-jquery-browserify');
 
 import Backbone from 'backbone';
 import { extend, template } from 'lodash-es';
+import { t } from '../translations';
 
 var toolbar = require('../toolbar/markdown.js');
 var upload = require('../upload');
@@ -128,7 +129,7 @@ module.exports = Backbone.View.extend({
           break;
         case 'numbered-list':
           this.numberedList(selection);
-        break;
+          break;
         default:
           this.view.editor.replaceSelection(snippet);
           break;
@@ -143,9 +144,9 @@ module.exports = Backbone.View.extend({
       var tmpl, className;
       if (key === 'media' && !this.mediaDirectoryPath ||
           key === 'media' && !this.media.length) {
-          className = key + ' no-directory';
+        className = key + ' no-directory';
       } else {
-          className = key;
+        className = key;
       }
 
       // This condition handles the link and media link in the toolbar.
@@ -161,130 +162,131 @@ module.exports = Backbone.View.extend({
           .empty();
 
         switch(key) {
-          case 'link':
-            tmpl = _(templates.dialogs.link).template();
+        case 'link':
+          tmpl = template(templates.dialogs.link);
 
-            $dialog.append(tmpl({
-              relativeLinks: self.relativeLinks
-            }));
+          $dialog.append(tmpl({
+            relativeLinks: self.relativeLinks
+          }));
 
-            if (self.relativeLinks) {
-              $('.chzn-select', $dialog).chosen().change(function() {
-                $('.chzn-single span').text('Insert a local link.');
+          if (self.relativeLinks) {
+            $('.chzn-select', $dialog).chosen().change(function() {
+              $('.chzn-single span').text('Insert a local link.');
 
-                var parts = $(this).val().split(',');
-                $('input[name=href]', $dialog).val(parts[0]);
-                $('input[name=text]', $dialog).val(parts[1]);
-              });
-            }
-
-            if (selection) {
-              // test if this is a markdown link: [text](link)
-              var link = /\[([^\]]+)\]\(([^)]+)\)/;
-              var quoted = /".*?"/;
-
-              var text = selection;
-              var href;
-              var title;
-
-              if (link.test(selection)) {
-                var parts = link.exec(selection);
-                text = parts[1];
-                href = parts[2];
-
-                // Search for a title attrbute within the url string
-                if (quoted.test(parts[2])) {
-                  href = parts[2].split(quoted)[0];
-
-                  // TODO: could be improved
-                  title = parts[2].match(quoted)[0].replace(/"/g, '');
-                }
-              }
-
-              $('input[name=text]', $dialog).val(text);
-              if (href) $('input[name=href]', $dialog).val(href);
-              if (title) $('input[name=title]', $dialog).val(title);
-            }
-          break;
-          case 'media':
-            tmpl = _(templates.dialogs.media).template();
-            $dialog.append(tmpl({
-              description: t('dialogs.media.description', {
-                input: '<input id="upload" class="upload" type="file" />'
-              }),
-              assetsDirectory: (self.media && self.media.length) ? true : false,
-              writable: self.file.get('writable')
-            }));
-
-            if (self.media && self.media.length) self.renderMedia(self.media);
-
-            if (selection) {
-              var image = /\!\[([^\[]*)\]\(([^\)]+)\)/;
-              var src;
-              var alt;
-
-              if (image.test(selection)) {
-                var imageParts = image.exec(selection);
-                alt = imageParts[1];
-                src = imageParts[2];
-
-                $('input[name=url]', $dialog).val(src);
-                if (alt) $('input[name=alt]', $dialog).val(alt);
-              }
-            }
-          break;
-          case 'help':
-            tmpl = _(templates.dialogs.help).template();
-            $dialog.append(tmpl({
-              help: toolbar().help
-            }));
-
-            // Page through different help sections
-            var $mainMenu = this.$el.find('.main-menu a');
-            var $subMenu = this.$el.find('.sub-menu');
-            var $content = this.$el.find('.help-content');
-
-            $mainMenu.on('click', function() {
-              if (!$(this).hasClass('active')) {
-
-                $mainMenu.removeClass('active');
-                $content.removeClass('active');
-                $subMenu
-                    .removeClass('active')
-                    .find('a')
-                    .removeClass('active');
-
-                $(this).addClass('active');
-
-                // Add the relavent sub menu
-                var parent = $(this).data('id');
-                $('.' + parent).addClass('active');
-
-                // Add an active class and populate the
-                // content of the first list item.
-                var $firstSubElement = $('.' + parent + ' a:first', this.el);
-                $firstSubElement.addClass('active');
-
-                var subParent = $firstSubElement.data('id');
-                $('.help-' + subParent).addClass('active');
-              }
-              return false;
+              var parts = $(this).val().split(',');
+              $('input[name=href]', $dialog).val(parts[0]);
+              $('input[name=text]', $dialog).val(parts[1]);
             });
+          }
 
-            $subMenu.find('a').on('click', function() {
-              if (!$(this).hasClass('active')) {
+          if (selection) {
+            // test if this is a markdown link: [text](link)
+            var link = /\[([^\]]+)\]\(([^)]+)\)/;
+            var quoted = /".*?"/;
 
-                $subMenu.find('a').removeClass('active');
-                $content.removeClass('active');
-                $(this).addClass('active');
+            var text = selection;
+            var href;
+            var title;
 
-                // Add the relavent content section
-                var parent = $(this).data('id');
-                $('.help-' + parent).addClass('active');
+            if (link.test(selection)) {
+              var parts = link.exec(selection);
+              text = parts[1];
+              href = parts[2];
+
+              // Search for a title attrbute within the url string
+              if (quoted.test(parts[2])) {
+                href = parts[2].split(quoted)[0];
+
+                // TODO: could be improved
+                title = parts[2].match(quoted)[0].replace(/"/g, '');
               }
+            }
 
-              return false;
-            });
+            $('input[name=text]', $dialog).val(text);
+            if (href) $('input[name=href]', $dialog).val(href);
+            if (title) $('input[name=title]', $dialog).val(title);
+          }
+          break;
+        case 'media':
+          tmpl = template(templates.dialogs.media);
+          $dialog.append(tmpl({
+            description: t('dialogs.media.description', {
+              input: '<input id="upload" class="upload" type="file" />'
+            }),
+            assetsDirectory: (self.media && self.media.length) ? true : false,
+            writable: self.file.get('writable')
+          }));
+
+          if (self.media && self.media.length) self.renderMedia(self.media);
+
+          if (selection) {
+            var image = /!\[([^[]*)\]\(([^)]+)\)/;
+            var src;
+            var alt;
+
+            if (image.test(selection)) {
+              var imageParts = image.exec(selection);
+              alt = imageParts[1];
+              src = imageParts[2];
+
+              $('input[name=url]', $dialog).val(src);
+              if (alt) $('input[name=alt]', $dialog).val(alt);
+            }
+          }
+          break;
+        case 'help':
+          // tmpl = _(templates.dialogs.help).template();
+          tmpl = template(templates.dialogs.help);
+          $dialog.append(tmpl({
+            help: toolbar().help
+          }));
+
+          // Page through different help sections
+          var $mainMenu = this.$el.find('.main-menu a');
+          var $subMenu = this.$el.find('.sub-menu');
+          var $content = this.$el.find('.help-content');
+
+          $mainMenu.on('click', function() {
+            if (!$(this).hasClass('active')) {
+
+              $mainMenu.removeClass('active');
+              $content.removeClass('active');
+              $subMenu
+                .removeClass('active')
+                .find('a')
+                .removeClass('active');
+
+              $(this).addClass('active');
+
+              // Add the relavent sub menu
+              var parent = $(this).data('id');
+              $('.' + parent).addClass('active');
+
+              // Add an active class and populate the
+              // content of the first list item.
+              var $firstSubElement = $('.' + parent + ' a:first', this.el);
+              $firstSubElement.addClass('active');
+
+              var subParent = $firstSubElement.data('id');
+              $('.help-' + subParent).addClass('active');
+            }
+            return false;
+          });
+
+          $subMenu.find('a').on('click', function() {
+            if (!$(this).hasClass('active')) {
+
+              $subMenu.find('a').removeClass('active');
+              $content.removeClass('active');
+              $(this).addClass('active');
+
+              // Add the relavent content section
+              var parent = $(this).data('id');
+              $('.help-' + parent).addClass('active');
+            }
+
+            return false;
+          });
 
           break;
         }
@@ -304,7 +306,7 @@ module.exports = Backbone.View.extend({
 
   updatePublishState: function() {
     // Update the publish key wording depening on what was saved
-    var $publishkey = this.$el.find('.publish-flag');
+    var $publishKey = this.$el.find('.publish-flag');
     var key = $publishKey.attr('data-state');
 
     if (key === 'true') {
@@ -372,7 +374,7 @@ module.exports = Backbone.View.extend({
   },
 
   dialogInsert: function(e) {
-    var $dialog = $('#dialog', this.el);
+    // var $dialog = $('#dialog', this.el);
     var $target = $(e.target, this.el);
     var type = $target.data('type');
 
@@ -444,9 +446,9 @@ module.exports = Backbone.View.extend({
 
   quote: function(s) {
     if (s.charAt(0) === '>') {
-      this.view.editor.replaceSelection(util.lTrim(s.replace(/\>/g, '')));
+      this.view.editor.replaceSelection(util.lTrim(s.replace(/>/g, '')));
     } else {
-      this.view.editor.replaceSelection('> ' + s.replace(/\>/g, ''));
+      this.view.editor.replaceSelection('> ' + s.replace(/>/g, ''));
     }
   },
 
@@ -473,7 +475,8 @@ module.exports = Backbone.View.extend({
   renderMedia: function(data, back) {
     var self = this;
     var $media = this.$el.find('#media');
-    var tmpl = _(templates.dialogs.mediadirectory).template();
+    // var tmpl = _(templates.dialogs.mediadirectory).template();
+    var tmpl = template(templates.dialogs.mediadirectory);
 
     // Reset some stuff
     $media.empty();
@@ -495,7 +498,7 @@ module.exports = Backbone.View.extend({
       }));
     });
 
-    $('.asset a', $media).on('click', function(e) {
+    $('.asset a', $media).on('click', function() {
       var href = $(this).attr('href');
       var alt = util.trim($(this).text());
 

@@ -3,9 +3,11 @@ import Backbone from 'backbone';
 import { template } from 'lodash-es';
 
 
-var cookie = require('../storage/cookie');
+import { cookie } from '../storage/cookie';
 import templates from '../templates';
 var LOCALES = require('../translations/locales');
+
+const app = window.app;
 
 module.exports = Backbone.View.extend({
   className: 'inner deep prose limiter',
@@ -37,10 +39,10 @@ module.exports = Backbone.View.extend({
       app.locale = code;
 
       if (app.locale && app.locale !== 'en') {
-          // $.getJSON('./translations/locales/' + app.locale + '.json', function(result) {
-          //     window.locale[app.locale] = result;
-              window.locale.current(app.locale);
-          // });
+        // $.getJSON('./translations/locales/' + app.locale + '.json', function(result) {
+        //     window.locale[app.locale] = result;
+        window.locale.current(app.locale);
+        // });
       }
 
       // Reflect changes. Could be more elegant.

@@ -8,13 +8,13 @@ import save from './save.txt';
 import settings from './settings.txt';
 
 export const sidebar = {
-  li,
-  branches,
-  drafts,
-  label,
-  orgs,
-  save,
-  settings
+    li,
+    branches,
+    drafts,
+    label,
+    orgs,
+    save,
+    settings
 };
 
 export default sidebar;

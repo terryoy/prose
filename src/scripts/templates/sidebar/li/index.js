@@ -1,7 +1,7 @@
 import commit from './commit.txt';
 
 export const li = {
-  commit
+    commit
 };
 
 export default li;

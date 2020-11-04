@@ -6,9 +6,9 @@
  */
 import Backbone from 'backbone';
 import User from './models/user';
-import cookie from './storage/cookie';
+import { cookie } from './storage/cookie';
 import Router from './router';
-import "./translations";
+import { t } from  './translations';
 
 const authenticate = (config) => {
 
@@ -92,7 +92,7 @@ const authenticate = (config) => {
       Backbone.history.start();
     }
   });
-}
+};
 
 /**
  * Main entry to the application.
@@ -106,4 +106,4 @@ export const init = (config) => {
   window.locale.current('en');
   window.app = {};
   window.Backbone = Backbone;
-}
+};

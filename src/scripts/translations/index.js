@@ -48,17 +48,17 @@ const I18nMessages = {
 };
 
 
-window.locale = {
+export const locale = {
   _current: 'en',
   ...I18nMessages
 };
 
 
 locale.current = function(_) {
-    if (!arguments.length) return locale._current;
-    if (locale[_] !== undefined) locale._current = _;
-    else if (locale[_.split('-')[0]]) locale._current = _.split('-')[0];
-    return locale;
+  if (!arguments.length) return locale._current;
+  if (locale[_] !== undefined) locale._current = _;
+  else if (locale[_.split('-')[0]]) locale._current = _.split('-')[0];
+  return locale;
 };
 
 /**
@@ -69,34 +69,39 @@ locale.current = function(_) {
  * @param  {[type]} loc locale
  * @return {[type]}     [description]
  */
-window.t = (s, o, loc) => {
-    if (!arguments.length) return;
-    loc = loc || locale._current;
+export const t = (s, o, loc) => {
+  if (!arguments.length) return;
+  loc = loc || locale._current;
 
-    var path = s.split('.').reverse(),
-        rep = locale[loc]; // messages of lang for locale(loc)
 
-    while (rep !== undefined && path.length) rep = rep[path.pop()];
+  function missing() {
+    var missing = 'Missing ' + loc + ' translation: ' + s;
+    if (typeof console !== 'undefined') console.error(missing);
+    return missing;
+  }
 
-    if (rep !== undefined) {
-        if (o) for (var k in o) rep = rep.replace('{' + k + '}', o[k]);
-        return rep;
-    } else {
-        function missing() {
-            var missing = 'Missing ' + loc + ' translation: ' + s;
-            if (typeof console !== "undefined") console.error(missing);
-            return missing;
-        }
+  var path = s.split('.').reverse(),
+    rep = locale[loc]; // messages of lang for locale(loc)
 
-        if (loc !== 'en') {
-            missing();
-            return t(s, o, 'en');
-        }
+  while (rep !== undefined && path.length) rep = rep[path.pop()];
 
-        if (o && 'default' in o) {
-            return o['default'];
-        }
+  if (rep !== undefined) {
+    if (o) for (var k in o) rep = rep.replace('{' + k + '}', o[k]);
+    return rep;
+  } else {
 
-        return missing();
+    if (loc !== 'en') {
+      missing();
+      return t(s, o, 'en');
     }
-}
+
+    if (o && 'default' in o) {
+      return o['default'];
+    }
+
+    return missing();
+  }
+};
+
+window.locale = locale;
+window.t = t;

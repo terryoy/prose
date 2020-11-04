@@ -6,7 +6,7 @@ import { template, invoke } from 'lodash-es';
 var LoaderView = require('./loader');
 var SidebarView = require('./sidebar');
 var NavView = require('./nav');
-var cookie = require('../storage/cookie');
+import { cookie } from '../storage/cookie';
 import templates from '../templates';
 var util = require('../util');
 var key = require('keymaster');

@@ -18,6 +18,7 @@
     "js-base64": "~2.1.1",
     "js-yaml": "^3.6.1",
     "keymaster": "1.6.2",
+    "liquidjs": "^9.16.1",
     "lodash": "^4.17.4",
     "lodash-es": "^4.17.15",
     "marked": "^0.5.2",
@@ -36,6 +37,7 @@
     "chai": "^1.9.2",
     "d3-queue": "^3.0.7",
     "del": "^1.1.1",
+    "eslint": "^7.12.0",
     "function-bind": "~0.1.0",
     "glob": "~3.1.21",
     "gulp": "^4.0.2",
@@ -68,6 +70,7 @@
     "old-start": "gulp serve",
     "old-build": "gulp clean; gulp production",
     "old-translations": "gulp translations",
+    "lint": "eslint src/scripts/**/*.js --fix",
     "build": "parcel build site/new.html",
     "start": "parcel site/new.html --port 3000"
   },

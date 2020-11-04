@@ -1,11 +1,13 @@
-var CodeMirror = require('codemirror');
-
-
+// var CodeMirror = require('codemirror');
+import CodeMirror from 'codemirror';
+import { Liquid } from 'liquidjs';
 import {
-  bindAll, template, compact, has, delay, map, pairs, invoke, escape
+  bindAll, template, compact, has, delay, map, pairs, invoke, escape, extend
 } from 'lodash-es';
-import queue from 'd3-queue';
+import { queue } from 'd3-queue';
 import Handsontable from 'handsontable';
+
+import { t } from '../translations';
 
 // var queue = require('queue-async');
 var jsyaml = require('js-yaml');
@@ -21,10 +23,10 @@ var File = require('../models/file');
 var HeaderView = require('./header');
 var ToolbarView = require('./toolbar');
 var MetadataView = require('./metadata');
-var auth = require('../config');
+import { Config } from '../config';
 var util = require('../util');
 var upload = require('../upload');
-var cookie = require('../storage/cookie');
+import { cookie } from '../storage/cookie';
 import templates from '../templates';
 
 module.exports = Backbone.View.extend({
@@ -118,29 +120,29 @@ module.exports = Backbone.View.extend({
     // Set model either by calling directly for new File models
     // or by filtering collection for existing File models
     switch(this.mode) {
-      case 'edit':
-      case 'blob':
-        this.model = this.collection.findWhere({ path: this.path });
-        break;
-      case 'preview':
-        this.model = this.collection.findWhere({ path: this.path });
-        if (!this.model) {
-          // We may be trying to preview a new file that only has
-          // stashed information lets check and create a dummy model
-          var previewPath = this.absolutePathFromComponents (
-            this.repo.get('owner').login,
-            this.repo.get('name'),
-            this.branch,
-            this.path
-          );
-          if (this.getStashForPath(previewPath)) {
-            this.model = this.newEmptyFile();
-          }
+    case 'edit':
+    case 'blob':
+      this.model = this.collection.findWhere({ path: this.path });
+      break;
+    case 'preview':
+      this.model = this.collection.findWhere({ path: this.path });
+      if (!this.model) {
+        // We may be trying to preview a new file that only has
+        // stashed information lets check and create a dummy model
+        var previewPath = this.absolutePathFromComponents (
+          this.repo.get('owner').login,
+          this.repo.get('name'),
+          this.branch,
+          this.path
+        );
+        if (this.getStashForPath(previewPath)) {
+          this.model = this.newEmptyFile();
         }
-        break;
-      case 'new':
-        this.model = this.newEmptyFile();
-        break;
+      }
+      break;
+    case 'new':
+      this.model = this.newEmptyFile();
+      break;
     }
 
     // Set default metadata from collection
@@ -225,49 +227,49 @@ module.exports = Backbone.View.extend({
 
     if (!match.isNumber) {
       switch (selection.charAt(0)) {
-        case '#':
-          if (!match.lineBreak.test(selection)) {
-            if (match.h3.test(selection) && !match.h4.test(selection)) {
-              this.toolbar.highlight('sub-heading');
-            } else if (match.h2.test(selection) && !match.h3.test(selection)) {
-              this.toolbar.highlight('heading');
-            }
+      case '#':
+        if (!match.lineBreak.test(selection)) {
+          if (match.h3.test(selection) && !match.h4.test(selection)) {
+            this.toolbar.highlight('sub-heading');
+          } else if (match.h2.test(selection) && !match.h3.test(selection)) {
+            this.toolbar.highlight('heading');
           }
-          break;
-        case '>':
-          this.toolbar.highlight('quote');
-          break;
-        case '*':
-        case '_':
-          if (!match.lineBreak.test(selection)) {
-            if (match.strong.test(selection)) {
-              // trigger a change
-              this.toolbar.highlight('bold');
-            } else if (match.italic.test(selection)) {
-              this.toolbar.highlight('italic');
-            }
+        }
+        break;
+      case '>':
+        this.toolbar.highlight('quote');
+        break;
+      case '*':
+      case '_':
+        if (!match.lineBreak.test(selection)) {
+          if (match.strong.test(selection)) {
+            // trigger a change
+            this.toolbar.highlight('bold');
+          } else if (match.italic.test(selection)) {
+            this.toolbar.highlight('italic');
           }
-          break;
-        case '!':
-          if (!match.lineBreak.test(selection) &&
+        }
+        break;
+      case '!':
+        if (!match.lineBreak.test(selection) &&
               selection.charAt(1) === '[' &&
               selection.charAt(selection.length - 1) === ')') {
-              this.toolbar.highlight('media');
-          }
-          break;
-        case '[':
-          if (!match.lineBreak.test(selection) &&
-              selection.charAt(selection.length - 1) === ')') {
-              this.toolbar.highlight('link');
-          }
-          break;
-        case '-':
-          if (selection.charAt(1) === ' ') {
-            this.toolbar.highlight('list');
-          }
+          this.toolbar.highlight('media');
+        }
         break;
-        default:
-          if (this.toolbar) this.toolbar.highlight();
+      case '[':
+        if (!match.lineBreak.test(selection) &&
+              selection.charAt(selection.length - 1) === ')') {
+          this.toolbar.highlight('link');
+        }
+        break;
+      case '-':
+        if (selection.charAt(1) === ' ') {
+          this.toolbar.highlight('list');
+        }
+        break;
+      default:
+        if (this.toolbar) this.toolbar.highlight();
         break;
       }
     } else {
@@ -308,7 +310,7 @@ module.exports = Backbone.View.extend({
           path = /^\//.test(path) ? path.slice(1) :
             util.extractFilename(this.model.get('path'))[0] + '/' + path;
 
-          var url = auth.site + '/' + this.repo.get('owner').login + '/' + this.repo.get('name') + '/blob/' +  this.branch + '/' + window.escape(path) + '?raw=true';
+          var url = Config.site + '/' + this.repo.get('owner').login + '/' + this.repo.get('name') + '/blob/' +  this.branch + '/' + window.escape(path) + '?raw=true';
 
           content = content.replace(r, '![' + parts[1] + '](' + url + ')');
         }
@@ -319,7 +321,7 @@ module.exports = Backbone.View.extend({
   },
 
   toggleEditor: function() {
-    cookie.set('disableCSVEditor', !cookie.get('disableCSVEditor'))
+    cookie.set('disableCSVEditor', !cookie.get('disableCSVEditor'));
     this.render();
   },
 
@@ -334,7 +336,7 @@ module.exports = Backbone.View.extend({
 
     var $container = this.$el.find('#csv');
     var container = $container[0];
-    var data = this.parseCSV(this.model.get('content'))
+    var data = this.parseCSV(this.model.get('content'));
 
     var distanceFromTop = $container.offset().top;
     var documentHeight = $(document).height();
@@ -358,7 +360,7 @@ module.exports = Backbone.View.extend({
       afterRemoveRow: this.makeDirty,
       afterCreateCol: this.makeDirty,
       afterCreateRow: this.makeDirty
-    })
+    });
 
     this.editor.getValue = function() {
       return Papa.unparse(this.getSourceData());
@@ -427,29 +429,31 @@ module.exports = Backbone.View.extend({
     var self = this;
 
     if (this.model.get('markdown')) {
+
       return {
-        'Ctrl-Enter': function (codemirror) {
+        // [Keyboard shortcuts]: callback (codemirror) => {}
+        'Ctrl-Enter': function () {
           self.blob();
         },
-        'Ctrl-S': function(codemirror) {
+        'Ctrl-S': function() {
           self.updateFile();
         },
-        'Cmd-B': function(codemirror) {
+        'Cmd-B': function() {
           if (self.editor.getSelection() !== '') self.toolbar.bold(self.editor.getSelection());
         },
-        'Ctrl-B': function(codemirror) {
+        'Ctrl-B': function() {
           if (self.editor.getSelection() !== '') self.toolbar.bold(self.editor.getSelection());
         },
-        'Cmd-I': function(codemirror) {
+        'Cmd-I': function() {
           if (self.editor.getSelection() !== '') self.toolbar.italic(self.editor.getSelection());
         },
-        'Ctrl-I': function(codemirror) {
+        'Ctrl-I': function() {
           if (self.editor.getSelection() !== '') self.toolbar.italic(self.editor.getSelection());
         }
       };
     } else {
       return {
-        'Ctrl-S': function(codemirror) {
+        'Ctrl-S': function() {
           self.updateFile();
         }
       };
@@ -492,10 +496,10 @@ module.exports = Backbone.View.extend({
       if (metadata && metadata.title) {
         return metadata.title;
 
-      // 2. A title does not exist and should be checked in the defaults
+        // 2. A title does not exist and should be checked in the defaults
       } else if (this.model.get('defaults')) {
 
-        var defaultTitle = _(this.model.get('defaults')).find(function(t) {
+        var defaultTitle = this.model.get('defaults').find(function(t) {
           return t.name == 'title';
         });
 
@@ -761,7 +765,7 @@ module.exports = Backbone.View.extend({
     try {
       p.post.date = jsyaml.safeLoad(date).toDateString();
     } catch(err) {
-      console.log("Error parsing date");
+      console.log('Error parsing date');
       console.log(err);
     }
 
@@ -836,9 +840,9 @@ module.exports = Backbone.View.extend({
       var content = p.content;
 
       // Set base URL to public site
-      if (config && config.siteurl) {
+      if (config && Config.siteurl) {
         content = content.replace(/(<head(?:.*)>)/, (function() {
-          return arguments[1] + '<base href="' + config.siteurl + '">';
+          return arguments[1] + '<base href="' + Config.siteurl + '">';
         }).bind(this));
       }
 
@@ -1344,8 +1348,8 @@ module.exports = Backbone.View.extend({
 
   updateImageInsert: function(e, file, content) {
     var path = (this.toolbar.mediaDirectoryPath) ?
-                    this.toolbar.mediaDirectoryPath :
-                    util.extractFilename(this.toolbar.file.attributes.path)[0];
+      this.toolbar.mediaDirectoryPath :
+      util.extractFilename(this.toolbar.file.attributes.path)[0];
     var src = path + '/' + encodeURIComponent(file.name);
 
     this.$el.find('input[name="url"]').val(src);

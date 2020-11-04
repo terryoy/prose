@@ -5,8 +5,8 @@ import { clone, extend } from 'lodash-es';
 
 var Repo = require('../models/repo');
 
-var auth = require('../config');
-var cookie = require('../storage/cookie');
+import { Config } from '../config';
+import { cookie } from '../storage/cookie';
 
 var util = require('../util');
 
@@ -50,15 +50,15 @@ module.exports = Backbone.Collection.extend({
     var path;
 
     switch(type) {
-      case 'User':
-        path = (id && this.user.get('id') === id) ? '/user' :
-          ('/users/' + this.user.get('login'))
-        break;
-      case 'Organization':
-        path = '/orgs/' + this.user.get('login');
-        break;
+    case 'User':
+      path = (id && this.user.get('id') === id) ? '/user' :
+        ('/users/' + this.user.get('login'));
+      break;
+    case 'Organization':
+      path = '/orgs/' + this.user.get('login');
+      break;
     }
 
-    return auth.api + path + '/repos?per_page=100';
+    return Config.api + path + '/repos?per_page=100';
   }
 });

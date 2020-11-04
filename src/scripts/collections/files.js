@@ -4,14 +4,16 @@ var jsyaml = require('js-yaml');
 
 import Backbone from 'backbone';
 import {
-  map, extend, forEach, isFunction, isString, isObject, compact
+  map, extend, forEach, isFunction, isString, isObject, compact, clone
 } from 'lodash-es';
-import queue from 'd3-queue';
+import { queue } from 'd3-queue';
+
+import { t } from '../translations';
 
 var File = require('../models/file');
 var Folder = require('../models/folder');
 
-var cookie = require('../storage/cookie');
+import { cookie } from '../storage/cookie';
 var util = require('../util');
 var ignore = require('ignore');
 
@@ -36,15 +38,12 @@ module.exports = Backbone.Collection.extend({
     // TODO: handle 'symlink' and 'submodule' type
     // TODO: coerce tree/folder to a single type
     switch(attributes.type) {
-      case 'tree':
-        return new Folder(attributes, options);
-        break;
-      case 'blob':
-        return new File(attributes, options);
-        break;
-      default:
-        return new File(attributes, options);
-        break;
+    case 'tree':
+      return new Folder(attributes, options);
+    case 'blob':
+      return new File(attributes, options);
+    default:
+      return new File(attributes, options);
     }
   },
 
@@ -61,7 +60,7 @@ module.exports = Backbone.Collection.extend({
       var pathA = a.get('path');
       var pathB = b.get('path');
 
-      var regex = /^_posts\/.*$/
+      var regex = /^_posts\/.*$/;
 
       if (typeA === typeB && typeA === 'file' && regex.test(pathA) && regex.test(pathB)) {
         // Reverse alphabetical
@@ -71,13 +70,11 @@ module.exports = Backbone.Collection.extend({
         return pathA < pathB ? -1 : 1;
       } else {
         switch(typeA) {
-          case 'tree':
-          case 'folder':
-            return -1;
-            break;
-          case 'file':
-            return typeB === 'folder' || typeB === 'tree' ? 1 : -1;
-            break;
+        case 'tree':
+        case 'folder':
+          return -1;
+        case 'file':
+          return typeB === 'folder' || typeB === 'tree' ? 1 : -1;
         }
       }
     };
@@ -89,7 +86,7 @@ module.exports = Backbone.Collection.extend({
         branch: this.branch,
         collection: this,
         repo: this.repo
-      })
+      });
     }).bind(this));
   },
 
@@ -100,7 +97,7 @@ module.exports = Backbone.Collection.extend({
     try {
       config = jsyaml.safeLoad(content);
     } catch(err) {
-      console.log("Error parsing YAML");
+      console.log('Error parsing YAML');
       console.log(err);
     }
 
@@ -169,7 +166,7 @@ module.exports = Backbone.Collection.extend({
               try {
                 defaults = jsyaml.safeLoad(raw);
               } catch(err) {
-                console.log("Error parsing default values.");
+                console.log('Error parsing default values.');
                 console.log(err);
               }
             }
@@ -338,8 +335,8 @@ module.exports = Backbone.Collection.extend({
     }
 
     return {
-      "CURRENT_DATETIME": (new Date()).format('Y-m-d H:i O'),
-      "CURRENT_USER": user
+      'CURRENT_DATETIME': (new Date()).format('Y-m-d H:i O'),
+      'CURRENT_USER': user
     };
   }
 });

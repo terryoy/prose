@@ -1,11 +1,12 @@
-var CodeMirror = require('codemirror');
+// var CodeMirror = require('codemirror');
+import CodeMirror from 'codemirror';
 import merge from 'deepmerge';
 import {
   bindAll, template, extend, isArray, difference, union,
   chain, pluck, forEach, find, filter, invoke
 } from 'lodash-es';
 
-var chosen = require('chosen-jquery-browserify');
+// var chosen = require('chosen-jquery-browserify');
 
 // merge = require('deepmerge');
 var jsyaml = require('js-yaml');
@@ -71,7 +72,7 @@ module.exports = Backbone.View.extend({
 
     // Using the yml configuration file for metadata,
     // render form fields.
-    this.model.get('defaults').forEach((data, key) => {
+    forEach(this.model.get('defaults'), (data, key) => {
 
       // Tests that 1. This is the title metadata,
       // and 2. We've decided to combine the title form UI as the page header.
@@ -87,7 +88,7 @@ module.exports = Backbone.View.extend({
         var field = {
           label: key,
           value: data,
-        }
+        };
         var name = data.name ? data.name : key;
         view = new forms.TextForm({
           name: name,
@@ -99,48 +100,48 @@ module.exports = Backbone.View.extend({
       // Use the data field to determine the kind of meta form to draw.
       else {
         switch (data.field.element) {
-          case 'button':
-            view = new forms.Button(data);
+        case 'button':
+          view = new forms.Button(data);
           break;
-          case 'checkbox':
-            view = new forms.Checkbox(data);
+        case 'checkbox':
+          view = new forms.Checkbox(data);
           break;
-          case 'text':
-            view = new forms.TextForm(extend({}, data, {type: 'text'}));
+        case 'text':
+          view = new forms.TextForm(extend({}, data, {type: 'text'}));
           break;
-          case 'textarea':
-            view = new forms.TextArea(extend({}, data, {id: util.stringToUrl(data.name)}));
+        case 'textarea':
+          view = new forms.TextArea(extend({}, data, {id: util.stringToUrl(data.name)}));
           break;
-          case 'number':
-            view = new forms.TextForm(extend({}, data, {type: 'number'}));
+        case 'number':
+          view = new forms.TextForm(extend({}, data, {type: 'number'}));
           break;
-          case 'select':
-            view = new forms.Select(extend({}, data, {lang: lang}));
+        case 'select':
+          view = new forms.Select(extend({}, data, {lang: lang}));
           break;
-          case 'multiselect':
-            view = new forms.Multiselect(extend({}, data, {lang: lang}));
+        case 'multiselect':
+          view = new forms.Multiselect(extend({}, data, {lang: lang}));
           break;
 
           // On hidden values, we obviously don't have to render anything.
           // Just make sure this default is saved on the metadata object.
-          case 'hidden':
-            var preExisting = metadata[data.name];
-            var newDefault = data.field.value || '';
-            var newMeta = {};
+        case 'hidden':
+          var preExisting = metadata[data.name];
+          var newDefault = data.field.value || '';
+          var newMeta = {};
 
-            // If the pre-existing metadata is an array,
-            // make sure we don't just override it, but we find the difference.
-            if (isArray(preExisting)) {
-              newMeta[data.name] = difference(newDefault, preExisting).length ?
-                union(newDefault, preExisting) : preExisting;
-            }
-            // If pre-existing is a single property or undefined,
-            // use extend to default to pre-existing if it exists, or
-            // newDefault if there is no pre-existing.
-            else {
-              newMeta[data.name] = newDefault;
-            }
-            this.model.set('metadata', extend(newMeta, this.model.get('metadata')));
+          // If the pre-existing metadata is an array,
+          // make sure we don't just override it, but we find the difference.
+          if (isArray(preExisting)) {
+            newMeta[data.name] = difference(newDefault, preExisting).length ?
+              union(newDefault, preExisting) : preExisting;
+          }
+          // If pre-existing is a single property or undefined,
+          // use extend to default to pre-existing if it exists, or
+          // newDefault if there is no pre-existing.
+          else {
+            newMeta[data.name] = newDefault;
+          }
+          this.model.set('metadata', extend(newMeta, this.model.get('metadata')));
           break;
         }
       }
@@ -201,7 +202,7 @@ module.exports = Backbone.View.extend({
   // and listening for changes.
   renderRawEditor: function() {
     var isYaml = this.model.get('lang') === 'yaml';
-    var $parent
+    var $parent;
     if (isYaml) {
       $parent = this.view.$el.find('#code');
       $parent.empty();
@@ -224,7 +225,7 @@ module.exports = Backbone.View.extend({
       try {
         var rawValue = jsyaml.safeLoad(codeMirror.getValue());
       } catch(err) {
-        console.log("Error parsing CodeMirror editor text");
+        console.log('Error parsing CodeMirror editor text');
         console.log(err);
       }
       if (rawValue) {
@@ -265,7 +266,7 @@ module.exports = Backbone.View.extend({
     // Get the title value from heading if it's available.
     // In testing environment, if the header doesn't render
     // then this.view.header is undefined.
-     if (this.titleAsHeading && this.view.header) {
+    if (this.titleAsHeading && this.view.header) {
       metadata.title = this.view.header.inputGet();
     }
 
@@ -274,7 +275,7 @@ module.exports = Backbone.View.extend({
       try {
         metadata = merge(metadata, jsyaml.safeLoad(this.codeMirrorInstances.rawEditor.getValue()) || {});
       } catch (err) {
-        console.log("Error parsing not defined raw yaml front matter");
+        console.log('Error parsing not defined raw yaml front matter');
         console.log(err);
       }
     }
@@ -337,7 +338,7 @@ module.exports = Backbone.View.extend({
       // titles, or published states here.
       else if (!renderedViews.length && value &&
                key !== 'title' && key !== 'published' &&
-               !find(hidden, function(d) { return d.name === key })){
+               !find(hidden, function(d) { return d.name === key; })){
         var raw = {};
         raw[key] = value;
         rawEditor.setValue(rawEditor.getValue() + jsyaml.safeDump(raw));
@@ -356,7 +357,7 @@ module.exports = Backbone.View.extend({
     var $input = $parent.find('input');
     var selectTarget = $(e.target).data('select');
     var $select = this.$el.find('#' + selectTarget);
-    var value = _($input.val()).escape();
+    var value = escape($input.val());
 
     if (value.length > 0) {
       var option = '<option value="' + value + '" selected="selected">' + value + '</option>';

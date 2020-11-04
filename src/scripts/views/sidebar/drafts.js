@@ -4,22 +4,22 @@ import { template } from 'lodash-es';
 import templates from '../../templates';
 
 module.exports = Backbone.View.extend({
-  className: 'inner',
+    className: 'inner',
 
-  template: templates.sidebar.drafts,
+    template: templates.sidebar.drafts,
 
-  initialize: function(options) {
-    this.link = options.link;
-    this.sidebar = options.sidebar;
-  },
+    initialize: function(options) {
+        this.link = options.link;
+        this.sidebar = options.sidebar;
+    },
 
-  render: function() {
-    this.$el.html(template(this.template, {
-      variable: 'link'
-    })(this.link));
+    render: function() {
+        this.$el.html(template(this.template, {
+            variable: 'link'
+        })(this.link));
 
-    this.sidebar.open();
+        this.sidebar.open();
 
-    return this;
-  }
+        return this;
+    }
 });

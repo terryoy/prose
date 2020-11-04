@@ -3,6 +3,7 @@ var pathUtil = require('path');
 
 import Backbone from 'backbone';
 import { escape, template, extend } from 'lodash-es';
+import { t } from '../translations';
 
 var util = require('../util');
 import templates from '../templates';
@@ -28,7 +29,7 @@ module.exports = Backbone.View.extend({
 
   render: function() {
     var user = this.user ? this.user.get('login') : this.repo.get('owner').login;
-    var permissions = this.repo ? this.repo.get('permissions') : undefined;
+    // var permissions = this.repo ? this.repo.get('permissions') : undefined;
     var isPrivate = this.repo && this.repo.get('private') ? true : false;
     var title = t('heading.explore');
     var avatar;

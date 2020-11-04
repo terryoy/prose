@@ -3,6 +3,7 @@ import {
   omit, pick, extend, clone, isFunction, isUndefined,
   map, pairs
 } from 'lodash-es';
+import { t } from '../translations';
 
 var pathUtil = require('path');
 
@@ -158,7 +159,8 @@ module.exports = Backbone.Model.extend({
       try {
         frontmatter = jsyaml.safeDump(metadata).trim();
       } catch(err) {
-        throw err;
+        console.error(err);
+        frontmatter = ' ';
       }
 
       return ['---', frontmatter, '---'].join('\n') + '\n' + content;

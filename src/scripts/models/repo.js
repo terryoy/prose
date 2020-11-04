@@ -5,7 +5,7 @@ import { clone, max, isFunction } from 'lodash-es';
 
 var Branches = require('../collections/branches');
 var Commits = require('../collections/commits');
-var config = require('../config');
+import { Config } from '../config';
 
 module.exports = Backbone.Model.extend({
   constructor: function(attributes, options) {
@@ -28,7 +28,7 @@ module.exports = Backbone.Model.extend({
 
   initialize: function(attributes, options) {
     this.branches = new Branches([], { repo: this });
-    this.commits = new Commits([], { repo: this, branch: this.branch })
+    this.commits = new Commits([], { repo: this, branch: this.branch });
   },
 
   ref: function(options) {
@@ -76,14 +76,14 @@ module.exports = Backbone.Model.extend({
             if (isFunction(success)) success(repo, branch);
           }).bind(this),
           error: options.error
-        })
+        });
       }).bind(this),
       error: options.error
     });
   },
 
   url: function() {
-    var url = config.api + '/repos/' + this.get('owner').login + '/' + this.get('name');
+    var url = Config.api + '/repos/' + this.get('owner').login + '/' + this.get('name');
     return url;
   }
 });

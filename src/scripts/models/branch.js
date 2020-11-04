@@ -1,6 +1,6 @@
 import Backbone from 'backbone';
 var Files = require('../collections/files');
-var config = require('../config');
+import { Config } from '../config';
 
 module.exports = Backbone.Model.extend({
   initialize: function(attributes, options) {

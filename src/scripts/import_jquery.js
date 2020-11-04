@@ -1,6 +1,6 @@
-var jquery = require("jquery");
+var jquery = require('jquery');
 window.$ = window.jQuery = jquery; // notice the definition of global variables here
 
-require("jquery-chosen");
+require('jquery-chosen');
 
 // export default (window.$ = window.jQuery = jquery);

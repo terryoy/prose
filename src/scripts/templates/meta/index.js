@@ -7,13 +7,13 @@ import text from './text.txt';
 import textarea from './textarea.txt';
 
 export const meta = {
-  button,
-  checkbox,
-  multiselect,
-  raw,
-  select,
-  text,
-  textarea
+    button,
+    checkbox,
+    multiselect,
+    raw,
+    select,
+    text,
+    textarea
 };
 
 export default meta;

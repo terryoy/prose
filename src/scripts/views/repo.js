@@ -3,12 +3,12 @@
 // var queue = require('queue-async');
 import Backbone from 'backbone';
 import { bindAll, isFunction, template, invoke } from 'lodash-es';
-import queue from 'd3-queue';
+import { queue } from 'd3-queue';
 
 var FilesView = require('./files');
 var HeaderView = require('./header');
 var SearchView = require('./search');
-var util = require('.././util');
+// var util = require('.././util');
 import templates from '../templates';
 
 module.exports = Backbone.View.extend({

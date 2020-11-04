@@ -4,7 +4,7 @@ import { isUndefined, isFunction } from 'lodash-es';
 import url from 'url';
 
 import { Config } from '../config';
-import cookie from '../storage/cookie';
+import { cookie } from '../storage/cookie';
 
 // import Backbone from 'backbone';
 var Repos = require('../collections/repos');
@@ -13,8 +13,8 @@ var Orgs = require('../collections/orgs');
 // TODO Pass Notification view here if something goes wrong?
 var NotificationView = require('../views/notification');
 
-// var auth = require('../config');
-// var cookie = require('../storage/cookie');
+// var auth = import { Config } from '../config';
+// import { cookie } from '../storage/cookie';
 import templates from '../templates';
 
 module.exports = Backbone.Model.extend({
@@ -30,7 +30,7 @@ module.exports = Backbone.Model.extend({
       var parsed = url.parse(window.location.href, true);
       var code = parsed.query && parsed.query.code;
       if (code) {
-        var ajax = $.ajax(auth.url + '/authenticate/' + code, {
+        var ajax = $.ajax(Config.url + '/authenticate/' + code, {
           success: function(data) {
             cookie.set('oauth-token', data.token);
             var newHref = url.format({

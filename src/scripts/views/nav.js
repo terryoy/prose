@@ -1,13 +1,14 @@
 import Backbone from 'backbone';
 import { template, delay } from 'lodash-es';
+import { t } from '../translations';
 
-var config = require('../config');
-var utils = require('../util');
+import { Config } from '../config';
+// var utils = require('../util');
 import templates from '../templates';
-var cookie = require('../storage/cookie');
+import { cookie } from '../storage/cookie';
 
 // Set scope
-config.scope = cookie.get('scope') || 'repo';
+Config.scope = cookie.get('scope') || 'repo';
 
 module.exports = Backbone.View.extend({
   template: templates.nav,
@@ -29,8 +30,8 @@ module.exports = Backbone.View.extend({
 
   render: function() {
     this.$el.html(template(this.template, { variable: 'data' })({
-      login: config.site + '/login/oauth/authorize' +
-        '?client_id=' + config.id + '&scope=' + config.scope + '&redirect_uri=' +
+      login: Config.site + '/login/oauth/authorize' +
+        '?client_id=' + Config.id + '&scope=' + Config.scope + '&redirect_uri=' +
         encodeURIComponent(window.location.href)
     }));
 

@@ -1,11 +1,14 @@
 
 import Backbone from 'backbone';
 import {
-  clone, template
+  clone, template, compact
 } from 'lodash-es';
 
 // import Backbone from 'backbone';
+import Router from '../router';
 import templates from '../templates';
+import { t } from '../translations';
+
 // import templates from '../../templates';
 var util = require('../util');
 
@@ -35,7 +38,7 @@ module.exports = Backbone.View.extend({
       message: this.message,
       error: this.error,
       options: this.options
-    }
+    };
 
     this.$el.html(template(this.template, {
       variable: 'data'
@@ -56,7 +59,7 @@ module.exports = Backbone.View.extend({
       hash[hash.length - 1]  += '&' + path[1];
     }
 
-    router.navigate(_(hash).compact().join('/'), { trigger: true });
+    Router.navigate(compact(hash).join('/'), { trigger: true });
     return false;
   }
 });

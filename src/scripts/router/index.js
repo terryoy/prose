@@ -4,13 +4,14 @@ import Backbone from 'backbone';
 import {
   find, clone, isUndefined
 } from 'lodash-es';
+import { t } from '../translations';
 
 var User = require('../models/user');
 var Users = require('../collections/users');
-var Orgs = require('../collections/orgs');
+// var Orgs = require('../collections/orgs');
 
 var Repo = require('../models/repo');
-var File = require('../models/file');
+// var File = require('../models/file');
 
 var AppView = require('../views/app');
 var NotificationView = require('../views/notification');
@@ -23,13 +24,13 @@ var FileView = require('../views/file');
 var DocumentationView = require('../views/documentation');
 var ChooseLanguageView = require('../views/chooselanguage');
 
-import templates from '../templates';
+// import templates from '../templates';
 var util = require('../util');
-var auth = require('../config');
-var cookie = require('../storage/cookie');
+import { Config } from '../config';
+import { cookie } from '../storage/cookie';
 
 // Set scope
-auth.scope = cookie.get('scope') || 'repo';
+Config.scope = cookie.get('scope') || 'repo';
 
 // Find the proper repo.
 // Handles users with access to a repo *and* it's fork,
@@ -233,17 +234,17 @@ module.exports = Backbone.Router.extend({
     var url = util.extractURL(path);
 
     switch(url.mode) {
-      case 'tree':
-        this.repo(login, repoName, url.branch, url.path);
-        break;
-      case 'new':
-      case 'blob':
-      case 'edit':
-      case 'preview':
-        this.post(login, repoName, url.mode, url.branch, url.path);
-        break;
-      default:
-        throw url.mode;
+    case 'tree':
+      this.repo(login, repoName, url.branch, url.path);
+      break;
+    case 'new':
+    case 'blob':
+    case 'edit':
+    case 'preview':
+      this.post(login, repoName, url.mode, url.branch, url.path);
+      break;
+    default:
+      throw url.mode;
     }
   },
 
@@ -253,15 +254,15 @@ module.exports = Backbone.Router.extend({
     this.app.nav.mode('file');
 
     switch(mode) {
-      case 'new':
-        this.app.loader.start(t('loading.creating'));
-        break;
-      case 'edit':
-        this.app.loader.start(t('loading.file'));
-        break;
-      case 'preview':
-        this.app.loader.start(t('loading.preview'));
-        break;
+    case 'new':
+      this.app.loader.start(t('loading.creating'));
+      break;
+    case 'edit':
+      this.app.loader.start(t('loading.file'));
+      break;
+    case 'preview':
+      this.app.loader.start(t('loading.preview'));
+      break;
     }
 
     var user = this.users.findWhere({ login: login });
@@ -342,7 +343,7 @@ module.exports = Backbone.Router.extend({
     repo.fetch({
       success: (function(model, res, options) {
         // TODO: should this still pass through File view?
-        this.view = new Preview(file);
+        this.view = new FileView(file);
         this.app.$el.find('#main').html(this.view.el);
       }).bind(this),
       error: (function(model, xhr, options) {
@@ -357,7 +358,7 @@ module.exports = Backbone.Router.extend({
 
     // If user has authenticated
     if (this.user) {
-      router.navigate(this.user.get('login'), {
+      this.navigate(this.user.get('login'), {
         trigger: true,
         replace: true
       });
@@ -400,8 +401,8 @@ module.exports = Backbone.Router.extend({
       error = t('notification.404');
       options.unshift({
         'title': t('login'),
-        'link': auth.site + '/login/oauth/authorize?client_id=' +
-          auth.id + '&scope=' + auth.scope + '&redirect_uri=' +
+        'link': Config.site + '/login/oauth/authorize?client_id=' +
+          Config.id + '&scope=' + Config.scope + '&redirect_uri=' +
           encodeURIComponent(window.location.href)
       });
     }

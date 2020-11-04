@@ -82,7 +82,7 @@ module.exports = Backbone.View.extend({
       'new',
       this.branch,
       this.path ? this.path : this.rooturl
-    ]
+    ];
 
     this.router.navigate(compact(path).join('/'), true);
   },
@@ -103,7 +103,7 @@ module.exports = Backbone.View.extend({
     ].join('/');
 
     // Set rooturl jail from collection config
-    var regex = new RegExp('^' + (path ? path : rooturl) + '[^\/]*$');
+    var regex = new RegExp('^' + (path ? path : rooturl) + '[^/]*$');
 
     // Render drafts link in sidebar as subview
     // if _posts directory exists and path does not begin with _drafts
@@ -182,7 +182,7 @@ module.exports = Backbone.View.extend({
   navigate: function(e) {
     var target = e.currentTarget;
     var path = target.href.split('#')[1];
-    var match = path.match(/tree\/([^\/]*)\/?(.*)$/);
+    var match = path.match(/tree\/([^/]*)\/?(.*)$/);
 
     if (e && match) {
       e.preventDefault();

@@ -1,6 +1,7 @@
 
 import Backbone from 'backbone';
 import { template } from 'lodash-es';
+import { t } from '../translations';
 
 import templates from '../templates';
 var util = require('../util');

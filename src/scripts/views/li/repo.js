@@ -3,32 +3,32 @@
 import Backbone from 'backbone';
 import { extend, template } from 'lodash-es';
 
-var cookie = require('../../storage/cookie');
+import { cookie } from '../../storage/cookie';
 import templates from '../../templates';
 
 module.exports = Backbone.View.extend({
-  tagName: 'li',
+    tagName: 'li',
 
-  className: 'item clearfix',
+    className: 'item clearfix',
 
-  template: templates.li.repo,
+    template: templates.li.repo,
 
-  initialize: function(options) {
-    this.model = options.model;
-    this.$el.attr('data-index', options.index);
-    this.$el.attr('data-id', this.model.id);
-    this.$el.attr('data-navigate', '#' + this.model.get('owner').login + '/' + this.model.get('name'));
-  },
+    initialize: function(options) {
+        this.model = options.model;
+        this.$el.attr('data-index', options.index);
+        this.$el.attr('data-id', this.model.id);
+        this.$el.attr('data-navigate', '#' + this.model.get('owner').login + '/' + this.model.get('name'));
+    },
 
-  render: function() {
-    var data = extend(this.model.attributes, {
-      login: cookie.get('login')
-    });
+    render: function() {
+        var data = extend(this.model.attributes, {
+            login: cookie.get('login')
+        });
 
-    this.$el.empty().append(template(this.template, {
-      variable: 'repo'
-    })(data));
+        this.$el.empty().append(template(this.template, {
+            variable: 'repo'
+        })(data));
 
-    return this;
-  }
+        return this;
+    }
 });

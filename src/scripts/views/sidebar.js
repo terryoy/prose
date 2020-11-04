@@ -1,7 +1,7 @@
 import Backbone from 'backbone';
 import { invoke, clone, template } from 'lodash-es';
 
-var util = require('../util');
+// var util = require('../util');
 
 var views = {
   branches: require('./sidebar/branches'),
@@ -19,7 +19,7 @@ module.exports = Backbone.View.extend({
 
   subviews: {},
 
-  render: function(options) {
+  render: function() {
     this.$el.html(template(this.template)());
     invoke(this.subviews, 'render');
     return this;

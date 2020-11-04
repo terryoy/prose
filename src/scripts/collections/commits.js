@@ -16,10 +16,10 @@ module.exports = Backbone.Collection.extend({
   },
 
   parse: function(resp, options) {
-    return map = map(resp, (function(commit) {
-     return  extend(commit, {
+    return map(resp, (function(commit) {
+      return  extend(commit, {
         repo: this.repo
-      })
+      });
     }).bind(this));
   },
 
