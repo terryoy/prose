@@ -412,11 +412,11 @@ module.exports = Backbone.View.extend({
     // Monitor the current selection and apply
     // an active class to any snippet links
     if (lang === 'gfm') {
-      this.listenTo(this.editor, 'cursorActivity', this.cursor);
+      this.listenTo(this.editor, 'cursorActivity', this.cursor.bind(this));
     }
 
-    this.listenTo(this.editor, 'change', this.makeDirty, this);
-    this.listenTo(this.editor, 'focus', this.focus, this);
+    this.listenTo(this.editor, 'change', this.makeDirty.bind(this));
+    this.listenTo(this.editor, 'focus', this.focus.bind(this));
 
     this.refreshCodeMirror();
 

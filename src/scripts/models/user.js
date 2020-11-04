@@ -11,13 +11,13 @@ var Repos = require('../collections/repos');
 var Orgs = require('../collections/orgs');
 
 // TODO Pass Notification view here if something goes wrong?
-var NotificationView = require('../views/notification');
+// var NotificationView = require('../views/notification');
 
 // var auth = import { Config } from '../config';
 // import { cookie } from '../storage/cookie';
-import templates from '../templates';
+// import templates from '../templates';
 
-module.exports = Backbone.Model.extend({
+export const User = Backbone.Model.extend({
   initialize: function(attributes, options) {
     this.repos = new Repos([], { user: this });
     this.orgs = new Orgs([], { user: this });
@@ -60,3 +60,5 @@ module.exports = Backbone.Model.extend({
       '/user' : '/users/' + this.get('login'));
   }
 });
+
+export default User;

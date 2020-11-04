@@ -2421,6 +2421,11 @@ chosen-jquery@^0.1.1:
   resolved "https://registry.npm.taobao.org/chosen-jquery/download/chosen-jquery-0.1.1.tgz#0293b9d0a55e045c3c8a6f19c414a5e01c25c886"
   integrity sha1-ApO50KVeBFw8im8ZxBSl4BwlyIY=
 
+chosen-js@^1.8.7:
+  version "1.8.7"
+  resolved "https://registry.npm.taobao.org/chosen-js/download/chosen-js-1.8.7.tgz#9bfa5597f5081d602ff4ae904af9aef33265bb1d"
+  integrity sha1-m/pVl/UIHWAv9K6QSvmu8zJlux0=
+
 chrono@~1.0.4:
   version "1.0.5"
   resolved "https://registry.npm.taobao.org/chrono/download/chrono-1.0.5.tgz#3faed1b0671661bf9f573e29a037e4aa4773ff16"
@@ -5934,11 +5939,6 @@ jquery-browserify@~1.8.1:
   version "1.8.1"
   resolved "https://registry.npm.taobao.org/jquery-browserify/download/jquery-browserify-1.8.1.tgz#0dea9d741a4f4115ae1980c4531b22502991a015"
   integrity sha1-DeqddBpPQRWuGYDEUxsiUCmRoBU=
-
-jquery-chosen@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.npm.taobao.org/jquery-chosen/download/jquery-chosen-1.1.0.tgz#310acce072beb0dd44abb9d28b3939b68c7b2d41"
-  integrity sha1-MQrM4HK+sN1Eq7nSizk5tox7LUE=
 
 jquery@^3.5.1:
   version "3.5.1"

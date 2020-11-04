@@ -5,7 +5,7 @@
  *   - after user is authorized, init <router> with user,
  */
 import Backbone from 'backbone';
-import User from './models/user';
+import { User } from './models/user';
 import { cookie } from './storage/cookie';
 import Router from './router';
 import { t } from  './translations';

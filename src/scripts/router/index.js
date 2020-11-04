@@ -6,7 +6,7 @@ import {
 } from 'lodash-es';
 import { t } from '../translations';
 
-var User = require('../models/user');
+import { User } from '../models/user';
 var Users = require('../collections/users');
 // var Orgs = require('../collections/orgs');
 
