@@ -3,12 +3,13 @@
 
 import Backbone from 'backbone';
 import { extend, template } from 'lodash-es';
+
 import { t } from '../translations';
+import templates from '../templates';
 
 var toolbar = require('../toolbar/markdown.js');
 var upload = require('../upload');
 var util = require('../util');
-var templates = require('../templates');
 
 module.exports = Backbone.View.extend({
   template: templates.toolbar,
