@@ -7,8 +7,6 @@ import { cookie } from '../storage/cookie';
 import templates from '../templates';
 var LOCALES = require('../translations/locales');
 
-const app = window.app;
-
 module.exports = Backbone.View.extend({
   className: 'inner deep prose limiter',
 
@@ -19,6 +17,7 @@ module.exports = Backbone.View.extend({
   },
 
   render: function() {
+    const app = window.app;
     var chooseLanguages = {
       languages: LOCALES,
       active: app.locale ? app.locale : window.locale._current
@@ -31,6 +30,7 @@ module.exports = Backbone.View.extend({
   },
 
   setLanguage: function(e) {
+    const app = window.app;
     if (!$(e.target).hasClass('active')) {
       var code = $(e.target).data('code');
       cookie.set('lang', code);
