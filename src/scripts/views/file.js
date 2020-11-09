@@ -287,7 +287,7 @@ module.exports = Backbone.View.extend({
     var titleAttribute = /".*?"/;
 
     // Build an array of found images
-    var results = content.match(scan);
+    var results = content.match(scan) || [];
 
     // Iterate over the results and replace
     results.forEach(r => {

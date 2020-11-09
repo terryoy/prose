@@ -1,7 +1,7 @@
 <% if (data.path && data.path !== data.rooturl) { %>
   <div class='breadcrumb'>
     <a class='branch' href='#<%= data.url %>'>..</a>
-    <% data.parts.each(function(part) { %>
+    <% data.parts.forEach(function(part) { %>
       <% if (part.name !== data.rooturl) { %>
         <span class='slash'>/</span>
         <a class='path' href='#<%= [data.url, part.url].join("/") %>'><%= part.name %></a>
