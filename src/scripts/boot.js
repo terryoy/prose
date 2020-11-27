@@ -1,4 +1,4 @@
-/**
+/*
  * Check User Login:
  *   - If user not logged in, init <router> without user,
  *   - If it is redirected from Github SSO, get the code redirected from github, and send to gatekeeper for verification.
@@ -92,7 +92,20 @@ const authenticate = (config) => {
       Backbone.history.start();
     }
   });
-};
+}; 
+
+const initLanguage = () => {
+   // Set locale as global variable
+  // window.locale.en = en;
+  window.locale.current('en');
+
+ // Set up translations
+  var setLanguage = (cookie.get('lang')) ? true : false;
+
+  // Check if the browsers language is supported
+  if (setLanguage) window.locale.current(cookie.get('lang'));
+
+}
 
 /**
  * Main entry to the application.
@@ -100,10 +113,9 @@ const authenticate = (config) => {
 export const init = (config) => {
   // start authentication
   authenticate(config);
+  // init locale
+  initLanguage();
 
-  // Set locale as global variable
-  // window.locale.en = en;
-  window.locale.current('en');
-  window.app = {};
+
   window.Backbone = Backbone;
 };

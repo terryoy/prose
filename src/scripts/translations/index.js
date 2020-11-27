@@ -31,19 +31,19 @@ const I18nMessages = {
   es,
   eu,
   fr,
-  he_IL,
+  "he-IL": he_IL,
   it,
   ja,
   ko,
   nl,
   pl,
-  pt_BR,
+  "pt-BR": pt_BR,
   ro,
   ru,
   sv,
   tr,
   vi,
-  zh_CN,
+  "zh-CN": zh_CN,
   zh
 };
 
@@ -72,7 +72,6 @@ locale.current = function(_) {
 export const t = (s, o, loc) => {
   if (!arguments.length) return;
   loc = loc || locale._current;
-
 
   function missing() {
     var missing = 'Missing ' + loc + ' translation: ' + s;
