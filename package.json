@@ -73,8 +73,8 @@
     "old-build": "gulp clean; gulp production",
     "old-translations": "gulp translations",
     "lint": "eslint src/scripts/**/*.js --fix",
-    "build": "parcel build site/new.html",
-    "start": "parcel site/new.html --port 3000"
+    "build": "parcel build site/index.html",
+    "start": "parcel site/index.html --port 3000"
   },
   "browserify": {
     "transform": [
