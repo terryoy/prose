@@ -1,6 +1,6 @@
 name: master-build
 
-on: 
+on:
   push:
     branches:
     - terryoy
@@ -24,8 +24,8 @@ jobs:
       run: |
         yarn
         yarn build
-        chmod +x .build_scripts/deploy.sh
-        .build_scripts/deploy.sh
+        chmod +x _build_scripts/deploy.sh
+        _build_scripts/deploy.sh
       env:
         CI: true
         DEPLOY_BRANCH: terryoy
@@ -35,4 +35,3 @@ jobs:
         #deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
         github_token: ${{ secrets.ACTION_GHPAGES_TOKEN }}
         publish_dir: ./public
-
