@@ -9,7 +9,7 @@ prepare_content() {
   mkdir $FINAL_PATH
 #  cp -a translations $FINAL_PATH
   cp -a site/* $FINAL_PATH
-  cp -a dist $FINAL_PATH
+  cp -a dist/* $FINAL_PATH
 }
 
 
