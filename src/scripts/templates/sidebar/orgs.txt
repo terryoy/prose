@@ -1,0 +1,17 @@
+<div class='inner'>
+  <h2 class='label'><%= t('sidebar.repos.groups') %></h2>
+</div>
+<ul class='listing'>
+  <li>
+    <a href='#<%= data.login.user %>' title='<%= data.login.user %>' data-id='<%= data.login.id %>'>
+      <%= data.login.user %>
+    </a>
+  </li>
+  <% data.orgs.forEach(function(org) {  %>
+  <li>
+    <a href='#<%= org.login %>' title='<%= org.login %>' data-id='<%= org.id %>'>
+      <%= org.login %>
+    </a>
+  </li>
+  <% }); %>
+</ul>
