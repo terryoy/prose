@@ -30,7 +30,7 @@ jobs:
         CI: true
         DEPLOY_BRANCH: terryoy
         OAUTH_CLIENT_ID: ${{ secrets.OAUTH_CLIENT_ID }}
-        GATEKEEPER_URL: ${{ secrets.GATEKEEPER_URL }}
+        GATEKEEPER_HOST: ${{ secrets.GATEKEEPER_HOST }}
     - name: deploy to gh-pages
       uses: peaceiris/actions-gh-pages@v3
       with:
