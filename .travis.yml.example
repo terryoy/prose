@@ -22,7 +22,7 @@ cache:
     - node_modules
 
 before_install:
-- chmod +x ./.build_scripts/deploy.sh
+- chmod +x ./_build_scripts/deploy.sh
 
 before_script:
 - npm test
@@ -33,6 +33,6 @@ script:
 deploy:
   provider: script
   skip_cleanup: true
-  script: .build_scripts/deploy.sh
+  script: _build_scripts/deploy.sh
   on:
     branch: ${DEPLOY_BRANCH}

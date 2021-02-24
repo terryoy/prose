@@ -1,5 +1,11 @@
 // var CodeMirror = require('codemirror');
 import CodeMirror from 'codemirror';
+import 'codemirror/mode/markdown/markdown';
+import 'codemirror/mode/gfm/gfm';
+import 'codemirror/mode/yaml/yaml';
+import 'codemirror/mode/toml/toml';
+import 'codemirror/mode/javascript/javascript';
+
 import { Liquid } from 'liquidjs';
 import {
   bindAll, template, compact, has, delay, map, pairs, invoke, escape, extend
@@ -468,6 +474,7 @@ module.exports = Backbone.View.extend({
     this.$el.find('.toolbar .group a').removeClass('on');
     this.$el.find('#dialog').empty().removeClass();
   },
+
 
   initToolbar: function() {
     this.toolbar = new ToolbarView({
@@ -1240,7 +1247,9 @@ module.exports = Backbone.View.extend({
     // Trigger the save event
     this.updateSaveState(t('actions.save.saving'), 'saving');
 
-    var method = this.model.get('writable') ? this.model.save : this.patch;
+    var isWritable = this.model.get('writable');
+    var method = isWritable ? this.model.save : this.patch;
+    var delegateObj = isWritable ? this.model : this;
 
     //this.updateSaveState(t('actions.save.metaError'), 'error');
     //this.updateSaveState(t('actions.error'), 'error');
@@ -1263,7 +1272,7 @@ module.exports = Backbone.View.extend({
     this.model.content = (this.editor) ? this.editor.getValue() : '';
 
     // Delegate
-    method.call(this, {
+    method.call(delegateObj, {
       success: (function(model, res, options) {
         var url;
         var data;
