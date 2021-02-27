@@ -1,38 +1,38 @@
-
 import Backbone from 'backbone';
 import { template } from 'lodash-es';
 
 import templates from '../templates';
 
-module.exports = Backbone.View.extend({
-  className: 'modal overlay',
+export default class Modal extends Backbone.View {
+  className = 'modal overlay';
 
-  template: templates.modal,
+  template = templates.modal;
 
-  events: {
-    'click .got-it': 'confirm'
-  },
+  events = {
+    'click .got-it': 'confirm',
+  }
 
-  initialize: function() {
+  constructor(options) {
+    super(options);
     this.message = this.options.message;
-  },
+  }
 
-  render: function() {
-    var modal = {
-      message: this.message
-    };
-    this.$el.empty().append(template(templates.modal, {
-      variable: 'modal'
-    })(modal));
-
-    return this;
-  },
-
-  confirm: function() {
-    var view = this;
-    this.$el.fadeOut('fast', function() {
+  confirm = () => {
+    const view = this;
+    this.$el.fadeOut('fast', () => {
       view.remove();
     });
     return false;
   }
-});
+
+  render = () => {
+    const modal = {
+      message: this.message,
+    };
+    this.$el.empty().append(template(templates.modal, {
+      variable: 'modal',
+    })(modal));
+
+    return this;
+  }
+}

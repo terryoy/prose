@@ -1,36 +1,38 @@
 module.exports = {
-  'env': {
-    'browser': true,
-    'es2021': true,
-    'commonjs': true,
-    'jquery': true
+  env: {
+    browser: true,
+    es2021: true,
   },
-  'extends': 'eslint:recommended',
-  'parserOptions': {
-    'ecmaVersion': 12,
-    'sourceType': 'module'
+  extends: [
+    'plugin:react/recommended',
+    'airbnb',
+  ],
+  parser: 'babel-eslint',
+  parserOptions: {
+    ecmaFeatures: {
+      jsx: true,
+    },
+    ecmaVersion: 12,
+    sourceType: 'module',
   },
-  'rules': {
-    'indent': [
-      'error',
-      2
-    ],
-    'linebreak-style': [
-      'error',
-      'unix'
-    ],
-    'quotes': [
-      'error',
-      'single'
-    ],
-    'semi': [
-      'error',
-      'always'
-    ],
+  plugins: [
+    'react',
+  ],
+  rules: {
+    'react/jsx-props-no-spreading': 'off',
+    'react/static-property-placement': 'off',
+    'react/destructuring-assignment': 'warn',
+    'import/prefer-default-export': 'off',
+    'class-methods-use-this': 'off',
     'no-unused-vars': 'warn',
-    'no-useless-escape': 'warn',
   },
-  'globals': {
-    'arguments': 'readonly'
-  }
+  ignorePatterns: [],
+  overrides: [
+    {
+      files: [
+        'src/**/*.jsx',
+        'src/**/*.js',
+      ],
+    },
+  ],
 };

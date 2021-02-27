@@ -1,29 +1,51 @@
-
-
 import Backbone from 'backbone';
 import { template, invoke } from 'lodash-es';
+import key from 'keymaster';
 
-var LoaderView = require('./loader');
-var SidebarView = require('./sidebar');
-var NavView = require('./nav');
 import { cookie } from '../storage/cookie';
 import templates from '../templates';
-var util = require('../util');
-var key = require('keymaster');
+import util from '../util';
 
-module.exports = Backbone.View.extend({
-  className: 'application',
+import LoaderView from './loader';
+import SidebarView from './sidebar';
+import NavView from './nav';
 
-  template: templates.app,
+export default class Application extends Backbone.View {
+  template = templates.app;
 
-  subviews: {},
+  subviews = {};
 
-  events: {
-    'click a.logout': 'logout'
-  },
+  events = {
+    'click a.logout': 'logout',
+  };
 
-  initialize: function(options) {
-    key('j, k, enter, o', (function(e, handler) {
+  constructor(options) {
+    super(options);
+
+    // initialize() will be triggered in super constructor...
+
+    this.user = options.user;
+
+    // Loader
+    this.loader = new LoaderView();
+    this.subviews.loader = this.loader;
+
+    // Sidebar
+    this.sidebar = new SidebarView({
+      app: this,
+      user: this.user,
+    });
+    this.subviews.sidebar = this.sidebar;
+
+    // Nav
+    this.nav = new NavView({
+      app: this,
+      sidebar: this.sidebar,
+      user: this.user,
+    });
+    this.subviews.nav = this.nav;
+
+    key('j, k, enter, o', (e, handler) => {
       if (this.$el.find('.listing')[0]) {
         if (handler.key === 'j' || handler.key === 'k') {
           util.pageListing(handler.key);
@@ -31,39 +53,33 @@ module.exports = Backbone.View.extend({
           util.goToFile();
         }
       }
-    }).bind(this));
+    });
 
-    key('ctrl+enter', (function (e, handler) {
+    key('ctrl+enter', (e, handler) => {
       if (this.nav.state === 'blob') {
         this.nav.trigger('edit');
       } else if (this.nav.state === 'edit') {
         this.nav.trigger('blob');
       }
-    }).bind(this));
-
-    this.user = options.user;
-
-    // Loader
-    this.loader = new LoaderView();
-    this.subviews['loader'] = this.loader;
-
-    // Sidebar
-    this.sidebar = new SidebarView({
-      app: this,
-      user: this.user
     });
-    this.subviews['sidebar'] = this.sidebar;
+  }
 
-    // Nav
-    this.nav = new NavView({
-      app: this,
-      sidebar: this.sidebar,
-      user: this.user
-    });
-    this.subviews['nav'] = this.nav;
-  },
+  logout() {
+    cookie.unset('oauth-token');
+    cookie.unset('id');
+    window.location.reload();
+    return false;
+  }
 
-  render: function() {
+  remove(...args) {
+    invoke(this.subviews, 'remove');
+    this.subviews = {};
+
+    super.remove(...args);
+    // Backbone.View.prototype.remove.apply(this, arguments);
+  }
+
+  render() {
     this.$el.html(template(this.template)());
 
     this.loader.setElement(this.$el.find('#loader')).render();
@@ -71,19 +87,5 @@ module.exports = Backbone.View.extend({
     this.nav.setElement(this.$el.find('nav')).render();
 
     return this;
-  },
-
-  logout: function() {
-    cookie.unset('oauth-token');
-    cookie.unset('id');
-    window.location.reload();
-    return false;
-  },
-
-  remove: function() {
-    invoke(this.subviews, 'remove');
-    this.subviews = {};
-
-    Backbone.View.prototype.remove.apply(this, arguments);
   }
-});
+}

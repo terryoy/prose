@@ -10,12 +10,12 @@ import { queue } from 'd3-queue';
 
 import { t } from '../translations';
 
-var File = require('../models/file');
-var Folder = require('../models/folder');
+import File from '../models/file';
+import Folder from '../models/folder';
 
 import { cookie } from '../storage/cookie';
-var util = require('../util');
-var ignore = require('ignore');
+import util from '../util';
+import ignore from 'ignore';
 
 /*
  * placeholderValues {object} mapping of placeholders, ie {CURRENT_USER: 'sally'}

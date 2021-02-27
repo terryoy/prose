@@ -1,30 +1,45 @@
-
-
 // var queue = require('queue-async');
 import Backbone from 'backbone';
-import { bindAll, isFunction, template, invoke } from 'lodash-es';
+import {
+  bindAll, isFunction, template, invoke,
+} from 'lodash-es';
 import { queue } from 'd3-queue';
-
-var FilesView = require('./files');
-var HeaderView = require('./header');
-var SearchView = require('./search');
-// var util = require('.././util');
+// import util from '.././util';
 import templates from '../templates';
 
-module.exports = Backbone.View.extend({
-  template: templates.repo,
+import FilesView from './files';
+import HeaderView from './header';
+import SearchView from './search';
 
-  events: {
-    'click a.new': 'create'
-  },
+export default class RepoView extends Backbone.View {
+  template = templates.repo;
 
-  subviews: {},
+  events = {
+    'click a.new': 'create',
+  };
 
-  initialize: function(options) {
-    var app = options.app;
+  subviews = {};
+
+  constructor(options) {
+    super(options);
+
+    const { app } = options;
     app.loader.start();
 
-    this.app = app;
+    // Init subviews
+    this.initBranches();
+    this.initHeader();
+
+    const q = queue();
+    q.defer(this.initSearch);
+    q.defer(this.initHistory);
+    q.awaitAll(this.initFiles);
+
+    app.loader.done();
+  }
+
+  initialize(options) {
+    this.app = options.app;
     this.branch = options.branch || this.model.get('default_branch');
     this.model = options.model;
     this.nav = options.nav;
@@ -32,55 +47,34 @@ module.exports = Backbone.View.extend({
     this.router = options.router;
     this.sidebar = options.sidebar;
 
-    // Init subviews
-    this.initBranches();
-    this.initHeader();
-
-    bindAll(this, ['initSearch', 'initHistory', 'initFiles']);
-
-    var q = queue();
-    q.defer(this.initSearch);
-    q.defer(this.initHistory);
-    q.awaitAll(this.initFiles);
+    // bindAll(this, ['initSearch', 'initHistory', 'initFiles']);
 
     // Events from sidebar
     this.listenTo(this.sidebar, 'destroy', this.destroy);
     this.listenTo(this.sidebar, 'cancel', this.cancel);
     this.listenTo(this.sidebar, 'confirm', this.updateFile);
+  }
 
-    app.loader.done();
-  },
-
-  render: function() {
-    this.$el.html(template(this.template)());
-
-    this.header.setElement(this.$el.find('#heading')).render();
-    this.search.setElement(this.$el.find('#search')).render();
-    this.files.setElement(this.$el.find('#files'));
-
-    return this;
-  },
-
-  initHeader: function() {
+  initHeader() {
     this.header = new HeaderView({
       repo: this.model,
-      alterable: false
+      alterable: false,
     });
 
-    this.subviews['header'] = this.header;
-  },
+    this.subviews.header = this.header;
+  }
 
-  initSearch: function(cb) {
+  initSearch = (cb) => {
     this.search = new SearchView({
-      mode: 'repo'
+      mode: 'repo',
     });
 
-    this.subviews['search'] = this.search;
+    this.subviews.search = this.search;
 
     if (isFunction(cb)) cb.apply(this);
-  },
+  }
 
-  initFiles: function() {
+  initFiles = () => {
     this.files = new FilesView({
       app: this.app,
       branch: this.branch,
@@ -91,26 +85,26 @@ module.exports = Backbone.View.extend({
       repo: this.model,
       router: this.router,
       search: this.search,
-      sidebar: this.sidebar
+      sidebar: this.sidebar,
     });
 
-    this.subviews['files'] = this.files;
-  },
+    this.subviews.files = this.files;
+  }
 
-  initBranches: function() {
+  initBranches = () => {
     this.branches = this.sidebar.initSubview('branches', {
       app: this.app,
       model: this.model.branches,
       repo: this.model,
       branch: this.branch,
       router: this.router,
-      sidebar: this.sidebar
+      sidebar: this.sidebar,
     });
 
-    this.subviews['branches'] = this.branches;
-  },
+    this.subviews.branches = this.branches;
+  }
 
-  initHistory: function(cb) {
+  initHistory = (cb) => {
     this.history = this.sidebar.initSubview('history', {
       app: this.app,
       branch: this.branch,
@@ -118,25 +112,35 @@ module.exports = Backbone.View.extend({
       repo: this.model,
       router: this.router,
       sidebar: this.sidebar,
-      view: this
+      view: this,
     });
 
-    this.subviews['history'] = this.history;
+    this.subviews.history = this.history;
 
     if (isFunction(cb)) cb.apply(this);
-  },
+  }
 
-  create: function() {
+  create() {
     this.files.newFile();
     return false;
-  },
+  }
 
-  remove: function() {
+  remove(...args) {
     this.sidebar.close();
 
     invoke(this.subviews, 'remove');
     this.subviews = {};
 
-    Backbone.View.prototype.remove.apply(this, arguments);
+    super.remove(...args);
   }
-});
+
+  render() {
+    this.$el.html(template(this.template)());
+
+    this.header.setElement(this.$el.find('#heading')).render();
+    this.search.setElement(this.$el.find('#search')).render();
+    this.files.setElement(this.$el.find('#files'));
+
+    return this;
+  }
+}

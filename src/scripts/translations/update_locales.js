@@ -9,10 +9,10 @@
  *  }
  */
 
-var request = require('request');
+import request from 'request';
 var yaml = require('js-yaml');
-var fs = require('fs');
-var _ = require('underscore');
+import fs from 'fs';
+import _ from 'underscore';
 
 var api = 'http://www.transifex.com/api/2/';
 var auth = JSON.parse(fs.readFileSync('./translations/transifex.auth', 'utf8'));

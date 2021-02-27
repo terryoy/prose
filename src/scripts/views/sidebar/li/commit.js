@@ -2,107 +2,109 @@ import Backbone from 'backbone';
 import { template } from 'lodash-es';
 
 import templates from '../../../templates';
-var util = require('../../../util');
+import util from '../../../util';
 
-module.exports = Backbone.View.extend({
-    template: templates.sidebar.li.commit,
+export default class CommitView extends Backbone.View {
+    template = templates.sidebar.li.commit;
 
-    tagName: 'li',
+    events = {
+      'mouseenter .removed': 'eventMessage',
+      'mouseleave .removed': 'eventMessage',
+      'click .removed': 'restore',
+    }
 
-    className: 'item',
+    constructor(options) {
+      super({
+        tagName: 'li',
+        className: 'item',
+        ...options,
+      });
+      const { file } = options;
 
-    events: {
-        'mouseenter .removed': 'eventMessage',
-        'mouseleave .removed': 'eventMessage',
-        'click .removed': 'restore'
-    },
+      this.branch = options.branch;
+      this.file = file;
+      this.files = options.repo.branches.findWhere({ name: options.branch }).files;
+      this.repo = options.repo;
+      this.view = options.view;
+    }
 
-    initialize: function(options) {
-        var file = options.file;
+    message(message) {
+      this.$el.find('.message').html(message);
+    }
 
-        this.branch = options.branch;
-        this.file = file;
-        this.files = options.repo.branches.findWhere({ name: options.branch }).files;
-        this.repo = options.repo;
-        this.view  = options.view;
-    },
-
-    render: function() {
-        var file = this.file;
-        var binary = util.isBinary(file.filename);
-
-        var data = {
-            branch: this.branch,
-            file: file,
-            mode: binary ? 'tree' : 'edit',
-            path: binary ?
-                util.extractFilename(file.filename)[0] : file.filename,
-            repo: this.repo.toJSON(),
-            status: file.status
-        };
-
-        var title = file.status.charAt(0).toUpperCase() + file.status.slice(1) +
-      ': ' + file.filename;
-
-        this.$el.attr('title', title)
-            .html(template(this.template, {variable: 'data'})(data));
-
-        return this;
-    },
-
-    message: function(message) {
-        this.$el.find('.message').html(message);
-    },
-
-    eventMessage: function(e) {
-        switch(e.type) {
+    eventMessage = (e) => {
+      switch (e.type) {
         case 'mouseenter':
-            this.message(t('sidebar.repo.history.actions.restore'));
-            break;
+          this.message(t('sidebar.repo.history.actions.restore'));
+          break;
         case 'mouseleave':
-            this.message(this.file.filename);
-            break;
-        }
+          this.message(this.file.filename);
+          break;
+        default:
+      }
 
-        return false;
-    },
+      return false;
+    }
 
-    state: function(state) {
+    state(state) {
     // TODO: Set data-state attribute to toggle icon in CSS?
     // this.$el.attr('data-state', state);
 
-        var $icon = this.$el.find('.ico');
-        $icon.removeClass('added modified renamed removed saving checkmark error')
-            .addClass(state);
-    },
-
-    restore: function(e) {
-        var path = this.file.filename;
-
-        // Spinning icon
-        this.message(t('actions.restore.restoring') + ' ' + path);
-        this.state('saving');
-
-        this.files.restore(this.file, {
-            success: (function(model, res, options) {
-                this.message(t('actions.restore.restored') + ': ' + path);
-                this.state('checkmark');
-
-                this.$el
-                    .attr('title', t('actions.restore.restored') + ': ' + this.file.filename);
-
-                this.$el.find('a').removeClass('removed');
-
-                // Re-render Files view once collection has updated
-                this.view.files.render();
-            }).bind(this),
-            error: (function(model, xhr, options) {
-                // Log actual error message
-                this.message(['Error', xhr.status, xhr.statusText].join(' '));
-                this.state('error');
-            }).bind(this)
-        });
-
-        return false;
+      const $icon = this.$el.find('.ico');
+      $icon.removeClass('added modified renamed removed saving checkmark error')
+        .addClass(state);
     }
-});
+
+    restore = (e) => {
+      const path = this.file.filename;
+
+      // Spinning icon
+      this.message(`${t('actions.restore.restoring')} ${path}`);
+      this.state('saving');
+
+      this.files.restore(this.file, {
+        success: (function (model, res, options) {
+          this.message(`${t('actions.restore.restored')}: ${path}`);
+          this.state('checkmark');
+
+          this.$el
+            .attr('title', `${t('actions.restore.restored')}: ${this.file.filename}`);
+
+          this.$el.find('a').removeClass('removed');
+
+          // Re-render Files view once collection has updated
+          this.view.files.render();
+        }).bind(this),
+        error: (function (model, xhr, options) {
+          // Log actual error message
+          this.message(['Error', xhr.status, xhr.statusText].join(' '));
+          this.state('error');
+        }).bind(this),
+      });
+
+      return false;
+    }
+
+    render() {
+      const { file } = this;
+      const binary = util.isBinary(file.filename);
+
+      const data = {
+        branch: this.branch,
+        file,
+        mode: binary ? 'tree' : 'edit',
+        path: binary
+          ? util.extractFilename(file.filename)[0] : file.filename,
+        repo: this.repo.toJSON(),
+        status: file.status,
+      };
+
+      const title = `${file.status.charAt(0).toUpperCase() + file.status.slice(1)
+      }: ${file.filename}`;
+
+      this.$el.attr('title', title)
+        .html(template(this.template, { variable: 'data' })(data));
+
+      return this;
+    }
+}

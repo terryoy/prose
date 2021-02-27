@@ -2,7 +2,7 @@
 import Backbone from 'backbone';
 import { clone } from 'lodash-es';
 
-var Org = require('../models/org');
+import Org from '../models/org';
 import { Config } from '../config';
 import { cookie } from '../storage/cookie';
 

@@ -1,7 +1,7 @@
 
 import Backbone from 'backbone';
 import { map, extend } from 'lodash-es';
-var Commit = require('../models/commit');
+import Commit from '../models/commit';
 
 module.exports = Backbone.Collection.extend({
   model: Commit,
