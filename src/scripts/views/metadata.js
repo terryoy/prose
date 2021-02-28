@@ -255,7 +255,8 @@ export default class MetaDataView extends Backbone.View {
   remove = (...args) => {
     invoke(this.subviews, 'remove');
     this.subviews = [];
-    Backbone.View.prototype.remove.apply(this, args);
+    super.remove(...args);
+    // Backbone.View.prototype.remove.apply(this, args);
   }
 
   // Parent file view calls this render func immediately

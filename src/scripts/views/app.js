@@ -64,7 +64,7 @@ export default class Application extends Backbone.View {
     });
   }
 
-  logout() {
+  logout = () => {
     cookie.unset('oauth-token');
     cookie.unset('id');
     window.location.reload();

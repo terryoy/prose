@@ -37,7 +37,8 @@ export default class BranchesView extends Backbone.View {
       invoke(this.subviews, 'remove');
       this.subviews = {};
 
-      Backbone.View.prototype.remove.apply(this, args);
+      super.remove(...args);
+      // Backbone.View.prototype.remove.apply(this, args);
     }
 
     render = () => {
