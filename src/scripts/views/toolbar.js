@@ -6,9 +6,10 @@ import { extend, template } from 'lodash-es';
 import { t } from '../translations';
 import templates from '../templates';
 
-import toolbar from '../toolbar/markdown.js';
 import upload from '../upload';
 import util from '../util';
+
+import toolbar from './toolbar/markdown';
 
 export default class ToolbarView extends Backbone.View {
   template = templates.toolbar;
