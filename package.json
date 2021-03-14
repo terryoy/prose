@@ -24,7 +24,11 @@
     "marked": "^0.5.2",
     "mkdirp": "^0.5.0",
     "papaparse": "^4.1.2",
-    "queue-async": "~1.0.3"
+    "prop-types": "^15.7.2",
+    "queue-async": "~1.0.3",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-router-dom": "^5.2.0"
   },
   "keywords": [
     "editor",
@@ -41,6 +45,8 @@
     "del": "^1.1.1",
     "eslint": "^7.12.0",
     "eslint-config-airbnb": "^18.2.1",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-import-resolver-parcel": "^1.10.6",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.22.0",
@@ -94,6 +100,10 @@
   "repository": {
     "type": "git",
     "url": "git://github.com/terryoy/prose.git"
+  },
+  "alias": {
+    "scripts": "./src/scripts",
+    "styles": "./src/styles"
   },
   "author": "terryoy",
   "license": "BSD",

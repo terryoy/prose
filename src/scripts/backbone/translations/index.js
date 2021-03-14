@@ -31,30 +31,28 @@ const I18nMessages = {
   es,
   eu,
   fr,
-  "he-IL": he_IL,
+  'he-IL': he_IL,
   it,
   ja,
   ko,
   nl,
   pl,
-  "pt-BR": pt_BR,
+  'pt-BR': pt_BR,
   ro,
   ru,
   sv,
   tr,
   vi,
-  "zh-CN": zh_CN,
-  zh
+  'zh-CN': zh_CN,
+  zh,
 };
-
 
 export const locale = {
   _current: 'en',
-  ...I18nMessages
+  ...I18nMessages,
 };
 
-
-locale.current = function(_) {
+locale.current = function (_) {
   if (!arguments.length) return locale._current;
   if (locale[_] !== undefined) locale._current = _;
   else if (locale[_.split('-')[0]]) locale._current = _.split('-')[0];
@@ -74,32 +72,31 @@ export const t = (s, o, loc) => {
   loc = loc || locale._current;
 
   function missing() {
-    var missing = 'Missing ' + loc + ' translation: ' + s;
+    const missing = `Missing ${loc} translation: ${s}`;
     if (typeof console !== 'undefined') console.error(missing);
     return missing;
   }
 
-  var path = s.split('.').reverse(),
-    rep = locale[loc]; // messages of lang for locale(loc)
+  const path = s.split('.').reverse();
+  let rep = locale[loc]; // messages of lang for locale(loc)
 
   while (rep !== undefined && path.length) rep = rep[path.pop()];
 
   if (rep !== undefined) {
-    if (o) for (var k in o) rep = rep.replace('{' + k + '}', o[k]);
+    if (o) for (const k in o) rep = rep.replace(`{${k}}`, o[k]);
     return rep;
-  } else {
-
-    if (loc !== 'en') {
-      missing();
-      return t(s, o, 'en');
-    }
-
-    if (o && 'default' in o) {
-      return o['default'];
-    }
-
-    return missing();
   }
+
+  if (loc !== 'en') {
+    missing();
+    return t(s, o, 'en');
+  }
+
+  if (o && 'default' in o) {
+    return o.default;
+  }
+
+  return missing();
 };
 
 window.locale = locale;

@@ -1,12 +1,12 @@
-import { importJquery } from './import_jquery';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-import { Config } from './config';
-import { init } from './boot';
+import { App } from 'scripts/ui/views/app';
 
-import '../style/style.scss';
+import "styles/_responsive.scss";
+import "styles/app/icon.scss";
 
-importJquery()
-  .then(() => {
-    // initialize the app
-    init(Config);
-  });
+export const mountApp = (node) => {
+  // react
+  ReactDOM.render(<App />, node);
+};
