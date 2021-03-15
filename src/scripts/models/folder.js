@@ -1,7 +1,7 @@
 
 // import Backbone from 'backbone';
 import Backbone from 'backbone';
-var util = require('.././util');
+import util from '.././util';
 
 module.exports = Backbone.Model.extend({
   idAttribute: 'path',

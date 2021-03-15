@@ -1,7 +1,7 @@
 function tryParse(obj) {
   try {
     return JSON.parse(obj);
-  } catch(e) {
+  } catch (e) {
     // should be string, no need to parse
     // console.error(e);
   }
@@ -15,38 +15,38 @@ function tryStringify(obj) {
 }
 
 export const cookie = {
-  set: function(name, value, expires, path, domain) {
-    var pair = escape(name) + '=' + escape(tryStringify(value));
+  set(name, value, expires, path, domain) {
+    let pair = `${escape(name)}=${escape(tryStringify(value))}`;
 
     if (expires) {
-      if (expires.constructor === Number) pair += ';max-age=' + expires;
-      else if (expires.constructor === String) pair += ';expires=' + expires;
-      else if (expires.constructor === Date)  pair += ';expires=' + expires.toUTCString();
+      if (expires.constructor === Number) pair += `;max-age=${expires}`;
+      else if (expires.constructor === String) pair += `;expires=${expires}`;
+      else if (expires.constructor === Date) pair += `;expires=${expires.toUTCString()}`;
     }
 
-    pair += ';path=' + ((path) ? path : '/');
-    if(domain) pair += ';domain=' + domain;
+    pair += `;path=${(path) || '/'}`;
+    if (domain) pair += `;domain=${domain}`;
 
     document.cookie = pair;
     return this;
   },
 
-  setObject: function(object, expires, path, domain) {
-    for(var key in object) this.set(key, object[key], expires, path, domain);
+  setObject(object, expires, path, domain) {
+    for (const key in object) this.set(key, object[key], expires, path, domain);
     return this;
   },
 
-  get: function(name) {
-    var obj = this.getObject();
+  get(name) {
+    const obj = this.getObject();
     return obj[name];
   },
 
-  getObject: function() {
-    var pairs = document.cookie.split(/;\s?/i);
-    var object = {};
-    var pair;
+  getObject() {
+    const pairs = document.cookie.split(/;\s?/i);
+    const object = {};
+    let pair;
 
-    for (var i in pairs) {
+    for (const i in pairs) {
       if (typeof pairs[i] === 'string') {
         pair = pairs[i].split('=');
         if (pair.length <= 1) continue;
@@ -57,15 +57,15 @@ export const cookie = {
     return object;
   },
 
-  unset: function(name) {
-    var date = new Date(0);
-    document.cookie = name + '=; expires=' + date.toUTCString();
+  unset(name) {
+    const date = new Date(0);
+    document.cookie = `${name}=; expires=${date.toUTCString()}`;
     return cookie;
   },
 
-  clear: function() {
-    var obj = this.getObject();
-    for(var key in obj) this.unset(key);
+  clear() {
+    const obj = this.getObject();
+    for (const key in obj) this.unset(key);
     return obj;
-  }
+  },
 };

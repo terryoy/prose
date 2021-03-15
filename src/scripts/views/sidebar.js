@@ -1,76 +1,81 @@
 import Backbone from 'backbone';
 import { invoke, clone, template } from 'lodash-es';
 
-// var util = require('../util');
-
-var views = {
-  branches: require('./sidebar/branches'),
-  history: require('./sidebar/history'),
-  drafts: require('./sidebar/drafts'),
-  orgs: require('./sidebar/orgs'),
-  save: require('./sidebar/save'),
-  settings: require('./sidebar/settings')
-};
-
 import templates from '../templates';
 
-module.exports = Backbone.View.extend({
-  template: templates.drawer,
+import SidebarBranchesView from './sidebar/branches';
+import SidebarHistoryView from './sidebar/history';
+import SidebarDraftsView from './sidebar/drafts';
+import SidebarOrgsView from './sidebar/orgs';
+import SidebarSaveView from './sidebar/save';
+import SidebarSettingsView from './sidebar/settings';
 
-  subviews: {},
+const views = {
+  branches: SidebarBranchesView,
+  history: SidebarHistoryView,
+  drafts: SidebarDraftsView,
+  orgs: SidebarOrgsView,
+  save: SidebarSaveView,
+  settings: SidebarSettingsView,
+};
 
-  render: function() {
-    this.$el.html(template(this.template)());
-    invoke(this.subviews, 'render');
-    return this;
-  },
+export default class SidebarView extends Backbone.View {
+  template = templates.drawer;
 
-  initSubview: function(subview, options) {
+  subviews = {};
+
+  initSubview(subview, options) {
     if (!views[subview]) return false;
 
     options = clone(options) || {};
 
-    var view = new views[subview](options);
-    this.$el.find('#' + subview).html(view.el);
+    const view = new views[subview](options);
+    this.$el.find(`#${subview}`).html(view.el);
 
     this.subviews[subview] = view;
 
     return view;
-  },
+  }
 
-  filepathGet: function() {
+  filepathGet() {
     return this.$el.find('.filepath').val();
-  },
+  }
 
-  updateState: function(label) {
+  updateState(label) {
     this.$el.find('.button.save').html(label);
-  },
+  }
 
-  open: function() {
+  open() {
     this.$el.toggleClass('open', true);
-  },
+  }
 
-  close: function() {
+  close() {
     this.$el.toggleClass('open', false);
-  },
+  }
 
-  toggle: function() {
+  toggle() {
     this.$el.toggleClass('open');
-  },
+  }
 
-  toggleMobile: function() {
+  toggleMobile() {
     this.$el.toggleClass('mobile');
-  },
+  }
 
-  mode: function(mode) {
+  mode(mode) {
     // Set data-mode attribute to toggle nav buttons in CSS
     this.$el.attr('data-sidebar', mode);
-  },
+  }
 
-  remove: function() {
+  remove(...args) {
     invoke(this.subviews, 'remove');
     this.subviews = {};
 
-    Backbone.View.prototype.remove.apply(this, arguments);
+    super.remove(...args);
   }
-});
+
+  render() {
+    this.$el.html(template(this.template)());
+    invoke(this.subviews, 'render');
+    return this;
+  }
+}

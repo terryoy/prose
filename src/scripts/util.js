@@ -1,8 +1,8 @@
 
 
 import { all, includes, map, clone, isFunction } from 'lodash-es';
-// var templates = require('./templates');
-var chrono = require('chrono');
+// import templates from './templates';
+import chrono from 'chrono';
 
 module.exports = {
 

@@ -1,43 +1,37 @@
-
-
 import Backbone from 'backbone';
-import { bindAll, defer, template } from 'lodash-es';
+import { defer, template } from 'lodash-es';
 
 import templates from '../templates';
 
-module.exports = Backbone.View.extend({
-  template: templates.loading,
+export default class LoaderView extends Backbone.View {
+  template = templates.loading;
 
-  initialize: function () {
-    bindAll(this, ['start', 'stop', 'done', 'render']);
-  },
+  queue = 0;
 
-  queue: 0,
-
-  start: function(message) {
-    this.queue++;
+  start(message) {
+    this.queue += 1;
 
     if (message) {
       this.$el.find('.message').html(message);
     }
 
     this.$el.show();
-  },
+  }
 
-  stop: function() {
+  stop() {
     this.queue = 0;
     this.$el.fadeOut(150);
-  },
+  }
 
-  done: function() {
-    defer((function() {
-      this.queue--;
+  done = () => {
+    defer(() => {
+      this.queue -= 1;
       if (this.queue < 1) this.stop();
-    }).bind(this));
-  },
+    });
+  }
 
-  render: function() {
+  render() {
     this.$el.html(template(this.template)());
     return this;
   }
-});
+}

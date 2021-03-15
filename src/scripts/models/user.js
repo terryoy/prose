@@ -7,11 +7,11 @@ import { Config } from '../config';
 import { cookie } from '../storage/cookie';
 
 // import Backbone from 'backbone';
-var Repos = require('../collections/repos');
-var Orgs = require('../collections/orgs');
+import Repos from '../collections/repos';
+import Orgs from '../collections/orgs';
 
 // TODO Pass Notification view here if something goes wrong?
-// var NotificationView = require('../views/notification');
+// import NotificationView from '../views/notification';
 
 // var auth = import { Config } from '../config';
 // import { cookie } from '../storage/cookie';

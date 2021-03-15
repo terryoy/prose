@@ -5,12 +5,12 @@ import {
 } from 'lodash-es';
 import { t } from '../translations';
 
-var pathUtil = require('path');
+import pathUtil from 'path';
 
-var marked = require('marked');
+import marked from 'marked';
 // import Backbone from 'backbone';
 var jsyaml = require('js-yaml');
-var util = require('../util');
+import util from '../util';
 
 module.exports = Backbone.Model.extend({
   idAttribute: 'path',

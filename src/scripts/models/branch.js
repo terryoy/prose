@@ -1,5 +1,5 @@
 import Backbone from 'backbone';
-var Files = require('../collections/files');
+import Files from '../collections/files';
 import { Config } from '../config';
 
 module.exports = Backbone.Model.extend({

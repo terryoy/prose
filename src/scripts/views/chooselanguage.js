@@ -1,36 +1,23 @@
-
 import Backbone from 'backbone';
 import { template } from 'lodash-es';
 
-
 import { cookie } from '../storage/cookie';
 import templates from '../templates';
-var LOCALES = require('../translations/locales');
 
-module.exports = Backbone.View.extend({
-  className: 'inner deep prose limiter',
+import LOCALES from '../translations/locales';
 
-  template: templates.chooselanguage,
+export default class ChooseLanguageView extends Backbone.View {
+  className = 'inner deep prose limiter';
 
-  events: {
-    'click .language': 'setLanguage'
-  },
+  template = templates.chooselanguage;
 
-  render: function() {
-    var chooseLanguages = {
-      languages: LOCALES,
-      active: window.locale._current
-    };
+  events = {
+    'click .language': 'setLanguage',
+  }
 
-    this.$el.empty().append(template(this.template, {
-      variable: 'chooseLanguage'
-    })(chooseLanguages));
-    return this;
-  },
-
-  setLanguage: function(e) {
+  setLanguage(e) {
     if (!$(e.target).hasClass('active')) {
-      var code = $(e.target).data('code');
+      const code = $(e.target).data('code');
       cookie.set('lang', code);
 
       // Check if the browsers language is supported
@@ -42,4 +29,16 @@ module.exports = Backbone.View.extend({
 
     return false;
   }
-});
+
+  render() {
+    const chooseLanguages = {
+      languages: LOCALES,
+      active: window.locale._current,
+    };
+
+    this.$el.empty().append(template(this.template, {
+      variable: 'chooseLanguage',
+    })(chooseLanguages));
+    return this;
+  }
+}

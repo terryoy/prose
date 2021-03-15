@@ -1,48 +1,25 @@
 import Backbone from 'backbone';
-import { bindAll, invoke } from 'lodash-es';
+import { invoke } from 'lodash-es';
 
-var RepoView = require('./li/repo');
+import RepoView from './li/repo';
 
-module.exports = Backbone.View.extend({
-  subviews: {},
+export default class ReposView extends Backbone.View {
+  subviews = {}
 
-  events: {
+  events = {
     'mouseover .item': 'activeListing',
-    'mouseover .item a': 'activeListing'
-  },
+    'mouseover .item a': 'activeListing',
+  }
 
-  initialize: function(options) {
-    bindAll(this, ['render']);
+  constructor(options) {
+    super(options);
     this.model = options.model;
     this.search = options.search;
-
     this.listenTo(this.search, 'search', this.render);
-  },
+  }
 
-  render: function() {
-    var collection = this.search ? this.search.search() : this.model;
-    var frag = document.createDocumentFragment();
-
-    collection.forEach((function(repo, i) {
-      var view = new RepoView({
-        index: i,
-        model: repo
-      });
-
-      frag.appendChild(view.render().el);
-      this.subviews[repo.id] = view;
-    }).bind(this));
-
-    this.$el.html(frag);
-
-    this.$listings = this.$el.find('.item');
-    this.$search = this.$el.find('#filter');
-
-    return this;
-  },
-
-  activeListing: function(e) {
-    var $listing = $(e.target);
+  activeListing = (e) => {
+    let $listing = $(e.target);
 
     if (!$listing.hasClass('item')) {
       $listing = $(e.target).closest('li');
@@ -53,12 +30,34 @@ module.exports = Backbone.View.extend({
 
     // Blur out search if its selected
     this.$search.blur();
-  },
+  }
 
-  remove: function() {
+  remove(...args) {
     invoke(this.subviews, 'remove');
     this.subviews = {};
 
-    Backbone.View.prototype.remove.apply(this, arguments);
+    super.remove(...args);
   }
-});
+
+  render = () => {
+    const collection = this.search ? this.search.search() : this.model;
+    const frag = document.createDocumentFragment();
+
+    collection.forEach(((repo, i) => {
+      const view = new RepoView({
+        index: i,
+        model: repo,
+      });
+
+      frag.appendChild(view.render().el);
+      this.subviews[repo.id] = view;
+    }));
+
+    this.$el.html(frag);
+
+    this.$listings = this.$el.find('.item');
+    this.$search = this.$el.find('#filter');
+
+    return this;
+  }
+}
