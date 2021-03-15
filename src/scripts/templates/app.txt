@@ -13,7 +13,7 @@
     <ul class='dropdown clearfix'>
       <li><a href='#'>Prose</a></li>
       <li><a class='about' href='#about'><%= t('navigation.about') %></a></li>
-      <li><a class='help' href='https://github.com/prose/prose'><%= t('navigation.develop') %></a></li>
+      <li><a class='help' href='https://github.com/terryoy/prose'><%= t('navigation.develop') %></a></li>
       <li><a href='#chooselanguage'><%= t('navigation.language') %></a></li>
       <li class='divider authenticated'></li>
       <li class='authenticated'>
