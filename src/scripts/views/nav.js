@@ -13,16 +13,27 @@ Config.scope = cookie.get('scope') || 'repo';
 export default class NavView extends Backbone.View {
   template = templates.nav;
 
-  events = {
-    'click a.edit': 'emit',
-    'click a.preview': 'emit',
-    'click a.meta': 'emit',
-    'click a.settings': 'emit',
-    'click a.save': 'emit',
-    'click .mobile .toggle': 'toggleMobile',
-  }
+  // events = {
+  //   'click a.edit': 'emit',
+  //   'click a.preview': 'emit',
+  //   'click a.meta': 'emit',
+  //   'click a.settings': 'emit',
+  //   'click a.save': 'emit',
+  //   'click .mobile .toggle': 'toggleMobile',
+  // }
 
-  initialize(options) {
+  constructor(options) {
+    super({
+      events: {
+        'click a.edit': 'emit',
+        'click a.preview': 'emit',
+        'click a.meta': 'emit',
+        'click a.settings': 'emit',
+        'click a.save': 'emit',
+        'click .mobile .toggle': 'toggleMobile',
+      },
+      ...options
+    });
     this.app = options.app;
     this.sidebar = options.sidebar;
     this.user = options.user;

@@ -14,12 +14,19 @@ export default class StartView extends Backbone.View {
 
   template = templates.start;
 
-  events = {
-    'click a[href="#scopes"]': 'toggleScope',
-    'change .toggle-hide select': 'setScope',
-  }
+  // events = {
+  //   'click a[href="#scopes"]': 'toggleScope',
+  //   'change .toggle-hide select': 'setScope',
+  // }
 
-  initialize() {
+  constructor(options) {
+    super({
+      events: {
+        'click a[href="#scopes"]': 'toggleScope',
+        'change .toggle-hide select': 'setScope',
+      },
+      ...options
+    });
     this.persistScope(Config.scope);
   }
 

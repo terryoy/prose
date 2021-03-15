@@ -9,14 +9,21 @@ import util from '../../util';
 export default class SaveView extends Backbone.View {
     template = templates.sidebar.save;
 
-    events = {
-      'change .commit-message': 'setMessage',
-      'click a.cancel': 'emit',
-      'click a.confirm': 'emit',
-    }
+    // events = {
+    //   'change .commit-message': 'setMessage',
+    //   'click a.cancel': 'emit',
+    //   'click a.confirm': 'emit',
+    // }
 
     constructor(options) {
-      super(options);
+      super({
+        events: {
+          'change .commit-message': 'setMessage',
+          'click a.cancel': 'emit',
+          'click a.confirm': 'emit',
+        },
+        ...options
+      });
       this.sidebar = options.sidebar;
       this.file = options.file;
 
