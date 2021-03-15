@@ -14,16 +14,25 @@ import toolbar from './toolbar/markdown';
 export default class ToolbarView extends Backbone.View {
   template = templates.toolbar;
 
-  events = {
-    'click .group a': 'markdownSnippet',
-    'click .publish-flag': 'togglePublishing',
-    'change #upload': 'fileInput',
-    'click .dialog .insert': 'dialogInsert',
-    'click .draft-to-post': 'post',
-  };
+  // events = {
+  //   'click .group a': 'markdownSnippet',
+  //   'click .publish-flag': 'togglePublishing',
+  //   'change #upload': 'fileInput',
+  //   'click .dialog .insert': 'dialogInsert',
+  //   'click .draft-to-post': 'post',
+  // };
 
   constructor(options) {
-    super(options);
+    super({
+      events: {
+        'click .group a': 'markdownSnippet',
+        'click .publish-flag': 'togglePublishing',
+        'change #upload': 'fileInput',
+        'click .dialog .insert': 'dialogInsert',
+        'click .draft-to-post': 'post',
+      },
+      ...options
+    });
 
     const self = this;
     this.file = options.file;

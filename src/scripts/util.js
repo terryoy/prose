@@ -183,7 +183,7 @@ module.exports = {
     // -------
 
     documentTitle: function(title) {
-        document.title = title + ' · Prose';
+        document.title = title + ' · TeaTime Prose';
     },
 
     fixedScroll: function($el, offset) {

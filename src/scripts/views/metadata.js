@@ -33,12 +33,12 @@ const forms = {
 export default class MetaDataView extends Backbone.View {
   template = templates.metadata;
 
-  events = {
-    'change .metafield': 'updateModel',
-    'click button.metafield': 'updateModel',
-    'click .create-select': 'createSelect',
-    'click .finish': 'exit',
-  }
+  // events = {
+  //   'change .metafield': 'updateModel',
+  //   'click button.metafield': 'updateModel',
+  //   'click .create-select': 'createSelect',
+  //   'click .finish': 'exit',
+  // }
 
   // @options object
   // @options.model object (file model attached to file view)
@@ -48,7 +48,15 @@ export default class MetaDataView extends Backbone.View {
   // titleAsHeading is true when the filetype is markdown,
   // and when there exists a meta field called title.
   constructor(options) {
-    super(options);
+    super({
+      events: {
+        'change .metafield': 'updateModel',
+        'click button.metafield': 'updateModel',
+        'click .create-select': 'createSelect',
+        'click .finish': 'exit',
+      },
+      ...options
+    });
 
     this.model = options.model;
     this.titleAsHeading = options.titleAsHeading;

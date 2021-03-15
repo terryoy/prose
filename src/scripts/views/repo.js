@@ -14,14 +14,19 @@ import SearchView from './search';
 export default class RepoView extends Backbone.View {
   template = templates.repo;
 
-  events = {
-    'click a.new': 'create',
-  };
+  // events = {
+  //   'click a.new': 'create',
+  // };
 
   subviews = {};
 
   constructor(options) {
-    super(options);
+    super({
+      events: {
+        'click a.new': 'create',
+      },
+      ...options
+    });
 
     const { app } = options;
     app.loader.start();

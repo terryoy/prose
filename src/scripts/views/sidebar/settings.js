@@ -8,16 +8,25 @@ import templates from '../../templates';
 export default class SettingsView extends Backbone.View {
     template = templates.sidebar.settings;
 
-    events = {
-      'click a.delete': 'emit',
-      'click a.toggle-editor': 'emit',
-      'click a.translate': 'emit',
-      'click a.draft': 'emit',
-      'change input.filepath': 'setPath',
-    };
+    // events = {
+    //   'click a.delete': 'emit',
+    //   'click a.toggle-editor': 'emit',
+    //   'click a.translate': 'emit',
+    //   'click a.draft': 'emit',
+    //   'change input.filepath': 'setPath',
+    // };
 
     constructor(options) {
-      super(options);
+      super({
+        events: {
+          'click a.delete': 'emit',
+          'click a.toggle-editor': 'emit',
+          'click a.translate': 'emit',
+          'click a.draft': 'emit',
+          'change input.filepath': 'setPath',
+        },
+        ...options
+      });
       this.sidebar = options.sidebar;
       this.config = options.config;
       this.file = options.file;
