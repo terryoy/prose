@@ -1,4 +1,4 @@
-import { t } from '../translations';
+import { t } from '../../translations';
 
 module.exports = function() {
   return {

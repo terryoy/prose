@@ -35,8 +35,14 @@ export default class SearchView extends Backbone.View {
 
   search() {
     const searchstr = this.input ? this.input.val().toLowerCase() : '';
+    const getText = (model) => {
+      return this.mode === 'repos' ?
+      `${model.get('owner').login}/${model.get('name')}` : model.get('name')
+    }
+
     return this.model.filter(
-      (model) => model.get('name').toLowerCase().indexOf(searchstr) > -1,
+      (model) => 
+        getText(model).toLowerCase().indexOf(searchstr) > -1
     );
   }
 
