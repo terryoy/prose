@@ -1,31 +1,33 @@
-
-
 import Backbone from 'backbone';
-import { bindAll, compact, template, invoke } from 'lodash-es';
+import {
+  bindAll, compact, template, invoke,
+} from 'lodash-es';
 
-var File = require('../models/file');
-var Folder = require('../models/folder');
-var FileView = require('./li/file');
-var FolderView = require('./li/folder');
+import File from '../models/file';
+import Folder from '../models/folder';
+import FileView from './li/file';
+import FolderView from './li/folder';
 import templates from '../templates';
-var util = require('.././util');
+import util from '../util';
 
-module.exports = Backbone.View.extend({
-  className: 'listings',
+export default class FilesView extends Backbone.View {
+  className = 'listings';
 
-  template: templates.files,
+  template = templates.files;
 
-  subviews: {},
+  subviews = {};
 
-  events: {
+  events = {
     'mouseover .item': 'activeListing',
     'mouseover .item a': 'activeListing',
     'click .breadcrumb a': 'navigate',
-    'click .item a': 'navigate'
-  },
+    'click .item a': 'navigate',
+  }
 
-  initialize: function(options) {
-    var app = options.app;
+  constructor(options) {
+    super(options);
+
+    const { app } = options;
     app.loader.start();
 
     this.app = app;
@@ -39,26 +41,26 @@ module.exports = Backbone.View.extend({
     this.search = options.search;
     this.sidebar = options.sidebar;
 
-    bindAll(this, ['setModel']);
+    // bindAll(this, ['setModel']);
 
     this.branches.fetch({
       success: this.setModel,
-      error: (function(model, xhr, options) {
+      error: (function (model, xhr, options) {
         this.router.error(xhr);
       }).bind(this),
-      complete: this.app.loader.done
+      complete: this.app.loader.done,
     });
-  },
+  }
 
-  setModel: function() {
+  setModel = () => {
     this.app.loader.start();
 
     this.model = this.branches.findWhere({ name: this.branch }).files;
 
     this.model.fetch({
-      success: (function() {
+      success: (function () {
         // Update this.path with rooturl
-        var config = this.model.config;
+        const { config } = this.model;
         this.rooturl = config && config.rooturl ? config.rooturl : '';
 
         this.presentationModel = this.model.filteredModel || this.model;
@@ -67,91 +69,125 @@ module.exports = Backbone.View.extend({
         this.listenTo(this.search, 'search', this.render);
         this.render();
       }).bind(this),
-      error: (function(model, xhr, options) {
+      error: (function (model, xhr, options) {
         this.router.error(xhr);
       }).bind(this),
       complete: this.app.loader.done,
-      reset: true
+      reset: true,
     });
-  },
+  }
 
-  newFile: function() {
-    var path = [
+  newFile() {
+    const path = [
       this.repo.get('owner').login,
       this.repo.get('name'),
       'new',
       this.branch,
-      this.path ? this.path : this.rooturl
+      this.path ? this.path : this.rooturl,
     ];
 
     this.router.navigate(compact(path).join('/'), true);
-  },
+  }
 
-  render: function() {
+  activeListing(e) {
+    let $listing = $(e.target);
+
+    if (!$listing.hasClass('item')) {
+      $listing = $(e.target).closest('li');
+    }
+
+    this.$el.find('.item').removeClass('active');
+    $listing.addClass('active');
+
+    // Blur out search if its selected
+    this.search.$el.blur();
+  }
+
+  navigate(e) {
+    const target = e.currentTarget;
+    const path = target.href.split('#')[1];
+    const match = path.match(/tree\/([^/]*)\/?(.*)$/);
+
+    if (e && match) {
+      e.preventDefault();
+
+      this.path = match ? match[2] : path;
+      this.render();
+
+      this.router.navigate(path);
+    }
+  }
+
+  remove(...args) {
+    invoke(this.subviews, 'remove');
+    this.subviews = {};
+
+    super.remove(...args);
+  }
+
+  render() {
     this.app.loader.start();
 
-    var search = this.search && this.search.input && this.search.input.val();
-    var rooturl = this.rooturl ? this.rooturl + '/' : '';
-    var path = this.path ? this.path + '/' : '';
-    var drafts;
+    const search = this.search && this.search.input && this.search.input.val();
+    const rooturl = this.rooturl ? `${this.rooturl}/` : '';
+    const path = this.path ? `${this.path}/` : '';
+    let drafts;
 
-    var url = [
+    const url = [
       this.repo.get('owner').login,
       this.repo.get('name'),
       'tree',
-      this.branch
+      this.branch,
     ].join('/');
 
     // Set rooturl jail from collection config
-    var regex = new RegExp('^' + (path ? path : rooturl) + '[^/]*$');
+    const regex = new RegExp(`^${path || rooturl}[^/]*$`);
 
     // Render drafts link in sidebar as subview
     // if _posts directory exists and path does not begin with _drafts
     if (this.presentationModel.get('_posts') && /^(?!_drafts)/.test(this.path)) {
       drafts = this.sidebar.initSubview('drafts', {
         link: [url, '_drafts'].join('/'),
-        sidebar: this.sidebar
+        sidebar: this.sidebar,
       });
 
-      this.subviews['drafts'] = drafts;
+      this.subviews.drafts = drafts;
       drafts.render();
     }
 
-    var data = {
-      path: path,
+    const data = {
+      path,
       parts: util.chunkedPath(this.path),
-      rooturl: rooturl,
-      url: url
+      rooturl,
+      url,
     };
 
-    this.$el.html(template(this.template, {variable: 'data'})(data));
+    this.$el.html(template(this.template, { variable: 'data' })(data));
 
     // if not searching, filter to only show current level
-    var collection = search ? this.search.search() : this.presentationModel.filter(file => {
-      return regex.test(file.get('path'));
-    });
+    const collection = search ? this.search.search() : this.presentationModel.filter((file) => regex.test(file.get('path')));
 
-    var frag = document.createDocumentFragment();
+    const frag = document.createDocumentFragment();
 
     collection.forEach((file, index) => {
-      var view;
+      let view;
       if (file instanceof File) {
         view = new FileView({
           branch: this.branch,
           history: this.history,
-          index: index,
+          index,
           model: file,
           repo: this.repo,
-          router: this.router
+          router: this.router,
         });
       } else if (file instanceof Folder) {
         view = new FolderView({
           branch: this.branch,
           history: this.history,
-          index: index,
+          index,
           model: file,
           repo: this.repo,
-          router: this.router
+          router: this.router,
         });
       }
       frag.appendChild(view.render().el);
@@ -163,41 +199,5 @@ module.exports = Backbone.View.extend({
     this.app.loader.done();
 
     return this;
-  },
-
-  activeListing: function(e) {
-    var $listing = $(e.target);
-
-    if (!$listing.hasClass('item')) {
-      $listing = $(e.target).closest('li');
-    }
-
-    this.$el.find('.item').removeClass('active');
-    $listing.addClass('active');
-
-    // Blur out search if its selected
-    this.search.$el.blur();
-  },
-
-  navigate: function(e) {
-    var target = e.currentTarget;
-    var path = target.href.split('#')[1];
-    var match = path.match(/tree\/([^/]*)\/?(.*)$/);
-
-    if (e && match) {
-      e.preventDefault();
-
-      this.path = match ? match[2] : path;
-      this.render();
-
-      this.router.navigate(path);
-    }
-  },
-
-  remove: function() {
-    invoke(this.subviews, 'remove');
-    this.subviews = {};
-
-    Backbone.View.prototype.remove.apply(this, arguments);
   }
-});
+}

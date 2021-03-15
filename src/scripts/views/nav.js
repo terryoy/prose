@@ -3,47 +3,36 @@ import { template, delay } from 'lodash-es';
 import { t } from '../translations';
 
 import { Config } from '../config';
-// var utils = require('../util');
+// import utils from '../util';
 import templates from '../templates';
 import { cookie } from '../storage/cookie';
 
 // Set scope
 Config.scope = cookie.get('scope') || 'repo';
 
-module.exports = Backbone.View.extend({
-  template: templates.nav,
+export default class NavView extends Backbone.View {
+  template = templates.nav;
 
-  events: {
+  events = {
     'click a.edit': 'emit',
     'click a.preview': 'emit',
     'click a.meta': 'emit',
     'click a.settings': 'emit',
     'click a.save': 'emit',
-    'click .mobile .toggle': 'toggleMobile'
-  },
+    'click .mobile .toggle': 'toggleMobile',
+  }
 
-  initialize: function(options) {
+  initialize(options) {
     this.app = options.app;
     this.sidebar = options.sidebar;
     this.user = options.user;
-  },
+  }
 
-  render: function() {
-    this.$el.html(template(this.template, { variable: 'data' })({
-      login: Config.site + '/login/oauth/authorize' +
-        '?client_id=' + Config.id + '&scope=' + Config.scope + '&redirect_uri=' +
-        encodeURIComponent(window.location.href)
-    }));
-
-    this.$save = this.$el.find('.file .save .popup');
-    return this;
-  },
-
-  emit: function(e) {
+  emit = (e) => {
     // TODO: get rid of this hack exception
     if (e && !$(e.currentTarget).hasClass('preview')) e.preventDefault();
 
-    var state = $(e.currentTarget).data('state');
+    let state = $(e.currentTarget).data('state');
     if ($(e.currentTarget).hasClass('active')) {
       // return to file state
       state = this.state;
@@ -51,15 +40,14 @@ module.exports = Backbone.View.extend({
 
     this.active(state);
     this.toggle(state, e);
-  },
+  }
 
-  setFileState: function(state) {
+  setFileState(state) {
     this.state = state;
     this.active(state);
-  },
+  }
 
-  updateState: function(label, classes, kill) {
-
+  updateState(label, classes, kill) {
     if (!label) label = t('navigation.save');
     this.$save.html(label);
 
@@ -69,30 +57,41 @@ module.exports = Backbone.View.extend({
       .addClass(classes);
 
     if (kill) {
-      delay((function() {
+      delay((() => {
         this.$el.find('.file').removeClass(classes);
-      }).bind(this), 1000);
+      }), 1000);
     }
-  },
+  }
 
-  mode: function(mode) {
+  mode(mode) {
     this.$el.attr('class', mode);
-  },
+  }
 
-  active: function(state) {
+  active(state) {
     // Coerce 'new' to 'edit' to activate correct icon
     state = (state === 'new' ? 'edit' : state);
     this.$el.find('.file a').removeClass('active');
-    this.$el.find('.file a[data-state=' + state + ']').toggleClass('active');
-  },
+    this.$el.find(`.file a[data-state=${state}]`).toggleClass('active');
+  }
 
-  toggle: function(state, e) {
+  toggle(state, e) {
     this.trigger(state, e);
-  },
+  }
 
-  toggleMobile: function(e) {
+  toggleMobile = (e) => {
     this.sidebar.toggleMobile();
     $(e.target).toggleClass('active');
     return false;
   }
-});
+
+  render() {
+    this.$el.html(template(this.template, { variable: 'data' })({
+      login: `${Config.site}/login/oauth/authorize`
+          + `?client_id=${Config.id}&scope=${Config.scope}&redirect_uri=${
+            encodeURIComponent(window.location.href)}`,
+    }));
+
+    this.$save = this.$el.find('.file .save .popup');
+    return this;
+  }
+}

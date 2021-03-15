@@ -1,41 +1,23 @@
-
 import Backbone from 'backbone';
 import { template } from 'lodash-es';
 import { t } from '../translations';
 
 import templates from '../templates';
-var util = require('../util');
+import util from '../util';
 
-module.exports = Backbone.View.extend({
-  template: templates.search,
+export default class SearchView extends Backbone.View {
+  template = templates.search;
 
-  events: {
-    'keyup input': 'keyup'
-  },
+  events = {
+    'keyup input': 'keyup',
+  }
 
-  initialize: function(options) {
+  initialize(options) {
     this.mode = options.mode;
     this.model = options.model;
-  },
+  }
 
-  render: function() {
-    var placeholder = t('main.repos.filter');
-    if (this.mode === 'repo') placeholder = t('main.repo.filter');
-
-    var search = {
-      placeholder: placeholder
-    };
-
-    this.$el.empty().append(template(this.template, {
-      variable: 'search'
-    })(search));
-
-    this.input = this.$el.find('input');
-    this.input.focus();
-    return this;
-  },
-
-  keyup: function(e) {
+  keyup(e) {
     if (e && e.which === 27) {
       // ESC key
       this.input.val('');
@@ -49,12 +31,35 @@ module.exports = Backbone.View.extend({
     } else {
       this.trigger('search');
     }
-  },
-
-  search: function() {
-    var searchstr = this.input ? this.input.val().toLowerCase() : '';
-    return this.model.filter(function(model) {
-      return model.get('name').toLowerCase().indexOf(searchstr) > -1;
-    });
   }
-});
+
+  search() {
+    const searchstr = this.input ? this.input.val().toLowerCase() : '';
+    const getText = (model) => {
+      return this.mode === 'repos' ?
+      `${model.get('owner').login}/${model.get('name')}` : model.get('name')
+    }
+
+    return this.model.filter(
+      (model) => 
+        getText(model).toLowerCase().indexOf(searchstr) > -1
+    );
+  }
+
+  render() {
+    let placeholder = t('main.repos.filter');
+    if (this.mode === 'repo') placeholder = t('main.repo.filter');
+
+    const search = {
+      placeholder,
+    };
+
+    this.$el.empty().append(template(this.template, {
+      variable: 'search',
+    })(search));
+
+    this.input = this.$el.find('input');
+    this.input.focus();
+    return this;
+  }
+}

@@ -34,7 +34,7 @@
     data-user='<%- repo.owner.login %>'
     data-repo='<%- repo.name %>'
     href='#<%- repo.owner.login %>/<%- repo.name %>'>
-    <h3<% if (!repo.description) { %> class='title'<% } %>><%- repo.name %></h3>
+    <h3<% if (!repo.description) { %> class='title'<% } %>><%- repo.owner.login %>/<%- repo.name %></h3>
     <span class='deemphasize'><%- repo.description %></span>
   </a>
 </div>

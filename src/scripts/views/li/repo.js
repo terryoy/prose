@@ -1,34 +1,34 @@
-
-
 import Backbone from 'backbone';
 import { extend, template } from 'lodash-es';
 
 import { cookie } from '../../storage/cookie';
 import templates from '../../templates';
 
-module.exports = Backbone.View.extend({
-    tagName: 'li',
+export default class RepoView extends Backbone.View {
+  template = templates.li.repo;
 
-    className: 'item clearfix',
+  constructor(options) {
+    super({
+      tagName: 'li',
+      className: 'item clearfix',
+      ...options,
+    });
 
-    template: templates.li.repo,
+    this.model = options.model;
+    this.$el.attr('data-index', options.index);
+    this.$el.attr('data-id', this.model.id);
+    this.$el.attr('data-navigate', `#${this.model.get('owner').login}/${this.model.get('name')}`);
+  }
 
-    initialize: function(options) {
-        this.model = options.model;
-        this.$el.attr('data-index', options.index);
-        this.$el.attr('data-id', this.model.id);
-        this.$el.attr('data-navigate', '#' + this.model.get('owner').login + '/' + this.model.get('name'));
-    },
+  render = () => {
+    const data = extend(this.model.attributes, {
+      login: cookie.get('login'),
+    });
 
-    render: function() {
-        var data = extend(this.model.attributes, {
-            login: cookie.get('login')
-        });
+    this.$el.empty().append(template(this.template, {
+      variable: 'repo',
+    })(data));
 
-        this.$el.empty().append(template(this.template, {
-            variable: 'repo'
-        })(data));
-
-        return this;
-    }
-});
+    return this;
+  }
+}

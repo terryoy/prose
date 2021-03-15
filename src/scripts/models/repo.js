@@ -3,8 +3,8 @@
 import Backbone from 'backbone';
 import { clone, max, isFunction } from 'lodash-es';
 
-var Branches = require('../collections/branches');
-var Commits = require('../collections/commits');
+import Branches from '../collections/branches';
+import Commits from '../collections/commits';
 import { Config } from '../config';
 
 module.exports = Backbone.Model.extend({

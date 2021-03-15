@@ -1,42 +1,40 @@
-
 import Backbone from 'backbone';
 
 import { bindAll, template } from 'lodash-es';
 
 import templates from '../../templates';
 
-module.exports = Backbone.View.extend({
+export default class Checkbox extends Backbone.View {
+  template = templates.meta.checkbox;
 
-    template: templates.meta.checkbox,
-    type: 'checkbox',
+  type = 'checkbox';
 
-    initialize: function(options) {
-        this.options = options;
-        bindAll(this, ['render', 'getValue', 'setValue']);
-    },
+  constructor(options) {
+    super(options);
+    this.options = options;
+    bindAll(this, ['render', 'getValue', 'setValue']);
+  }
 
-    render: function() {
-        var options = this.options;
-        var checkbox = {
-            name: options.name,
-            label: options.field.label,
-            help: options.field.help,
-            value: options.name,
-            checked: options.field.value
-        };
+  getValue = () => this.$form[0].checked
 
-        this.setElement($(template(this.template, {
-            variable: 'meta'
-        })(checkbox)));
-        this.$form = this.$el.find('input');
-        return this.$el;
-    },
+  setValue = (value) => {
+    this.$form[0].checked = value;
+  }
 
-    getValue: function() {
-        return this.$form[0].checked;
-    },
+  render = () => {
+    const { options } = this;
+    const checkbox = {
+      name: options.name,
+      label: options.field.label,
+      help: options.field.help,
+      value: options.name,
+      checked: options.field.value,
+    };
 
-    setValue: function(value) {
-        this.$form[0].checked = value;
-    },
-});
+    this.setElement($(template(this.template, {
+      variable: 'meta',
+    })(checkbox)));
+    this.$form = this.$el.find('input');
+    return this.$el;
+  }
+}

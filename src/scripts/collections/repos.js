@@ -3,12 +3,12 @@
 import Backbone from 'backbone';
 import { clone, extend } from 'lodash-es';
 
-var Repo = require('../models/repo');
+import Repo from '../models/repo';
 
 import { Config } from '../config';
 import { cookie } from '../storage/cookie';
 
-var util = require('../util');
+import util from '../util';
 
 module.exports = Backbone.Collection.extend({
   model: Repo,
