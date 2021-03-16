@@ -7,63 +7,59 @@ import { t } from '../../translations';
 import util from '../../util';
 
 export default class SaveView extends Backbone.View {
-    template = templates.sidebar.save;
+  template = templates.sidebar.save;
 
-    // events = {
-    //   'change .commit-message': 'setMessage',
-    //   'click a.cancel': 'emit',
-    //   'click a.confirm': 'emit',
-    // }
+  events = {
+    'change .commit-message': 'setMessage',
+    'click a.cancel': 'emit',
+    'click a.confirm': 'emit',
+  }
 
-    constructor(options) {
-      super({
-        events: {
-          'change .commit-message': 'setMessage',
-          'click a.cancel': 'emit',
-          'click a.confirm': 'emit',
-        },
-        ...options
-      });
-      this.sidebar = options.sidebar;
-      this.file = options.file;
+  constructor(options) {
+    super(options);
+    
+    this.sidebar = options.sidebar;
+    this.file = options.file;
 
-      // Re-render updated path in commit message
-      this.listenTo(this.file, 'change:path', this.updatePlaceholder);
-    }
+    this.delegateEvents();
 
-    emit = (e) => {
-      const action = $(e.currentTarget).data('action');
-      this.sidebar.trigger(action, e);
-      return false;
-    }
+    // Re-render updated path in commit message
+    this.listenTo(this.file, 'change:path', this.updatePlaceholder);
+  }
 
-    setMessage = (e) => {
-      const { value } = e.currentTarget;
-      this.file.set('message', value);
-    }
+  emit = (e) => {
+    const action = $(e.currentTarget).data('action');
+    this.sidebar.trigger(action, e);
+    return false;
+  }
 
-    updatePlaceholder(model, value, options) {
-      const name = util.extractFilename(value)[1];
+  setMessage = (e) => {
+    const { value } = e.currentTarget;
+    this.file.set('message', value);
+  }
 
-      const placeholder = this.file.isNew()
-        ? t('actions.commits.create', { filename: name })
-        : t('actions.commits.update', { filename: name });
+  updatePlaceholder(model, value, options) {
+    const name = util.extractFilename(value)[1];
 
-      this.file.set('placeholder', placeholder);
-      this.$el.find('.commit-message').attr('placeholder', placeholder);
-    }
+    const placeholder = this.file.isNew()
+      ? t('actions.commits.create', { filename: name })
+      : t('actions.commits.update', { filename: name });
 
-    render() {
-      const writable = this.file.get('writable')
-        ? t('sidebar.save.save')
-        : t('sidebar.save.submit');
+    this.file.set('placeholder', placeholder);
+    this.$el.find('.commit-message').attr('placeholder', placeholder);
+  }
 
-      this.$el.html(template(this.template, {
-        variable: 'writable',
-      })(writable));
+  render() {
+    const writable = this.file.get('writable')
+      ? t('sidebar.save.save')
+      : t('sidebar.save.submit');
 
-      this.updatePlaceholder(this.file, this.file.get('path'));
+    this.$el.html(template(this.template, {
+      variable: 'writable',
+    })(writable));
 
-      return this;
-    }
+    this.updatePlaceholder(this.file, this.file.get('path'));
+
+    return this;
+  }
 }

@@ -10,15 +10,15 @@ import templates from '../templates';
 export default class HeaderView extends Backbone.View {
   template = templates.header;
 
+  events = {
+    'focus input': 'checkPlaceholder',
+    'change input[data-mode="path"]': 'updatePath',
+    'change input[data-mode="title"]': 'updateTitle',
+  }
+
   constructor(options) {
-    super({
-      events: {
-        'focus input': 'checkPlaceholder',
-        'change input[data-mode="path"]': 'updatePath',
-        'change input[data-mode="title"]': 'updateTitle',
-      },
-      ...options
-    });
+    super(options);
+    this.delegateEvents();
 
     this.user = options.user;
     this.repo = options.repo;

@@ -8,17 +8,14 @@ export default class Button extends Backbone.View {
 
     type = 'button';
 
-    // events = {
-    //   'click button': 'toggleState',
-    // }
+    events = {
+      'click button': 'toggleState',
+    }
 
     constructor(options) {
-      super({
-        events: {
-          'click button': 'toggleState',
-        },
-        ...options
-      });
+      super(options);
+      this.delegateEvents();
+
       this.options = options;
       this.on = options.field.on;
       this.off = options.field.off;

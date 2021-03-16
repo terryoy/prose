@@ -8,19 +8,18 @@ import templates from '../../templates';
 export default class FileView extends Backbone.View {
   template = templates.li.file;
 
-  // events = {
-  //   'click a.delete': 'destroy',
-  // }
+  events = {
+    'click a.delete': 'destroy',
+  }
 
   constructor(options) {
     super({
       tagName: 'li',
       className: 'item clearfix',
-      events: {
-        'click a.delete': 'destroy',
-      },
       ...options,
     });
+    this.delegateEvents();
+    
     this.branch = options.branch;
     this.history = options.history;
     this.model = options.model;

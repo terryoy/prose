@@ -11,17 +11,13 @@ export default class ChooseLanguageView extends Backbone.View {
 
   template = templates.chooselanguage;
 
-  // events = {
-  //   'click .language': 'setLanguage',
-  // }
+  events = {
+    'click .language': 'setLanguage',
+  }
 
   constructor(options) {
-    super({
-      events: {
-        'click .language': 'setLanguage',
-      },
-      ...options
-    });
+    super(options);
+    this.delegateEvents();
   }
 
   setLanguage(e) {
