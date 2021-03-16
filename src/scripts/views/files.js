@@ -17,23 +17,16 @@ export default class FilesView extends Backbone.View {
 
   subviews = {};
 
-  // events = {
-  //   'mouseover .item': 'activeListing',
-  //   'mouseover .item a': 'activeListing',
-  //   'click .breadcrumb a': 'navigate',
-  //   'click .item a': 'navigate',
-  // }
+  events = {
+    'mouseover .item': 'activeListing',
+    'mouseover .item a': 'activeListing',
+    'click .breadcrumb a': 'navigate',
+    'click .item a': 'navigate',
+  }
 
   constructor(options) {
-    super({
-      events: {
-        'mouseover .item': 'activeListing',
-        'mouseover .item a': 'activeListing',
-        'click .breadcrumb a': 'navigate',
-        'click .item a': 'navigate',
-      },
-      ...options
-    });
+    super(options);
+    this.delegateEvents();
 
     const { app } = options;
     app.loader.start();

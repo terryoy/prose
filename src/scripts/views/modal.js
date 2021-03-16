@@ -13,12 +13,8 @@ export default class Modal extends Backbone.View {
   }
 
   constructor(options) {
-    super({
-      events: {
-        'click .got-it': 'confirm',
-      },
-      ...options
-    });
+    super(options);
+    this.delegateEvents();
     this.message = this.options.message;
   }
 

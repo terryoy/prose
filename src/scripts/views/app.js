@@ -15,17 +15,13 @@ export default class Application extends Backbone.View {
 
   subviews = {};
 
-  // events = {
-  //   'click a.logout': 'logout',
-  // };
+  events = {
+    'click a.logout': 'logout',
+  };
 
   constructor(options) {
-    super({
-      events: {
-        'click a.logout': 'logout',
-      },
-      ...options
-    });
+    super(options);
+    this.delegateEvents();
 
     // initialize() will be triggered in super constructor...
 

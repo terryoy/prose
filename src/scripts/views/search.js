@@ -8,17 +8,14 @@ import util from '../util';
 export default class SearchView extends Backbone.View {
   template = templates.search;
 
-  // events = {
-  //   'keyup input': 'keyup',
-  // }
+  events = {
+    'keyup input': 'keyup',
+  }
 
   constructor(options) {
-    super({
-      events: {
-        'keyup input': 'keyup',
-      },
-      ...options,
-    });
+    super(options);
+    this.delegateEvents();
+    
     this.mode = options.mode;
     this.model = options.model;
   }

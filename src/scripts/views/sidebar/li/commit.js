@@ -7,23 +7,19 @@ import util from '../../../util';
 export default class CommitView extends Backbone.View {
     template = templates.sidebar.li.commit;
 
-    // events = {
-    //   'mouseenter .removed': 'eventMessage',
-    //   'mouseleave .removed': 'eventMessage',
-    //   'click .removed': 'restore',
-    // }
+    events = {
+      'mouseenter .removed': 'eventMessage',
+      'mouseleave .removed': 'eventMessage',
+      'click .removed': 'restore',
+    }
 
     constructor(options) {
       super({
         tagName: 'li',
         className: 'item',
-        events: {
-          'mouseenter .removed': 'eventMessage',
-          'mouseleave .removed': 'eventMessage',
-          'click .removed': 'restore',
-        },
         ...options,
       });
+      this.delegateEvents();
       const { file } = options;
 
       this.branch = options.branch;

@@ -6,19 +6,15 @@ import RepoView from './li/repo';
 export default class ReposView extends Backbone.View {
   subviews = {}
 
-  // events = {
-  //   'mouseover .item': 'activeListing',
-  //   'mouseover .item a': 'activeListing',
-  // }
+  events = {
+    'mouseover .item': 'activeListing',
+    'mouseover .item a': 'activeListing',
+  }
 
   constructor(options) {
-    super({
-      events: {
-        'mouseover .item': 'activeListing',
-        'mouseover .item a': 'activeListing',
-      },
-      ...options
-    });
+    super(options);
+    this.delegateEvents();
+    
     this.model = options.model;
     this.search = options.search;
     this.listenTo(this.search, 'search', this.render);

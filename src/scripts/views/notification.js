@@ -19,17 +19,13 @@ export default class NotificationView extends Backbone.View {
 
   template = templates.notification;
 
-  // events = {
-  //   'click .create': 'createPost',
-  // }
+  events = {
+    'click .create': 'createPost',
+  }
 
   constructor(options) {
-    super({
-      events: {
-        'click .create': 'createPost',
-      },
-      ...options,
-    })
+    super(options);
+    this.delegateEvents();
     options = clone(options) || {};
 
     this.message = options.message;
