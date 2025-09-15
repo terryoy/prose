@@ -59,11 +59,7 @@
     "merge2": "^1.0.2",
     "mocha": "^8.1.1",
     "node-notifier": "^5.2.1",
-    "parcel-bundler": "^1.12.4",
-    "parcel-plugin-bundle-visualiser": "^1.2.0",
-    "parcel-plugin-clean-dist": "^0.0.6",
-    "parcel-plugin-externals": "^0.5.1",
-    "parcel-plugin-txt": "^1.0.3",
+    "parcel": "^2.8.3",
     "request": "^2.88.0",
     "sass": "^1.32.8",
     "serve": "^10.1.1",
@@ -82,7 +78,7 @@
     "old-translations": "gulp translations",
     "lint": "eslint src/scripts/**/*.js --fix",
     "build": "parcel build site/index.html",
-    "start": "parcel site/index.html --port 3000"
+    "start": "parcel serve site/index.html --port 3000"
   },
   "browserify": {
     "transform": [
