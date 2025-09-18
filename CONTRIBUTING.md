@@ -71,9 +71,10 @@ All pull requests should be proposed to the [master](https://github.com/prose/pr
 
 ## Building / Installing
 
-Prose uses [Browserify](http://browserify.org) with [Gulp](http://gulpjs.com/)
-to manage dependencies and build. Development also requires you
-have [node.js](http://nodejs.org) >= v4.2 installed.
+Prose now uses [Webpack 5](https://webpack.js.org/) to manage dependencies and
+produce the browser bundles. Development requires
+[node.js](http://nodejs.org) >= v18 so that the build tooling and dependencies
+work correctly.
 
 ### Prerequisites
 - [node.js](http://nodejs.org/).
@@ -81,10 +82,11 @@ have [node.js](http://nodejs.org) >= v4.2 installed.
 ### Install steps
 
 1. `git clone git@github.com:prose/prose.git && cd prose/`
-2. Run `npm i`
-3. To run prose with authentication locally, a `oauth.json` file is required in the
-root directory. npm will handle this for you with the `gulp` postinstall script.
-4. Run `npm start` By default, prose will be set up on [http://localhost:3000](http://localhost:3000).
+2. Run `npm install`
+3. To run prose with authentication locally, create an `oauth.json` file in the
+root directory (see `site/oauth.json` for an example).
+4. Run `npm start`. By default, prose will be served on
+[http://localhost:3000](http://localhost:3000) using the webpack development server.
 
 __Note:__ You should not commit the `oauth.json` file to a remote repo or along with a pull
 request.
@@ -100,10 +102,11 @@ param represents the auth string. You can manually set the URL back to your pros
     http://localhost:3000/?code=36f237f41bd81c1a3661
 
 Alternatively you can setup your own Gatekeeper instance. For any changes you make
-to the codebase, you'll need to run `npm run build` to package code into a minified `prose.min.js`
-and see changes.
+to the codebase, run `npm run build` to emit the production assets into the `dist/`
+directory.
 
-__ProTip:__ You may want to run `npm run start` to serve the site and allow the running of gulp on every change.
+__ProTip:__ `npm run start` launches the webpack dev server with hot module reloading
+so you can see changes immediately during development.
 
 ## Testing
 
