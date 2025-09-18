@@ -17,6 +17,9 @@ module.exports = (env, argv) => {
     },
     resolve: {
       extensions: ['.js'],
+      fallback: {
+        buffer: require.resolve('buffer/'),
+      },
     },
     module: {
       rules: [
@@ -71,6 +74,9 @@ module.exports = (env, argv) => {
       }),
       new MiniCssExtractPlugin({
         filename: isProduction ? 'assets/css/[name].[contenthash:8].css' : 'assets/css/[name].css',
+      }),
+      new webpack.ProvidePlugin({
+        Buffer: ['buffer', 'Buffer'],
       }),
       new webpack.DefinePlugin({
         'process.env': JSON.stringify({
