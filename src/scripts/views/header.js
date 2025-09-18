@@ -1,4 +1,4 @@
-import pathUtil from 'path';
+import pathUtil from '../path-util';
 
 import Backbone from 'backbone';
 import { escape, template, extend } from 'lodash-es';

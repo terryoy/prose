@@ -5,7 +5,7 @@ import {
 } from 'lodash-es';
 import { t } from '../translations';
 
-import pathUtil from 'path';
+import pathUtil from '../path-util';
 
 import marked from 'marked';
 // import Backbone from 'backbone';
