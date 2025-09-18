@@ -54,7 +54,7 @@
     "sass-loader": "^16.0.1",
     "sinon": "^1.17.2",
     "sinon-chai": "^2.6.0",
-    "style-loader": "^4.4.0",
+    "style-loader": "^3.3.4",
     "webpack": "^5.95.0",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^5.1.0"
