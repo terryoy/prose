@@ -12,6 +12,7 @@
     "deepmerge": "^2.0.1",
     "diff": "~2.2.0",
     "handsontable": "8.0.0",
+    "buffer": "^6.0.3",
     "ignore": "^3.3.7",
     "jquery": "^3.5.1",
     "jquery-browserify": "~1.8.1",
