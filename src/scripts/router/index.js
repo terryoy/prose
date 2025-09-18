@@ -61,7 +61,7 @@ function newRepo(user, repoName) {
   });
 }
 
-module.exports = Backbone.Router.extend({
+const Router = Backbone.Router.extend({
 
   routes: {
     'about(/)': 'about',
@@ -406,3 +406,5 @@ module.exports = Backbone.Router.extend({
     this.notify(message, error, options);
   },
 });
+
+export default Router;

@@ -4,7 +4,7 @@ import { all, includes, map, clone, isFunction } from 'lodash-es';
 // import templates from './templates';
 import chrono from 'chrono';
 
-module.exports = {
+const util = {
 
     // Cleans up a string for use in urls
     stringToUrl: function(string) {
@@ -299,3 +299,5 @@ module.exports = {
         }
     }
 };
+
+export default util;

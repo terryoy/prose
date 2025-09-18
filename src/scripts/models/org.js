@@ -1,5 +1,7 @@
 // import Backbone from 'backbone';
 import Backbone from 'backbone';
 
-module.exports = Backbone.Model.extend({
+const OrgModel = Backbone.Model.extend({
 });
+
+export default OrgModel;

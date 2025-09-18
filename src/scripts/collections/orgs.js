@@ -6,7 +6,7 @@ import Org from '../models/org';
 import { Config } from '../config';
 import { cookie } from '../storage/cookie';
 
-module.exports = Backbone.Collection.extend({
+const Orgs = Backbone.Collection.extend({
   model: Org,
 
   initialize: function(models, options) {
@@ -31,3 +31,5 @@ module.exports = Backbone.Collection.extend({
     }
   }
 });
+
+export default Orgs;

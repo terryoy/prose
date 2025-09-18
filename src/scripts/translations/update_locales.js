@@ -48,7 +48,7 @@ function getResource(resource, callback) {
       callback(null, locale);
     });
 
-    fs.writeFileSync('translations/locales.js', '// Automatically Generated\n\nmodule.exports = ' + JSON.stringify(lang) + ';');
+    fs.writeFileSync('translations/locales.js', '// Automatically Generated\n\nconst locales = ' + JSON.stringify(lang) + ';\n\nexport default locales;\n');
   });
 }
 

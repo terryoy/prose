@@ -1,7 +1,7 @@
 
 import Backbone from 'backbone';
 
-module.exports = Backbone.Model.extend({
+const CommitModel = Backbone.Model.extend({
   initialize: function(attributes, options) {
     this.repo = attributes.repo;
   },
@@ -10,3 +10,5 @@ module.exports = Backbone.Model.extend({
     return this.repo.url() + '/commits/' + this.get('sha');
   }
 });
+
+export default CommitModel;

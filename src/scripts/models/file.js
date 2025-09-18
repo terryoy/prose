@@ -12,7 +12,7 @@ import marked from 'marked';
 var jsyaml = require('js-yaml');
 import util from '../util';
 
-module.exports = Backbone.Model.extend({
+const FileModel = Backbone.Model.extend({
   idAttribute: 'path',
 
   initialize: function(attributes, options) {
@@ -281,7 +281,7 @@ module.exports = Backbone.Model.extend({
 
                 // Create new File model in forked repo
                 // TODO: serialize metadata, set raw content
-                var file = new module.exports({
+                var file = new FileModel({
                   branch: branch,
                   collection: collection,
                   content: this.get('content'),
@@ -382,3 +382,5 @@ module.exports = Backbone.Model.extend({
     });
   }
 });
+
+export default FileModel;
