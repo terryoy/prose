@@ -46,6 +46,10 @@ module.exports = (env, argv) => {
           ],
         },
         {
+          test: /\.txt$/,
+          type: 'asset/source',
+        },
+        {
           test: /\.(png|jpe?g|gif|svg)$/i,
           type: 'asset/resource',
           generator: {
