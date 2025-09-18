@@ -1,4 +1,4 @@
-module.exports = {
+const upload = {
     dragEnter: function(e) {
         $(e.currentTarget).addClass('drag-over');
         e.stopPropagation();
@@ -69,3 +69,5 @@ module.exports = {
         }
     }
 };
+
+export default upload;

@@ -10,7 +10,7 @@ import { cookie } from '../storage/cookie';
 
 import util from '../util';
 
-module.exports = Backbone.Collection.extend({
+const Repos = Backbone.Collection.extend({
   model: Repo,
 
   initialize: function(models, options) {
@@ -62,3 +62,5 @@ module.exports = Backbone.Collection.extend({
     return Config.api + path + '/repos?per_page=100';
   }
 });
+
+export default Repos;

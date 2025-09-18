@@ -3,7 +3,7 @@
 import Backbone from 'backbone';
 import util from '.././util';
 
-module.exports = Backbone.Model.extend({
+const FolderModel = Backbone.Model.extend({
   idAttribute: 'path',
 
   initialize: function(attributes, options) {
@@ -22,3 +22,5 @@ module.exports = Backbone.Model.extend({
     return this.repo.url() + '/contents/' + this.get('path') + '?ref=' + this.branch.get('name');
   }
 });
+
+export default FolderModel;

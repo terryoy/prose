@@ -1,6 +1,6 @@
 import { t } from '../../translations';
 
-module.exports = function() {
+export default function() {
   return {
     help: [{
       menuName: t('dialogs.help.blockElements.title'),
@@ -57,4 +57,4 @@ module.exports = function() {
     }
     ]
   };
-};
+}

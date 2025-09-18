@@ -7,7 +7,7 @@ import Branches from '../collections/branches';
 import Commits from '../collections/commits';
 import { Config } from '../config';
 
-module.exports = Backbone.Model.extend({
+const RepoModel = Backbone.Model.extend({
   constructor: function(attributes, options) {
     Backbone.Model.call(this, {
       id: attributes.id,
@@ -56,8 +56,7 @@ module.exports = Backbone.Model.extend({
       url: this.url() + '/forks',
       success: (function(res) {
         // Initialize new Repo model
-        // TODO: is referencing module.exports in this manner acceptable?
-        var repo = new module.exports(res);
+        var repo = new RepoModel(res);
 
         // TODO: Forking is async, retry if request fails
         repo.branches.fetch({
@@ -87,3 +86,5 @@ module.exports = Backbone.Model.extend({
     return url;
   }
 });
+
+export default RepoModel;

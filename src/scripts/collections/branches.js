@@ -6,7 +6,7 @@ import {
 import Branch from '../models/branch';
 import util from '../util';
 
-module.exports = Backbone.Collection.extend({
+const Branches = Backbone.Collection.extend({
   model: Branch,
 
   initialize(models, options) {
@@ -46,3 +46,5 @@ module.exports = Backbone.Collection.extend({
     return `${this.repo.url()}/branches?per_page=100`;
   },
 });
+
+export default Branches;

@@ -2,7 +2,7 @@ import Backbone from 'backbone';
 import Files from '../collections/files';
 import { Config } from '../config';
 
-module.exports = Backbone.Model.extend({
+const BranchModel = Backbone.Model.extend({
   initialize: function(attributes, options) {
     this.repo = attributes.repo;
 
@@ -22,3 +22,5 @@ module.exports = Backbone.Model.extend({
     return this.repo.url() + '/branches/' + this.get('name');
   }
 });
+
+export default BranchModel;
