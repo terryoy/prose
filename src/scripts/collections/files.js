@@ -33,7 +33,7 @@ function replacePlaceholders (placeholderValues, initialValue) {
   return result;
 }
 
-module.exports = Backbone.Collection.extend({
+const Files = Backbone.Collection.extend({
   model: function(attributes, options) {
     // TODO: handle 'symlink' and 'submodule' type
     // TODO: coerce tree/folder to a single type
@@ -340,3 +340,5 @@ module.exports = Backbone.Collection.extend({
     };
   }
 });
+
+export default Files;

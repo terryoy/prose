@@ -3,7 +3,7 @@ import Backbone from 'backbone';
 import { map, extend } from 'lodash-es';
 import Commit from '../models/commit';
 
-module.exports = Backbone.Collection.extend({
+const Commits = Backbone.Collection.extend({
   model: Commit,
 
   initialize: function(models, options) {
@@ -27,3 +27,5 @@ module.exports = Backbone.Collection.extend({
     return this.repo.url() + '/commits?sha=' + this.branch;
   }
 });
+
+export default Commits;

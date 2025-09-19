@@ -7,7 +7,7 @@ import 'codemirror/mode/javascript/javascript';
 
 import { Liquid } from 'liquidjs';
 import {
-  template, compact, has, delay, map, pairs, invoke, escape, extend,
+  template, compact, has, delay, map, toPairs, invoke, escape, extend,
 } from 'lodash-es';
 import { queue } from 'd3-queue';
 import Handsontable from 'handsontable';
@@ -1290,7 +1290,7 @@ export default class FileView extends Backbone.View {
             branch: this.collection.branch.get('name'),
           };
 
-          params = map(pairs(data), (param) => param.join('=')).join('&');
+          params = map(toPairs(data), (param) => param.join('=')).join('&');
 
           $.ajax({
             type: 'DELETE',

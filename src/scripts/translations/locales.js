@@ -158,4 +158,4 @@ const locales = [{
   'code': 'vi-VN'
 }];
 
-module.exports = locales;
+export default locales;

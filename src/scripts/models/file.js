@@ -1,18 +1,18 @@
 import Backbone from 'backbone';
 import {
   omit, pick, extend, clone, isFunction, isUndefined,
-  map, pairs
+  map, toPairs
 } from 'lodash-es';
 import { t } from '../translations';
 
-import pathUtil from 'path';
+import pathUtil from '../path-util';
 
 import marked from 'marked';
 // import Backbone from 'backbone';
 var jsyaml = require('js-yaml');
 import util from '../util';
 
-module.exports = Backbone.Model.extend({
+const FileModel = Backbone.Model.extend({
   idAttribute: 'path',
 
   initialize: function(attributes, options) {
@@ -281,7 +281,7 @@ module.exports = Backbone.Model.extend({
 
                 // Create new File model in forked repo
                 // TODO: serialize metadata, set raw content
-                var file = new module.exports({
+                var file = new FileModel({
                   branch: branch,
                   collection: collection,
                   content: this.get('content'),
@@ -346,7 +346,7 @@ module.exports = Backbone.Model.extend({
     };
 
     var url = this.url().split('?')[0];
-    var params = map(pairs(data), function(param) { return param.join('='); }).join('&');
+    var params = map(toPairs(data), function(param) { return param.join('='); }).join('&');
 
     Backbone.Model.prototype.destroy.call(this, extend(options, {
       url: url + '?' + params,
@@ -382,3 +382,5 @@ module.exports = Backbone.Model.extend({
     });
   }
 });
+
+export default FileModel;
