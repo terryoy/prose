@@ -69,7 +69,7 @@ locale.current = function(_) {
  * @param  {[type]} loc locale
  * @return {[type]}     [description]
  */
-export const t = (s, o, loc) => {
+export const t = function t(s, o, loc) {
   if (!arguments.length) return;
   loc = loc || locale._current;
 
