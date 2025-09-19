@@ -1,7 +1,7 @@
 import Backbone from 'backbone';
 import {
   omit, pick, extend, clone, isFunction, isUndefined,
-  map, pairs
+  map, toPairs
 } from 'lodash-es';
 import { t } from '../translations';
 
@@ -346,7 +346,7 @@ const FileModel = Backbone.Model.extend({
     };
 
     var url = this.url().split('?')[0];
-    var params = map(pairs(data), function(param) { return param.join('='); }).join('&');
+    var params = map(toPairs(data), function(param) { return param.join('='); }).join('&');
 
     Backbone.Model.prototype.destroy.call(this, extend(options, {
       url: url + '?' + params,

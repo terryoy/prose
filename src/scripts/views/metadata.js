@@ -3,7 +3,7 @@ import CodeMirror from 'codemirror';
 import merge from 'deepmerge';
 import {
   bindAll, template, extend, isArray, difference, union,
-  chain, pluck, forEach, find, filter, invoke,
+  chain, map, forEach, find, filter, invoke,
 } from 'lodash-es';
 
 // var chosen = require('chosen-jquery-browserify');
@@ -123,7 +123,7 @@ export default class MetaDataView extends Backbone.View {
     })).groupBy('name').forEach((group) => {
       const { name } = group[0];
       metadata[name] = group.length === 1
-        ? group[0].value : pluck(group, 'value');
+        ? group[0].value : map(group, 'value');
     });
 
     // TODO does this always default metadata.published to true?

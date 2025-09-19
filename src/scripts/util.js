@@ -1,6 +1,6 @@
 
 
-import { all, includes, map, clone, isFunction } from 'lodash-es';
+import { every, includes, map, clone, isFunction } from 'lodash-es';
 // import templates from './templates';
 import chrono from 'chrono';
 
@@ -33,7 +33,7 @@ const util = {
 
     validPathname: function(path) {
         var regex = /^([a-zA-Z0-9_\-]|\.)+$/;
-        return all(path.split('/'), function(filename) {
+        return every(path.split('/'), function(filename) {
             return !!regex.test(filename);
         });
     },
