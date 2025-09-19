@@ -1,0 +1,56 @@
+/* @license
+Papa Parse
+v4.6.3
+https://github.com/mholt/PapaParse
+License: MIT
+*/
+
+/*!
+ * Pikaday
+ *
+ * Copyright © 2014 David Bushell | BSD & MIT license | https://github.com/Pikaday/Pikaday
+ */
+
+/*!
+ * Sizzle CSS Selector Engine
+ *  Copyright 2012 jQuery Foundation and other contributors
+ *  Released under the MIT license
+ *  http://sizzlejs.com/
+ */
+
+/*!
+ * The buffer module from node.js, for the browser.
+ *
+ * @author   Feross Aboukhadijeh <https://feross.org>
+ * @license  MIT
+ */
+
+/*!
+ * https://github.com/Starcounter-Jack/JSON-Patch
+ * json-patch-duplex.js version: 0.5.7
+ * (c) 2013 Joachim Wester
+ * MIT license
+ */
+
+/*!
+ * jQuery JavaScript Library v3.7.1
+ * https://jquery.com/
+ *
+ * Copyright OpenJS Foundation and other contributors
+ * Released under the MIT license
+ * https://jquery.org/license
+ *
+ * Date: 2023-08-28T13:37Z
+ */
+
+/*! https://mths.be/punycode v1.4.1 by @mathias */
+
+/*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
+
+/**
+ * @preserve
+ * Authors: Handsoncode
+ * Last updated: Nov 15, 2017
+ *
+ * Description: Definition file for English - United States language-country.
+ */
