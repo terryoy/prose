@@ -3,7 +3,7 @@ import CodeMirror from 'codemirror';
 import merge from 'deepmerge';
 import {
   bindAll, template, extend, isArray, difference, union,
-  chain, map, forEach, find, filter, invoke,
+  map, forEach, find, filter, invoke, groupBy,
 } from 'lodash-es';
 
 // var chosen = require('chosen-jquery-browserify');
@@ -111,17 +111,17 @@ export default class MetaDataView extends Backbone.View {
   }
 
   getValue = () => {
-    const view = this;
     let metadata = this.model.get('metadata') || {};
 
     // It's important to save only the data that's represented
     // by the current meta elements.
     // Even if there are elements with the same name.
-    chain(this.subviews).map((view) => ({
-      value: view.getValue(),
-      name: view.name,
-    })).groupBy('name').forEach((group) => {
-      const { name } = group[0];
+    const groupedValues = groupBy(this.subviews.map((subview) => ({
+      value: subview.getValue(),
+      name: subview.name,
+    })), 'name');
+
+    forEach(groupedValues, (group, name) => {
       metadata[name] = group.length === 1
         ? group[0].value : map(group, 'value');
     });
