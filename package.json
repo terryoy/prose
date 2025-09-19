@@ -64,7 +64,7 @@
   "scripts": {
     "lint": "eslint src/scripts/**/*.js --fix",
     "build": "webpack --mode production",
-    "start": "webpack serve --mode development --open false --port 3000"
+    "start": "webpack serve --mode development --port 3000"
   },
   "repository": {
     "type": "git",
