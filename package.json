@@ -4,6 +4,7 @@
   "description": "[Prose](http://prose.lucki.cn) is a web-based interface for managing text-based content in your GitHub repositories. Use it to create, edit, and delete files, and save your changes directly to GitHub.",
   "dependencies": {
     "backbone": "^1.4.0",
+    "buffer": "^6.0.3",
     "chosen-jquery": "^0.1.1",
     "chosen-jquery-browserify": "~0.9.15",
     "chosen-js": "^1.8.7",
@@ -12,7 +13,6 @@
     "deepmerge": "^2.0.1",
     "diff": "~2.2.0",
     "handsontable": "8.0.0",
-    "buffer": "^6.0.3",
     "ignore": "^3.3.7",
     "jquery": "^3.5.1",
     "jquery-browserify": "~1.8.1",
@@ -25,7 +25,8 @@
     "marked": "^0.5.2",
     "mkdirp": "^0.5.0",
     "papaparse": "^4.1.2",
-    "queue-async": "~1.0.3"
+    "queue-async": "~1.0.3",
+    "url": "^0.11.4"
   },
   "keywords": [
     "editor",
