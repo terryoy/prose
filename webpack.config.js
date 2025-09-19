@@ -1,3 +1,4 @@
+const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -6,6 +7,26 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = (env, argv) => {
   const isProduction = argv.mode === 'production';
+
+  const localOAuthPath = path.resolve(__dirname, 'site/oauth.json.local');
+  let localOAuthConfig = {};
+
+  if (!isProduction && fs.existsSync(localOAuthPath)) {
+    try {
+      const raw = fs.readFileSync(localOAuthPath, 'utf-8');
+      const parsed = JSON.parse(raw);
+      localOAuthConfig = {
+        API_URL: parsed.api,
+        STATUS_URL: parsed.statusUrl,
+        SITE_URL: parsed.site,
+        OAUTH_CLIENT_ID: parsed.clientId,
+        GATEKEEPER_HOST: parsed.gatekeeperUrl,
+      };
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.warn('Failed to read site/oauth.json.local:', error);
+    }
+  }
 
   return {
     entry: path.resolve(__dirname, 'src/scripts/app.js'),
@@ -81,11 +102,11 @@ module.exports = (env, argv) => {
       new webpack.DefinePlugin({
         'process.env': JSON.stringify({
           NODE_ENV: process.env.NODE_ENV || (isProduction ? 'production' : 'development'),
-          API_URL: process.env.API_URL || '',
-          STATUS_URL: process.env.STATUS_URL || '',
-          SITE_URL: process.env.SITE_URL || '',
-          OAUTH_CLIENT_ID: process.env.OAUTH_CLIENT_ID || '',
-          GATEKEEPER_HOST: process.env.GATEKEEPER_HOST || '',
+          API_URL: process.env.API_URL || localOAuthConfig.API_URL || '',
+          STATUS_URL: process.env.STATUS_URL || localOAuthConfig.STATUS_URL || '',
+          SITE_URL: process.env.SITE_URL || localOAuthConfig.SITE_URL || '',
+          OAUTH_CLIENT_ID: process.env.OAUTH_CLIENT_ID || localOAuthConfig.OAUTH_CLIENT_ID || '',
+          GATEKEEPER_HOST: process.env.GATEKEEPER_HOST || localOAuthConfig.GATEKEEPER_HOST || '',
         }),
       }),
       new CopyWebpackPlugin({

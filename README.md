@@ -12,6 +12,21 @@ Prose supports configuration settings with a variety of options, which makes it 
 
 Prose is hosted at [Prose.io](http://prose.io), or you can use on your own server. For installation instructions and contributing guidelines, please [read contributing.md](CONTRIBUTING.md). For deploying to your own server, read [deployment.md](DEPLOYMENT.md).
 
+#### Local OAuth configuration for development
+
+When running `npm run start`, you can override OAuth-related values without affecting production builds by creating a `site/oauth.json.local` file. Use the same shape as [`site/oauth.json`](site/oauth.json), for example:
+
+```json
+{
+  "api": "https://api.github.com",
+  "site": "https://github.com",
+  "clientId": "your-local-client-id",
+  "gatekeeperUrl": "http://localhost:9999"
+}
+```
+
+Any keys provided in this file will be injected into `process.env` during development so that modules like [`src/scripts/config.js`](src/scripts/config.js) receive the overridden values.
+
 ### Getting help
 
 Have questions? Jump into the #prose channel on irc.freenode.net.
