@@ -103,7 +103,7 @@ Router 处理 `about`、`profile`、`repo` 等路径，负责销毁旧视图、�
 `views/toolbar/markdown.js` 集中定义 Markdown 操作逻辑，供 Toolbar 视图调用，实现粗体、引用、列表等文本操作。【F:src/scripts/views/toolbar/markdown.js†L1-L60】【F:src/scripts/views/toolbar.js†L52-L140】 扩展新的 Markdown 快捷键时，可在该模块添加处理函数，并在模板中加入按钮以调用。
 
 ## 模板资源
-`src/scripts/templates/index.js` 聚合所有 Mustache/Underscore 模板，包括主应用、侧边栏、对话框、列表项等，并从子目录引入 dialogs、li、meta、sidebar 模块。【F:src/scripts/templates/index.js†L1-L51】 各 `.txt` 文件定义 HTML 结构，例如 `files.txt`、`repo.txt` 等，与对应视图一一配合使用。新增界面时，建议在此目录新增模板文件并在 `index.js` 注册，以便视图通过 `templates.<name>` 访问。
+`src/scripts/templates/index.js` 聚合所有 Mustache/Underscore 模板，包括主应用、侧边栏、对话框、列表项等，并从子目录引入 dialogs、li、meta、sidebar 模块。【F:src/scripts/templates/index.js†L1-L51】 各 `.html` 文件定义 HTML 结构，例如 `files.html`、`repo.html` 等，与对应视图一一配合使用。新增界面时，建议在此目录新增模板文件并在 `index.js` 注册，以便视图通过 `templates.<name>` 访问。
 
 ## 扩展业务功能的推荐流程
 1. **确定数据需求**：若需从 API 获取新数据，先在 `models`/`collections` 下建模，并在 `Config` 中补充所需配置项。【F:src/scripts/config.js†L1-L14】【F:src/scripts/collections/repos.js†L1-L70】

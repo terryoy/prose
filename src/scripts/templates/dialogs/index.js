@@ -1,7 +1,7 @@
-import help from './help.txt';
-import link from './link.txt';
-import media from './media.txt';
-import mediadirectory from './mediadirectory.txt';
+import help from './help.html';
+import link from './link.html';
+import media from './media.html';
+import mediadirectory from './mediadirectory.html';
 
 export const dialogs = {
     help,

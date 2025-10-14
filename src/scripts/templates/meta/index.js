@@ -1,10 +1,10 @@
-import button from './button.txt';
-import checkbox from './checkbox.txt';
-import multiselect from './multiselect.txt';
-import raw from './raw.txt';
-import select from './select.txt';
-import text from './text.txt';
-import textarea from './textarea.txt';
+import button from './button.html';
+import checkbox from './checkbox.html';
+import multiselect from './multiselect.html';
+import raw from './raw.html';
+import select from './select.html';
+import text from './text.html';
+import textarea from './textarea.html';
 
 export const meta = {
     button,
