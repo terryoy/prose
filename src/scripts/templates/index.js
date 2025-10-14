@@ -3,23 +3,23 @@ import li from './li';
 import meta from './meta';
 import sidebar from './sidebar';
 
-import app from './app.txt';
-import breadcrumb from './breadcrumb.txt';
-import chooselanguage from './chooselanguage.txt';
-import drawer from './drawer.txt';
-import file from './file.txt';
-import files from './files.txt';
-import header from './header.txt';
-import loading from './loading.txt';
-import metadata from './metadata.txt';
-import modal from './modal.txt';
-import nav from './nav.txt';
-import notification from './notification.txt';
-import profile from './profile.txt';
-import repo from './repo.txt';
-import search from './search.txt';
-import start from './start.txt';
-import toolbar from './toolbar.txt';
+import app from './app.html';
+import breadcrumb from './breadcrumb.html';
+import chooselanguage from './chooselanguage.html';
+import drawer from './drawer.html';
+import file from './file.html';
+import files from './files.html';
+import header from './header.html';
+import loading from './loading.html';
+import metadata from './metadata.html';
+import modal from './modal.html';
+import nav from './nav.html';
+import notification from './notification.html';
+import profile from './profile.html';
+import repo from './repo.html';
+import search from './search.html';
+import start from './start.html';
+import toolbar from './toolbar.html';
 
 const templates = {
   // templates from sub-folders
@@ -45,7 +45,7 @@ const templates = {
   repo,
   search,
   start,
-  toolbar
+  toolbar,
 };
 
 export default templates;

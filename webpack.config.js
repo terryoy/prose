@@ -70,7 +70,8 @@ module.exports = (env, argv) => {
           ],
         },
         {
-          test: /\.txt$/,
+          test: /\.(txt|html)$/,
+          include: path.resolve(__dirname, 'src/scripts/templates'),
           type: 'asset/source',
         },
         {
